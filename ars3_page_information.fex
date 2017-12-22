@@ -1,0 +1,61 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2016
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy Fute (Information Builders), Alexandre PENG (Information Builders)
+-* Date création : 05/10/2016
+-* Description   : Procédure de génération du rapport affichant les fichiers déposés par MOA sous forme url du répertoire
+-*		   /sinput/informatives/
+-*--------------------------------------------------------------------------------------------------
+-* Modifications
+-*  Date   : jj/mm/ssaa
+-*  Auteur :
+-*  Objet  : ...
+-*==================================================================================================
+-*ELSE IF HYPERTEXT EQ 'O' THEN NIVEAU_2 | '<a href="&APPNAME' | NOM_FICHIER | '" target="_blank">' | LIBELLE | '</a>'
+ 
+-*dir3_page_informatives.fex
+ 
+ 
+-****************Chemin d'accès à INDICATEUR.csv**************************
+-SET &CHEMIN= &&APPS ||'\informations\ars2016\informations.csv';
+FI PAGE_INFORMATION DISK &CHEMIN
+ 
+-SET &APPNAME2 = '/approot/informations/ars2016/';
+-*-SET &APPNAME3 = '';
+ 
+DEFINE FILE PAGE_INFORMATION
+BLC/A10 = '&'|'nbsp;';
+NIVEAU_2/A250 = IF NIVEAU EQ 1 THEN '' ELSE IF NIVEAU EQ 2 THEN BLC | BLC | BLC ELSE IF NIVEAU EQ 3 THEN  BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC ELSE IF NIVEAU EQ 4 THEN BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC | BLC ELSE BLC;
+FILE_LIST/A1000 = IF LIGNE_BLANCHE EQ 'O' THEN ' '
+					ELSE IF HYPERTEXT EQ 'O' THEN NIVEAU_2 | '<a href="&APPNAME2' | NOM_FICHIER | '" target="_blank">' | LIBELLE | '</a>'
+							ELSE NIVEAU_2 | LIBELLE;
+END
+TABLE FILE PAGE_INFORMATION
+PRINT FILE_LIST AS 'Liste d'informations supplémentaires'
+HYPERTEXT NOPRINT
+NIVEAU NOPRINT
+-*WHERE FILENAME CONTAINS '.pdf' OR '.PDF' OR '.docx' OR '.DOCX' OR '.htm' OR '.html' OR '.HTM' OR '.HTML'
+ON TABLE SET PAGE-NUM NOLEAD
+ON TABLE NOTOTAL
+ON TABLE SET ASNAME ON
+ON TABLE PCHOLD FORMAT HTML
+ON TABLE SET HTMLCSS ON
+ON TABLE SET STYLE *
+-*     INCLUDE = ENblue_theme,
+INCLUDE = endeflt,
+$
+ 
+TYPE=DATA, COLUMN=N1, SIZE=10, STYLE=BOLD,FONT=ARIAL,$
+TYPE=TITLE, COLUMN=N1, SIZE=14, STYLE=BOLD, FONT=ARIAL,COLOR=GRAY,$
+DEFMACRO=COND0001,MACTYPE=RULE,WHEN=N2 EQ 'O',$
+TYPE=DATA, COLUMN=N1, MACRO=COND0001, STYLE=BOLD+ITALIC,$
+DEFMACRO=COND0002,MACTYPE=RULE, WHEN=N3 EQ 1,$
+TYPE=DATA, COLUMN=N1, MACRO=COND0002, SIZE=12,$
+DEFMACRO=COND0003,MACTYPE=RULE, WHEN=N3 EQ 2,$
+TYPE=DATA, COLUMN=N1, MACRO=COND0003, SIZE=11,$
+DEFMACRO=COND0004,MACTYPE=RULE, WHEN=N3 EQ 3,$
+TYPE=DATA, COLUMN=N1, MACRO=COND0004, SIZE=10,$
+ENDSTYLE
+END
+ 
+ 

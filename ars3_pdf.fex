@@ -1,0 +1,74 @@
+-* Default Mode: ResourceLayout
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+-*============================================================================
+-* Projet Suivi d'activité DIRECCTE 2016
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas WATTIAUX (Information builders)
+-* Date création : 18/09/2017
+-*============================================================================
+*-HOLD_SOURCE
+-* File newfex
+SET HTMLARCHIVE=ON
+COMPOUND LAYOUT PCHOLD FORMAT PDF
+UNITS=CM, $
+SECTION=section1, LAYOUT=ON, METADATA='prop_with_names^Margins_Left=0.5^Margins_Top=0.5^Margins_Right=0.5^Margins_Bottom=0.5^thumbnailscale=4', MERGE=OFF, ORIENTATION=PORTRAIT, PAGESIZE=Letter, SHOW_GLOBALFILTER=OFF, $
+PAGELAYOUT=ALL, NAME='Page maître', $
+OBJECT=BOX, NAME='line4', POSITION=(0.529 26.193), DIMENSION=(20.333 0.000), BACKCOLOR=BLACK, BORDER-COLOR=BLACK, METADATA='Z-INDEX: 18; POSITION: absolute; BACKGROUND-COLOR: black; WIDTH: 20.333cm; FONT-SIZE: 1pt; TOP: 26.193cm; LEFT: 0.529cm', $
+OBJECT=STRING, NAME='text19', TEXT='<font face="TREBUCHET MS" size=10><ibi-total-pages/></font>', POSITION=(10.054 26.617), MARKUP=ON, WRAP=ON, DIMENSION=(4.233 1.058),  METADATA='Z-INDEX: 99; POSITION: absolute; WIDTH: 4.233cm; FONT-FAMILY: TREBUCHET MS; WORD-WRAP: break-word; HEIGHT: 1.058cm; FONT-SIZE: 10pt; TOP: 26.617cm; LEFT: 10.054cm', $
+OBJECT=STRING, NAME='text5', TEXT='<font face="TREBUCHET MS" size=10><center><BR><ibi-page-number/></center></font>', POSITION=(8.308 26.194), MARKUP=ON, WRAP=ON, DIMENSION=(2.910 1.323),  METADATA='Z-INDEX: 100; POSITION: absolute; TEXT-ALIGN: center; WIDTH: 2.91cm; FONT-FAMILY: TREBUCHET MS; WORD-WRAP: break-word; HEIGHT: 1.323cm; FONT-SIZE: 10pt; TOP: 26.194cm; LEFT: 8.308cm', $
+OBJECT=STRING, NAME='text20', TEXT='<font face="TREBUCHET MS" size=10>/</font>', POSITION=(9.684 26.617), MARKUP=ON, WRAP=ON, DIMENSION=(0.522 1.004),  METADATA='Z-INDEX: 101; POSITION: absolute; WIDTH: 0.522cm; FONT-FAMILY: TREBUCHET MS; WORD-WRAP: break-word; HEIGHT: 1.004cm; FONT-SIZE: 10pt; TOP: 26.617cm; LEFT: 9.684cm', $
+OBJECT=IMAGE, NAME='image7', IMAGE=logo_dfas.gif, ALT='', POSITION=(3.122 0.794), DIMENSION=(2.117 2.196), METADATA='Z-INDEX: 106; POSITION: absolute; WIDTH: 2.117cm; HEIGHT: 2.196cm; TOP: 0.794cm; LEFT: 3.122cm rtFileName=logo_dfas.gif', $
+OBJECT=IMAGE, NAME='image8', IMAGE=logo_sg.gif, ALT='', POSITION=(0.794 0.794), DIMENSION=(2.117 2.196), METADATA='Z-INDEX: 107; POSITION: absolute; WIDTH: 2.117cm; HEIGHT: 2.196cm; TOP: 0.794cm; LEFT: 0.794cm rtFileName=logo_sg.gif', $
+OBJECT=IMAGE, NAME='image9', IMAGE=logo_rf.gif, ALT='', POSITION=(17.719 0.781), DIMENSION=(2.117 2.196), METADATA='Z-INDEX: 108; POSITION: absolute; WIDTH: 2.117cm; HEIGHT: 2.196cm; TOP: 0.781cm; LEFT: 17.719cm rtFileName=logo_rf.gif', $
+COMPONENT='DfltCmpt1', POSITION=(0 0), DIMENSION=(0 0),  $
+PAGELAYOUT=1, NAME='Présentation page 1', text='Présentation page 1', TOC-LEVEL=1, BOTTOMMARGIN=0.5, TOPMARGIN=0.5, ORIENTATION=PORTRAIT, METADATA='BOTTOMMARGIN=0.5,TOPMARGIN=0.5,LEFTMARGIN=0,RIGHTMARGIN=0,ORIENTATION=PORTRAIT,', $
+COMPONENT='report6', TEXT='report6', TOC-LEVEL=2, POSITION=(4.736 18.098), DIMENSION=(10.843 6.081),  ARREPORTSIZE=DIMENSION, METADATA='Z-INDEX: 98; POSITION: absolute; WIDTH: 10.843cm; HEIGHT: 6.081cm; TOP: 18.098cm; LEFT: 4.736cm', $
+OBJECT=IMAGE, NAME='image11', IMAGE=logo_ars.gif, ALT='', POSITION=(2.752 7.779), DIMENSION=(14.821 8.290), METADATA='Z-INDEX: 110; POSITION: absolute; WIDTH: 14.821cm; HEIGHT: 8.29cm; TOP: 7.779cm; LEFT: 2.752cm rtFileName=logo_ars.gif', $
+PAGELAYOUT=2, NAME='Présentation page 2', text='Présentation page 2', TOC-LEVEL=1, BOTTOMMARGIN=0.5, TOPMARGIN=0.5, METADATA='BOTTOMMARGIN=0.5,TOPMARGIN=0.5,LEFTMARGIN=0,RIGHTMARGIN=0,', $
+COMPONENT='report2', TEXT='report2', TOC-LEVEL=2, POSITION=(1.614 9.049), DIMENSION=(17.105 11.106),  ARREPORTSIZE=DIMENSION, METADATA='Z-INDEX: 80; POSITION: absolute; WIDTH: 17.105cm; HEIGHT: 11.106cm; TOP: 9.049cm; LEFT: 1.614cm', $
+OBJECT=STRING, NAME='text3', TEXT='<font face="TREBUCHET MS" size=24 color=#7b68ee><center>Répartition par activité</center></font>', POSITION=(2.619 6.350), MARKUP=ON, WRAP=ON, DIMENSION=(15.081 1.905), style=+italic, METADATA='Z-INDEX: 111; POSITION: absolute; TEXT-ALIGN: center; FONT-STYLE: italic; WIDTH: 15.081cm; FONT-FAMILY: TREBUCHET MS; WORD-WRAP: break-word; HEIGHT: 1.905cm; COLOR: #7b68ee; FONT-SIZE: 24pt; TOP: 6.35cm; LEFT: 2.619cm', $
+PAGELAYOUT=3, NAME='Présentation page 3', text='Présentation page 3', TOC-LEVEL=1, BOTTOMMARGIN=1.1, TOPMARGIN=1.1, METADATA='BOTTOMMARGIN=1.1,TOPMARGIN=1.1,LEFTMARGIN=0,RIGHTMARGIN=0,', $
+COMPONENT='report3', TEXT='report3', TOC-LEVEL=2, POSITION=(1.879 9.472), DIMENSION=(16.576 12.570),  ARREPORTSIZE=DIMENSION, METADATA='Z-INDEX: 88; POSITION: absolute; WIDTH: 16.576cm; HEIGHT: 12.57cm; TOP: 9.472cm; LEFT: 1.879cm', $
+OBJECT=STRING, NAME='text4', TEXT='<font face="TREBUCHET MS" size=24 color=#7b68ee><center>Comparaison des activités entre type d''entités</center></font>', POSITION=(0.767 6.350), MARKUP=ON, WRAP=ON, DIMENSION=(18.779 1.946), style=+italic, METADATA='Z-INDEX: 112; POSITION: absolute; TEXT-ALIGN: center; FONT-STYLE: italic; WIDTH: 18.779cm; FONT-FAMILY: TREBUCHET MS; WORD-WRAP: break-word; HEIGHT: 1.946cm; COLOR: #7b68ee; FONT-SIZE: 24pt; TOP: 6.35cm; LEFT: 0.767cm', $
+PAGELAYOUT=4, NAME='Présentation page 5', text='Présentation page 5', TOC-LEVEL=1, BOTTOMMARGIN=0.5, TOPMARGIN=0.5, METADATA='BOTTOMMARGIN=0.5,TOPMARGIN=0.5,LEFTMARGIN=0,RIGHTMARGIN=0,', $
+COMPONENT='report4', TEXT='report4', TOC-LEVEL=2, POSITION=(1.085 9.948), DIMENSION=(18.160 9.520),  ARREPORTSIZE=DIMENSION, METADATA='Z-INDEX: 89; POSITION: absolute; WIDTH: 18.16cm; HEIGHT: 9.52cm; TOP: 9.948cm; LEFT: 1.085cm', $
+OBJECT=STRING, NAME='text25', TEXT='<font face="TREBUCHET MS" size=24 color=#7b68ee><center>Evolution des activités</center></font>', POSITION=(0.767 6.350), MARKUP=ON, WRAP=ON, DIMENSION=(18.785 1.958), style=+italic, METADATA='Z-INDEX: 113; POSITION: absolute; TEXT-ALIGN: center; FONT-STYLE: italic; WIDTH: 18.785cm; FONT-FAMILY: TREBUCHET MS; WORD-WRAP: break-word; HEIGHT: 1.958cm; COLOR: #7b68ee; FONT-SIZE: 24pt; TOP: 6.35cm; LEFT: 0.767cm', $
+PAGELAYOUT=5, NAME='Présentation page 6', text='Présentation page 6', TOC-LEVEL=1, BOTTOMMARGIN=0.5, TOPMARGIN=0.5, METADATA='BOTTOMMARGIN=0.5,TOPMARGIN=0.5,LEFTMARGIN=0,RIGHTMARGIN=0,', $
+COMPONENT='report5', TEXT='report5', TOC-LEVEL=2, POSITION=(1.164 9.340), DIMENSION=(17.992 9.172),  ARREPORTSIZE=DIMENSION, METADATA='Z-INDEX: 90; POSITION: absolute; WIDTH: 17.992cm; HEIGHT: 9.172cm; TOP: 9.34cm; LEFT: 1.164cm', $
+OBJECT=STRING, NAME='text31', TEXT='<font face="TREBUCHET MS" size=24 color=#7b68ee><center>Répartition par entité</center></font>', POSITION=(4.075 6.350), MARKUP=ON, WRAP=ON, DIMENSION=(12.175 1.857), style=+italic, METADATA='Z-INDEX: 114; POSITION: absolute; TEXT-ALIGN: center; FONT-STYLE: italic; WIDTH: 12.175cm; FONT-FAMILY: TREBUCHET MS; WORD-WRAP: break-word; HEIGHT: 1.857cm; COLOR: #7b68ee; FONT-SIZE: 24pt; TOP: 6.35cm; LEFT: 4.075cm', $
+END
+SET COMPONENT='DfltCmpt1'
+TABLE FILE SYSCOLUM
+" "
+SUM TBNAME NOPRINT
+IF READLIMIT EQ 1
+ON TABLE SET PREVIEW ON
+ON TABLE SET PAGE-NUM NOLEAD
+ON TABLE HOLD AS OUT FORMAT PDF
+ON TABLE SET STYLE *
+END
+SET COMPONENT='report6'
+-*component_type report
+-INCLUDE ars3_rpt_recapetp_pdf.fex
+SET COMPONENT='report2'
+-*component_type report
+-INCLUDE ars3_rpt_repartition_act_pdf.fex
+SET COMPONENT='report3'
+-*component_type report
+-INCLUDE ars3_rpt_comparaison_act_pdf.fex
+SET COMPONENT='report4'
+-*component_type report
+-INCLUDE ars3_rpt_evolution_act_pdf.fex
+SET COMPONENT='report5'
+-*component_type report
+-INCLUDE ars3_graph_rep_entite_pdf.fex
+COMPOUND END

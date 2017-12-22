@@ -1,0 +1,151 @@
+-*============================================================================
+-* Projet Suivi d'activité DIRECCTE 2016
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas WATTIAUX (Information builders)
+-* Date création : 18/09/2017
+-*============================================================================
+-*-SET &ECHO=ALL;
+-INCLUDE ARS3_DEFAUT_ACT
+-*---------------------------------------------------
+-* Récupération des codes axes selon les paramètres
+-*---------------------------------------------------
+-DEFAULTH &STR_ENT='';
+-DEFAULTH &STR_GEO='';
+-DEFAULTH &STR_ACT='';
+-DEFAULTH &STR_PLAF='';
+-DEFAULTH &STR_STAT='';
+ 
+-INCLUDE ARS3_READ_ENT_SPECIAL
+-INCLUDE ARS3_READ_GEO
+-INCLUDE ARS3_READ_ACTIVITE_SPECIAL
+-INCLUDE ARS3_READ_PLAFOND
+-INCLUDE ARS3_READ_STATUT
+-*End Other
+-*COMPONENT=Define_VIEW_IND_VAL_IA
+DEFINE FILE VIEW_IND_VAL_IA ADD
+VALEUR_FIN/D20.2=IF VALEUR_FINALE IS MISSING THEN 0 ELSE VALEUR_FINALE ;
+AX_ENT_FIN/A100V=VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX03_LIBELLE || ' - ' || VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX02_LIBELLE ;
+END
+ 
+-*IA_GRAPH_BEGIN
+-*Do not delete or modify the comments below
+*-INTERNAL_COMMENT LINE#0$PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8IS0tMS4wLS0+DQo8Um9vdCB2ZXJzaW9uPSIxLjAiPg0KICAgIDxPYmplY3Qgb2JqZWN0SWQ9IkNoYXJ0XzEiPg0KICAgICAgICA8UHJvcGVydHkgbmFtZT0iTGlua2VkU29ydHMiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciLz4NCiAgICA8L09iamVjdD4NCiAgICA8T2JqZWN0IG9iamVjdElkPSJHTE9CQUwiPg0KICAgICAgICA8UHJvcGVydHkgbmFtZT0iU2FtcGxlRGF0YSIgdHlwZT0iamF2YS5sYW5nLkJvb2xlYW4iPmZhbHNlPC9Qcm9wZXJ0eT4NCiAgICAgICAgPFByb3BlcnR5IG5hbWU9Ikdsb2JhbFJlY29yZExpbWl0IiB0eXBlPSJqYXZhLmxhbmcuU3RyaW5nIj41MDA8L1Byb3BlcnR5Pg0KICAgICAgICA8UHJvcGVydHkgbmFtZT0iR2xvYmFsUnVuUmVjb3JkTGltaXQiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciPjA8L1Byb3BlcnR5Pg0KICAgICAgICA8UHJvcGVydHkgbmFtZT0iZmllbGREaXNwbGF5TW9kZSIgdHlwZT0iamF2YS5sYW5nLlN0cmluZyI+bGFiZWw8L1Byb3BlcnR5Pg0KICAgICAgICA8UHJvcGVydHkgbmFtZT0icHJlZml4RGlzcGxheU1vZGUiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciLz4NCiAgICAgICAgPFByb3BlcnR5IG5hbWU9IkFjdGl2ZV9TdHlsZV9Vc2VyX3R5cGUiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciPnBvd2VyPC9Qcm9wZXJ0eT4NCiAgICAgICAgPFByb3BlcnR5IG5hbWU9Ikdsb2JhbFZhbHVlc1BhZ2luZyIgdHlwZT0iamF2YS5sYW5nLlN0cmluZyI+NDwvUHJvcGVydHk+DQogICAgICAgIDxQcm9wZXJ0eSBuYW1lPSJGb2NleGVjUHJlZmVyZW5jZXMiIHR5cGU9Ik1hcCI+DQogICAgICAgICAgICA8RW50cnkga2V5PSJkaXNwbGF5RWRpdE1vZGVJbmZvTWluaVByZWZlcmVuY2UiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciPmZhbHNlPC9FbnRyeT4NCiAgICAgICAgICAgIDxFbnRyeSBrZXk9ImRpc3BsYXlGb3JtYXRUYWJJbmZvTWluaVByZWZlcmVuY2UiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciPnRydWU8L0VudHJ5Pg0KICAgICAgICAgICAgPEVudHJ5IGtleT0iZGlzcGxheUhvbWVUYWJJbmZvTWluaVByZWZlcmVuY2UiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciPmZhbHNlPC9FbnRyeT4NCiAgICAgICAgICAgIDxFbnRyeSBrZXk9ImRpc3BsYXlRdWlja0FjY2Vzc1Rvb2xiYXJTYXZlSW5mb01pbmlQcmVmZXJlbmNlIiB0eXBlPSJqYXZhLmxhbmcuU3RyaW5nIj50cnVlPC9FbnRyeT4NCiAgICAgICAgICAgIDxFbnRyeSBrZXk9Im1ldGFkYXRhX3ZpZXdzIiB0eXBlPSJqYXZhLmxhbmcuU3RyaW5nIj5NZXRhRGF0YVRyZWUuVklFV19ESU1TPC9FbnRyeT4NCiAgICAgICAgICAgIDxFbnRyeSBrZXk9ImRpc3BsYXlSZXNvdXJjZXNGaWVsZFRhYkluZm9NaW5pUHJlZmVyZW5jZSIgdHlwZT0iamF2YS5sYW5nLlN0cmluZyI+ZmFsc2U8L0VudHJ5Pg0KICAgICAgICAgICAgPEVudHJ5IGtleT0iZGlzcGxheUluc2VydFRhYkluZm9NaW5pUHJlZmVyZW5jZSIgdHlwZT0iamF2YS5sYW5nLlN0cmluZyI+ZmFsc2U8L0VudHJ5Pg0KICAgICAgICAgICAgPEVudHJ5IGtleT0iZGlzcGxheVNsaWNlcnNUYWJFZGl0SW5mb01pbmlQcmVmZXJlbmNlIiB0eXBlPSJqYXZhLmxhbmcuU3RyaW5nIj5mYWxzZTwvRW50cnk+DQogICAgICAgICAgICA8RW50cnkga2V5PSJkaXNwbGF5U2VyaWVzVGFiSW5mb01pbmlQcmVmZXJlbmNlIiB0eXBlPSJqYXZhLmxhbmcuU3RyaW5nIj5mYWxzZTwvRW50cnk+DQogICAgICAgICAgICA8RW50cnkga2V5PSJpbmZvQXNzaXN0TW9kZUFsbG93ZWRJbmZvTWluaVByZWZlcmVuY2UiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciPmZhbHNlPC9FbnRyeT4NCiAgICAgICAgICAgIDxFbnRyeSBrZXk9ImRlZmF1bHRfcHJldmlld19wYWdlbGltaXRfbGF5b3V0IiB0eXBlPSJqYXZhLmxhbmcuU3RyaW5nIj4xPC9FbnRyeT4NCiAgICAgICAgICAgIDxFbnRyeSBrZXk9ImRlZmF1bHRfcHJldmlld19wYWdlbGltaXQiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciPjU8L0VudHJ5Pg0KICAgICAgICAgICAgPEVudHJ5IGtleT0iZGVmYXVsdF9jb21wb3NlX2Zvcm1hdCIgdHlwZT0iamF2YS5sYW5nLlN0cmluZyI+UERGPC9FbnRyeT4NCiAgICAgICAgICAgIDxFbnRyeSBrZXk9ImRpc3BsYXlJbnRlcmFjdGl2ZU1vZGVJbmZvTWluaVByZWZlcmVuY2UiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciPnRydWU8L0VudHJ5Pg0KICAgICAgICAgICAgPEVudHJ5IGtleT0icnVuT25TdGFydHVwSW5mb01pbmlQcmVmZXJlbmNlIiB0eXBlPSJqYXZhLmxhbmcuU3RyaW5nIj50cnVlPC9FbnRyeT4NCiAgICAgICAgICAgIDxFbnRyeSBrZXk9ImRpc3BsYXlEYXRhVGFiSW5mb01pbmlQcmVmZXJlbmNlIiB0eXBlPSJqYXZhLmxhbmcuU3RyaW5nIj5mYWxzZTwvRW50cnk+DQogICAgICAgICAgICA8RW50cnkga2V5PSJkaXNwbGF5U2xpY2Vyc1RhYkludGVyYWN0aXZlSW5mb01pbmlQcmVmZXJlbmNlIiB0eXBlPSJqYXZhLmxhbmcuU3RyaW5nIj50cnVlPC9FbnRyeT4NCiAgICAgICAgICAgIDxFbnRyeSBrZXk9ImRpc3BsYXlMYXlvdXRUYWJJbmZvTWluaVByZWZlcmVuY2UiIHR5cGU9ImphdmEubGFuZy5TdHJpbmciPmZhbHNlPC9FbnRyeT4NCiAgICAgICAgPC9Qcm9wZXJ0eT4NCiAgICAgICAgPFByb3BlcnR5IG5hbWU9ImNhc2NhZGVOYW1lcyIgdHlwZT0iTWFwIi8+DQogICAgICAgIDxQcm9wZXJ0eSBuYW1lPSJNYXN0ZXJfRmlsZXMiIHR5cGU9IlNldCI+DQogICAgICAgICAgICA8RW50cnkgdHlwZT0iamF2YS5sYW5nLlN0cmluZyI+VklFV19JTkRfVkFMX0lBPC9FbnRyeT4NCiAgICAgICAgPC9Qcm9wZXJ0eT4NCiAgICAgICAgPFByb3BlcnR5IG5hbWU9ImVuYWJsZVByZXZpZXciIHR5cGU9ImphdmEubGFuZy5Cb29sZWFuIj50cnVl
+*-INTERNAL_COMMENT LINE#1$PC9Qcm9wZXJ0eT4NCiAgICA8L09iamVjdD4NCjwvUm9vdD4NCg==
+-*Do not delete or modify the comments above
+ENGINE INT CACHE SET ON
+-DEFAULTH &WF_STYLE_UNITS='PIXELS';
+-DEFAULTH &WF_STYLE_HEIGHT='405.0';
+-DEFAULTH &WF_STYLE_WIDTH='769.999968';
+-DEFAULTH &WF_TITLE='WebFOCUS Report';
+-*Cette option permet de faire afficher le graphe en mode PDF
+-* Cette option se retrouve aussi dans la console d'administartion et il suffit de changer la valeur existante par une du vide
+SET GRAPHSERVURL='';
+GRAPH FILE VIEW_IND_VAL_IA
+-* Created by Info Assist for Graph
+SUM PCT.VALEUR_FIN AS '%'
+BY AX_ENT_FIN
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.ID_INDICATEUR EQ 'I_GIDB001C';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX01_NOM EQ 'TEMPS';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX02_NOM EQ 'GEOAR';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX03_NOM EQ 'AARS16ENT';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX04_NOM EQ 'AARS16DOM';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX05_NOM EQ 'AARS15EFF';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX06_NOM EQ 'AARS16STATUT';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX07_NOM EQ 'AARS15ICE';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX01_CODE EQ '&EXERCICE';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX04_CODE IN ( &STR_ACT );
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX05_CODE IN ( &STR_PLAF );
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX06_CODE IN ( &STR_STAT );
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX02_GROUPE EQ 'GEOAR_N4';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX03_GROUPE EQ 'AARS16ENT_N2';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX07_NIVEAU EQ 1;
+ON GRAPH PCHOLD FORMAT PDF
+ON GRAPH SET HTMLENCODE ON
+ON GRAPH SET GRAPHDEFAULT OFF
+ON GRAPH SET ARGRAPHENGIN JSCHART
+ON GRAPH SET VZERO OFF
+ON GRAPH SET UNITS &WF_STYLE_UNITS
+ON GRAPH SET HAXIS &WF_STYLE_WIDTH
+ON GRAPH SET VAXIS &WF_STYLE_HEIGHT
+ON GRAPH SET GRMERGE ADVANCED
+ON GRAPH SET GRMULTIGRAPH 0
+ON GRAPH SET GRLEGEND 0
+ON GRAPH SET GRXAXIS 1
+ON GRAPH SET LOOKGRAPH HBAR
+ON GRAPH SET STYLE *
+*GRAPH_SCRIPT
+ 
+setPieDepth(0);
+setPieTilt(0);
+setDepthRadius(0);
+setCurveFitEquationDisplay(false);
+setPlace(true);
+ 
+*END
+INCLUDE=ENIADefault_combine,$
+TYPE=REPORT, TITLETEXT=&WF_TITLE.QUOTEDSTRING, $
+TYPE=REPORT, OBJECT=MENU, COLOR=RGB(0 0 0), $
+*GRAPH_SCRIPT
+setPieFeelerTextDisplay(1);
+setReportParsingErrors(false);
+setSelectionEnableMove(false);
+setTextString(getO1Title(),"");
+setSeriesType(0,1);
+setFillColor(getO1Title(),new Color(0,0,0));
+setFillColor(getO1Label(),new Color(0,0,255));
+setDisplay(getLegendArea(),true);
+setDisplay(getY1Title(),false);
+setFillColor(getFrame(),new Color(255,255,255));
+setDisplay(getO1MajorGrid(),false);
+setFrameAutoShade(true);
+setTransparentFillColor(getFrameBottom(),true);
+setDisplay(getDataText(0), true);
+setFontSizeAbsolute(getDataText(),true);
+setAutofit(getDataText(),false);
+setPlaceResize(getDataText(),0);
+setFontName(getDataText(),"ARIAL");
+setFontStyle(getDataText(),0);
+setDisplay(getDataText(),true);
+setDataTextPosition(6);
+setFontSizeInPoints(getDataText(),7);
+setConnectLineMarkers(false);
+setDisplay(getY1MajorGrid(),false);
+setDisplay(getY1MinorGrid(),false);
+setDisplay(getY1MajorTick(),true);
+setAltFmtFrameNumColors(getY1AltFmtFrame(),5);
+setTickStyle(getY1MajorTick(),4);
+setDisplay(getY1MinorTick(),false);
+setTextFormatPreset(getY1Label(),0);
+setFontName(getY1Label(),"ARIAL");
+setFontSizeAbsolute(getY1Label(),true);
+setAutofit(getY1Label(),false);
+setFontSizeInPoints(getY1Label(),8);
+setPlaceResize(getY1Label(),0);
+setBorderColor(getFrameSide(),new Color(255,255,255));
+setFillColor(getFrameSide(),new Color(0,0,0));
+setTransparentFillColor(getFrame(),true);
+setTransparentFillColor(getFrameSide(),true);
+setTransparentBorderColor(getFrameSide(),true);
+setBorderColor(getFrameBottom(),new Color(255,255,255));
+setTransparentBorderColor(getFrameBottom(),true);
+setTextRotation(getO1Label(),0);
+setDepthRadius(5);
+setDepthAngle(45);
+setPieTilt(10);
+setPieDepth(70);
+setTextFormatPreset(getDataText(),1);
+*GRAPH_JS
+"riserShadow": false,
+ 
+*END
+ENDSTYLE
+END
+ 
+-*IA_GRAPH_FINISH
+-IF &LINES EQ 0 THEN GOTO NODATAPDF;
+-GOTO SKIP0
+-*Other
+-NODATAPDF
+-INCLUDE ARS3_NODATA
+-*End Other
+-SKIP0

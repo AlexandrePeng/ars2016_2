@@ -1,0 +1,35 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2015
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des libellés d'entité sélectionnées dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 07/07/2015
+-*  Auteur : Nicolas WATTIAUX
+ 
+-*============================================================================
+-* Procedure    : ars3_recup_lib_entite.fex
+-* ------------------------------------------------------------------------------------------------
+-IF &ENTITE_TYPE EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSENT;
+ 
+TABLE FILE AXE_AARS16ENT
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ &ENTITE_TYPE.QUOTEDSTRING
+ON TABLE HOLD AS TMP_LIB_ENTITE FORMAT ALPHA
+END
+-RUN
+-GOTO LBENT
+-TSENT
+-SET &ENTITE_LIB='Tous les sièges et/ou DT';
+-GOTO EENT
+-LBENT
+-READ TMP_LIB_ENTITE &ENTITE_LIB.A60.
+-EENT
+-TYPE &ENTITE_LIB
+ 
+ 
+ 

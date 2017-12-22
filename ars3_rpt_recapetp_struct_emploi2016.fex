@@ -1,0 +1,116 @@
+-* File ars3_rpt_recapetp_struct_emploi.fex
+-*==================================================================================================
+-* Projet Suivi d'activité 2014 - Tableau de bord : Récapitulatif des paramètres et Total ETP
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas Wattiaux (Information Builders), Guy Fute (Aixial BI)
+-* Date création : 01/07/2015
+-* Description   :
+-*
+-*--------------------------------------------------------------------------------------------------
+-* Modifications
+-*  Date   : jj/mm/ssaa
+-*  Auteur : first last - sté
+-*  Objet  : ...
+-*==================================================================================================
+SET SPACES =ON;
+-DEFAULTH &AX04_LIBELLE = ''
+-DEFAULTH &VALEUR_FINALE = 0
+-SET &ID_INDICATEUR= 'I_GIDB0015';
+-SET &EXERCICE=2015;
+-INCLUDE ars3_DEFAUT_STAT
+ 
+-DEFAULT &FMT_SORTIE='HTML'
+ 
+-*---------------------------------------------------
+-* Récupération des codes axes selon les paramètres
+-*---------------------------------------------------
+ 
+-INCLUDE ars3_READ_GEO_INDUCT
+-INCLUDE ars3_READ_ACTIVITE_INDUC
+-*-INCLUDE ars3_READ_STATUT
+ 
+-*---------------------------------
+-* Total ETP selon les paramètres
+-*---------------------------------
+SET CDN=OFF
+-RUN
+TABLE FILE VIEW_IND_VAL_IA
+SUM VALEUR_FINALE/D20.1
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre STATUT
+-*	WHERE (AX03_CODE IN ( &STR_STAT ))
+-IF &STATUT NE 'STATUT' THEN GOTO STATNIV3;
+WHERE (AX03_NIVEAU EQ 2)
+-GOTO FINSTATNIV
+-STATNIV3
+WHERE (AX03_NIVEAU EQ 3)
+-FINSTATNIV
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+ 
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS OUT FORMAT ALPHA
+END
+ 
+-*Test pour vérifier qu'il y a des valeurs
+-IF &LINES EQ 0 THEN GOTO :ERRMESS;
+-RUN
+ 
+-READ OUT &VALEUR_FINALE.20.
+ 
+-GOTO :VAL
+ 
+-:ERRMESS
+-SET &VALEUR_FINALE=0;
+ 
+-:VAL
+ 
+-SET &VAL_FI=TRIM('L', &VALEUR_FINALE, 20, ' ', 1,'A20');
+-SET &NEWVAL1=TRUNCATE(&VAL_FI);
+SET CDN=ON
+-RUN
+ 
+-SET &NEWVAL=FTOA(&NEWVAL1, '(D10.1)', 'A12');
+-*Récupération inducteur
+-INCLUDE ars3_RECUP_LIB_GEO_INDUCT
+-INCLUDE ars3_RECUP_LIB_ACTIVITE_INDUCT
+-*-INCLUDE ars3_RECUP_LIB_STATUT
+ 
+-SET &STATUT_LIB='Tous';
+-RUN
+ 
+ 
+-HTMLFORM BEGIN
+<HTML>
+<BODY style="Z-INDEX: 0; OVERFLOW: hidden;background:#5472AE">
+<font color="white">
+<font face="arial">
+-*<font face="verdana">
+<font size=2>
+<center>
+<p><br>
+<b><font color="black">ARS:</font>ARS &GEO_LIB</b>
+<br>
+<b><font color="black">Secteur:</font>&SECTEUR_LIB</b>
+<br>
+<b><font color="black">Statut:</font>&STATUT_LIB</b>
+<br>
+<font size=5> <font size=3>  ETP &EXERCICE : </font> <font color="#ED7F10"> <b>&NEWVAL</b>
+</font> </p>
+</center></font></body></html>
+-HTMLFORM END
+-GOTO :FINI
+ 
+ 
+-:FINI
+ 
+ 
+ 
+ 
+ 

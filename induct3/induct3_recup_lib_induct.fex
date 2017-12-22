@@ -1,0 +1,52 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2017
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Alexandre PENG (Information builders)
+-* Date création : 04/11/2017
+-* Description   : Procédure de récupération des libellés d'activité sélectionnés dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   :
+-*  Auteur :
+ 
+-*============================================================================
+-* Procedure    : induct3_recup_lib_induct.fex
+-* ------------------------------------------------------------------------------------------------
+-IF &SECTEUR EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSSECTEUR;
+ 
+TABLE FILE AXE_AARS17INDUCTEUR
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ '&SECTEUR'
+ON TABLE HOLD AS TMP_LIB_ACTIVITE_SECTEUR FORMAT ALPHA
+END
+-RUN
+ 
+-READ TMP_LIB_ACTIVITE_SECTEUR &SECTEUR_LIB.A60.
+-GOTO ESECTEUR
+-TSSECTEUR
+-SET &SECTEUR_LIB='Tous';
+-ESECTEUR
+-TYPE &SECTEUR_LIB
+ 
+ 
+-IF &INDUCTEUR EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSTYPE_INT;
+ 
+TABLE FILE AXE_AARS17INDUCTEUR
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ '&INDUCTEUR'
+ON TABLE HOLD AS TMP_LIB_ACTIVITE_INDUCTEUR FORMAT ALPHA
+END
+-RUN
+-READ TMP_LIB_ACTIVITE_INDUCTEUR &INDUCTEUR_LIB.A60.
+-GOTO ETYPE_INT
+-TSTYPE_INT
+-SET &INDUCTEUR_LIB='Tous';
+-ETYPE_INT
+-TYPE &INDUCTEUR_LIB
+ 
+ 
+ 
+ 
+ 

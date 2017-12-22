@@ -1,0 +1,136 @@
+-* File test.fex
+-*-SET &ECHO=ALL;
+-INCLUDE ars3_DEFAUT_ACT
+-*---------------------------------------------------
+-* Récupération des codes axes selon les paramètres
+-*---------------------------------------------------
+-DEFAULTH &STR_ENT='';
+-DEFAULTH &STR_GEO='';
+-DEFAULTH &STR_ACT='';
+-DEFAULTH &STR_PLAF='';
+-DEFAULTH &STR_STAT='';
+-INCLUDE ars3_READ_ENT
+-INCLUDE ars3_READ_GEO
+-INCLUDE ars3_READ_ACTIVITE
+-INCLUDE ars3_READ_PLAFOND
+-SET &SECT_NIV= IF &SECTEUR EQ '_FOC_NULL' THEN 1 ELSE 2;
+-INCLUDE ars3_READ_STATUT_GRAPH_ACT
+ 
+ 
+DEFINE FILE VIEW_IND_VAL_IA ADD
+ VALEUR_FIN/D20.2=IF VALEUR_FINALE IS MISSING THEN 0 ELSE VALEUR_FINALE;
+END
+ 
+TABLE FILE VIEW_IND_VAL_IA
+PRINT VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.VALEUR_FIN
+BY AX06_LIBELLE
+BY AX06_CODE
+ 
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.ID_INDICATEUR EQ 'I_GIDB001C';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX01_NOM EQ 'TEMPS';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX02_NOM EQ 'GEOAR';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX03_NOM EQ 'AARS16ENT';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX04_NOM EQ 'AARS16DOM';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX05_NOM EQ 'AARS15EFF';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX06_NOM EQ 'AARS16STATUT';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX07_NOM EQ 'AARS15ICE';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX01_CODE EQ '&EXERCICE';
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX02_CODE IN ( &STR_GEO );
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX03_CODE IN ( &STR_ENT );
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX04_CODE IN ( &STR_ACT );
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX05_CODE IN ( &STR_PLAF );
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX06_CODE IN ( &STR_STAT );
+WHERE VIEW_IND_VAL_IA.VIEW_IND_VAL_IA.AX07_NIVEAU EQ 1;
+-*ON TABLE COLUMN-TOTAL
+ON TABLE HOLD AS VIEW_IND_VAL_IA FORMAT ALPHA
+END
+ 
+JOIN CLEAR *
+JOIN AX06_CODE IN VIEW_IND_VAL_IA TO UNIQUE CODE_STAT IN LISTE_STATUT
+END
+ 
+ 
+ENGINE INT CACHE SET ON
+-DEFAULTH &WF_STYLE_UNITS='PIXELS';
+-DEFAULTH &WF_STYLE_HEIGHT='405.0';
+-DEFAULTH &WF_STYLE_WIDTH='770.0';
+ 
+GRAPH FILE VIEW_IND_VAL_IA
+SUM PCT.VALEUR_FIN
+BY LIBEL_STAT
+ 
+HEADING
+""
+ON GRAPH PCHOLD FORMAT AHTML
+ON GRAPH SET VZERO OFF
+ON GRAPH SET HTMLENCODE ON
+ON GRAPH SET GRAPHDEFAULT OFF
+ON GRAPH SET ARGRAPHENGIN JSCHART
+ON GRAPH SET UNITS &WF_STYLE_UNITS
+ON GRAPH SET HAXIS &WF_STYLE_WIDTH
+ON GRAPH SET VAXIS &WF_STYLE_HEIGHT
+ON GRAPH SET GRMERGE ADVANCED
+ON GRAPH SET GRMULTIGRAPH 0
+ON GRAPH SET GRLEGEND 1
+ON GRAPH SET GRXAXIS 0
+ON GRAPH SET LOOKGRAPH PIESINGL
+ON GRAPH SET AUTOFIT ON
+ON GRAPH SET STYLE *
+*GRAPH_SCRIPT
+setPieDepth(0);
+setPieTilt(0);
+setDepthRadius(0);
+setCurveFitEquationDisplay(false);
+setPlace(true);
+setPieFeelerTextDisplay(1);
+*END
+-*INCLUDE=IBFS:/FILE/IBI_HTML_DIR/javaassist/intl/EN/ENIADefault_combine.sty,$
+TYPE=REPORT, TITLETEXT='WebFOCUS Report', ARGRAPHENGINE=JSFUSION, $
+TYPE=HEADING, JUSTIFY=CENTER, FONT='Trebuchet MS', SIZE=10, COLOR=RGB(66 70 73), STYLE=BOLD, $
+*GRAPH_SCRIPT
+setDisplay(getSubtitle(),false);
+setDisplay(getTitle(),false);
+setReportParsingErrors(false);
+setSelectionEnableMove(false);
+setDisplay(getFootnote(),false);
+setLegendPosition(7);
+setFillColor(getChartBackground(),new Color(255,255,255));
+setDisplay(getPieLabel(),false);
+setFontName(getLegendText(),"Arial");
+setFontSizeAbsolute(getLegendText(), false);
+setFontSizeInPoints(getLegendText(), 10);
+setTextJustHoriz(getLegendText(),1);
+setTextUnderlineType(getLegendText(),1);
+setLegendPosition(7);
+setLegendTextAutosize(false);
+setLegendAutomatic(true);
+setPlaceResize(getLegendText(),1);
+setLegendPosition(1);
+setLegendOrient(1);
+setBorderColor(getLegendArea(),new Color(0,0,0));
+setPieFeelerTextDisplay(4);
+setTextFormatPreset(getPieSliceLabel(),3);
+setDepthRadius(5);
+setDepthAngle(45);
+setPieTilt(10);
+setPieDepth(70);
+setPieSliceDetach(getSeries(*), 0);
+setPieSliceDetach(getSeries(*), 0);
+*GRAPH_JS
+"mouseOverIndicator": {
+  "enabled": true,
+  "color": "yellow",
+  "marker": {"size": 0}
+ },
+ "riserShadow": true,
+ "riserBevel": "cylinder",
+ "introAnimation": {
+  "enabled": false,
+  "duration": 1400
+ },
+*END
+ENDSTYLE
+END
+ 
+-*******Fin*****
+-INCLUDE ars3_NODATA

@@ -1,0 +1,51 @@
+-*============================================================================
+-* Projet Suivi des ARS 2015
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des activité sélectionnées dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 31/08/2015
+-*  Auteur : Guy FUTE
+-* Description: Procédure utilisée pour les tableaux de répartion  des etpt
+-*============================================================================
+-* Procedure    : ars3_read_activite_special.fex
+-* ------------------------------------------------------------------------------------------------
+ 
+-SET &ACT= IF &NIV_ACTIVITE EQ '4' THEN &NIV_ACTIVITE ELSE &NIV_ACTIVITE+1;
+ 
+TABLE FILE AXE_AARS16DOM
+PRINT VALEUR_AXE
+WHERE NIVEAU EQ &ACT
+-IF &NIV_ACTIVITE EQ '1' THEN GOTO :ACTIVITE_N1 ELSE IF &NIV_ACTIVITE EQ '2' THEN GOTO :ACTIVITE_N2 ELSE IF &NIV_ACTIVITE EQ '3' THEN GOTO :ACTIVITE_N3 ELSE GOTO :ACTIVITE_N4;
+-:ACTIVITE_N4
+WHERE AARS16DOM_N4 EQ &MISSION.QUOTEDSTRING
+-GOTO EACTIV
+-:ACTIVITE_N3
+WHERE AARS16DOM_N3 EQ &TYPE_INT.QUOTEDSTRING
+-GOTO EACTIV
+-:ACTIVITE_N2
+WHERE AARS16DOM_N2 EQ &SECTEUR.QUOTEDSTRING
+-GOTO EACTIV
+-:ACTIVITE_N1
+WHERE AARS16DOM_N1 EQ &ACTIVITE_NATIONAL.QUOTEDSTRING
+-EACTIV
+ON TABLE HOLD AS TMP_AXE_AARS16DOM FORMAT ALPHA
+END
+-RUN
+-SET &IORETURN=0;
+-SET &CPT=0;
+-SET &STR_ACT='';
+-REPEAT :BOUCLE2 WHILE &IORETURN EQ 0;
+-READ TMP_AXE_AARS16DOM &ACT_VAL.A15.
+-IF &IORETURN NE 0 THEN GOTO :BOUCLE2;
+-SET &STR_ACT=IF &STR_ACT EQ '' THEN &ACT_VAL ELSE IF &CPT EQ 1 THEN '''' | &STR_ACT | '''' | ',' | '''' | &ACT_VAL | '''' ELSE &STR_ACT | ',' | '''' | &ACT_VAL | '''';
+-SET &STR_ACT=IF &LINES EQ 1 THEN '''' | &STR_ACT | '''' ELSE &STR_ACT;
+-SET &CPT=&CPT+1;
+-:BOUCLE2
+-CLOSE TMP_AXE_AARS16DOM
+-TYPE &STR_ACT
+ 

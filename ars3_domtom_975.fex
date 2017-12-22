@@ -1,0 +1,12 @@
+-*Permet d'afficher le DOMTOM 975
+ 
+-*-SET &ECHO=ALL;
+ 
+-SET &CODE_DOMTOM = '975' ;
+-*Centrage de la carte et niveau de Zoom
+-SET &CENTRE_D = '46.90525' ;
+-SET &CENTRE_F = '-56.30493'   ;
+-SET &ZOOM     = '9' ;
+ 
+-INCLUDE ars3_gen_dom_tom
+ 

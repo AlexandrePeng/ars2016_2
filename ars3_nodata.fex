@@ -1,0 +1,21 @@
+-* File sial2_nodata.fex
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI)
+-* Date création : 07/07/2015
+-* Description   :
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 26/08/2015
+-*  Auteur : Guy FUTE
+-*  Objet  : Procédure renvoyant un message en cas d'absence de données
+-*============================================================================
+ 
+-IF &LINES NE 0 GOTO :ENDDATA;
+-HTMLFORM ars3_NODATA
+-:ENDDATA
+ 
+ 

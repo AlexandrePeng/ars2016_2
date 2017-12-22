@@ -1,0 +1,37 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 25/08/2015
+-* Description   : Procédure de d'alimentation du filtre secteur (SECTEUR)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 25/08/2015
+-*  Auteur : guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_cdg_fil_act_sect.fex
+-* -----------------------------------------------------------------------------------------------
+ 
+-DEFAULT &ID_NIVEAU ='2'
+TABLE FILE SI_AXN_AXE_NIVEAU
+PRINT *
+WHERE ID_AXE EQ 'AARS16DOM'
+WHERE ID_NIVEAU EQ '&ID_NIVEAU'
+ON TABLE HOLD AS FIL_SECTEUR FORMAT ALPHA
+END
+ 
+JOIN CLEAR *
+-RUN
+JOIN ID_VALEUR_AXE IN FIL_SECTEUR TO UNIQUE VALEUR_AXE IN AXE_AARS16DOM
+ 
+TABLE FILE FIL_SECTEUR
+SUM ID_VALEUR_AXE
+BY AARS16DOM_N2_ORD NOPRINT
+BY AARS16DOM_N2_LIB
+ON TABLE PCHOLD FORMAT XML
+END
+ 
+ 

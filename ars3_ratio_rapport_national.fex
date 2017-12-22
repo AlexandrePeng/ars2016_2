@@ -1,0 +1,70 @@
+-*============================================================================
+-* Projet Suivi d'activité DIRECCTE 2016
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas WATTIAUX (Information builders)
+-* Date création : 04/09/2017
+-* Description   : Procédure de génération du rapport affichant les éléments de calcul
+-*		   des pourcentages affichés dans l'onglet ratio/carto
+-*--------------------------------------------------------------------------------------------------
+-* Modifications
+-*  Date   : jj/mm/ssaa
+-*  Auteur :
+-*  Objet  : ...
+-*==================================================================================================
+-TYPE =============================================================================
+-TYPE  Procedure    : ars3_ratio_rapport.fex
+-TYPE =============================================================================
+-SET &EXCEL_LAUNCH='OUI';
+ 
+ 
+-INCLUDE ARS3_CARTO_NATIONAL
+ 
+JOIN AX02_CODE IN ETP_RATIO TO AX02_CODE IN ETP_CALC AS J7
+ 
+SET CDN=SPACE
+-RUN
+TABLE FILE ETP_RATIO
+-*HEADING
+-*"Détail du calcul du ratio pour la cartographie Nationale"
+PRINT
+ETPNAT/D11.2 AS 'Dénominateur'
+VALEUR_FINALE/D11.2 AS 'Numérateur'
+CALC_DPT/D11.2 AS 'Ratio, arrondi en %'
+BY AX02_LIBELLE AS 'Contexte Géo'
+-*ON TABLE SET PAGE-NUM NOLEAD
+-*ON TABLE COLUMN-TOTAL AS 'TOTAL'
+ON TABLE PCHOLD FORMAT AHTML
+-*ON TABLE SET AUTOFIT ON
+ON TABLE SET HTMLCSS ON
+ON TABLE SET STYLE *
+     INCLUDE = endeflt,
+$
+-*     GRAPHTYPE=DATA,
+-*     COLUMN=N4,
+     GRAPHCOLOR=RGB(0 0 133),
+ 
+$
+	 -*Désactivation de certaines options d'active report (sauf le tri)
+TYPE=REPORT, ALLOW-PAGINATION=OFF, $
+TYPE=REPORT, ALLOW-FREEZE=OFF, $
+TYPE=REPORT, ALLOW-FILTER=OFF, $
+TYPE=REPORT, ALLOW-CALC=OFF, $
+TYPE=REPORT, ALLOW-HIDE =OFF, $
+TYPE=REPORT, ALLOW-CHART =OFF, $
+TYPE=REPORT, ALLOW-EXPORT =ON, $
+TYPE=REPORT, ALLOW-VISUALIZE =OFF, $
+TYPE=REPORT, ALLOW-SORT =ON, $
+TYPE=REPORT, ALLOW-ROLLUP=OFF, $
+TYPE=REPORT, ALLOW-PIVOT=OFF, $
+TYPE=REPORT, ALLOW-COMMENTS=OFF, $
+TYPE=REPORT, ALLOW-WINDOW=OFF, $
+TYPE=REPORT, ALLOW-RESTORE=OFF, $
+TYPE=REPORT, ALLOW-SENDEMAIL=OFF, $
+TYPE=REPORT, ALLOW-SAVECHANGE=OFF, $
+TYPE=REPORT, ALLOW-PRINT=ON, $
+TYPE=REPORT, ALLOW-ACCORDION=OFF, $
+TYPE=REPORT, ALLOW-TOOLS=OFF, $
+ENDSTYLE
+END
+ 
+ 

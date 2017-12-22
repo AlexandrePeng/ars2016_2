@@ -1,0 +1,463 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<HTML><HEAD>
+<META id=RLT_STANDARDS_MODE_META content=IE=9 http-equiv=X-UA-Compatible>
+<META name=mycharsetmeta content="text/html; charset=ISO-8859-1" http-equiv=Content-Type>
+<META name=Generation content="Created in release 8009, Generation 3">
+<SCRIPT type=text/javascript>//confidential_id=IBI_OptionsScript
+var szHtmlAlias="/ibi_apps/ibi_html";var szRunTimeHtmlAlias="runTimeHtmlAlias";var cgipath="cgipath";var ibirls="ibirls3";var rltdyncalendar="rltdyncalendar";var map="ibimap";var olap="olap";var olappanebase="olappanebase";var olapdrill="olapdrill";var ibiOptions = new Array(cgipath,ibirls);var nlsScript="/javaassist/nls.js";var glbScript="/javaassist/ibi/html/js/ibigbl.js";var replacePart="<replace>";
+var scriptTemplate='<SCRIPT src="'+replacePart+'" type="text/javascript"><\/SCRIPT>';if(typeof(szRunTimeHtmlAlias) === 'string' && szRunTimeHtmlAlias.indexOf('/') == 0)szHtmlAlias=szRunTimeHtmlAlias;document.write(scriptTemplate.replace(replacePart, szHtmlAlias + nlsScript));document.write(scriptTemplate.replace(replacePart, szHtmlAlias + glbScript));</SCRIPT>
+ 
+<SCRIPT type=text/javascript>//confidential_id=IBI_ibigblloadCss
+if(typeof ibigblloadCss === 'function'){ibigblloadCss(null);addIntlTranslatedJS("composertrans.js");}else {alert("L'alias JavaScript '/ibi_apps/ibi_html'  n'est pas valide");window.location("about:blank");}</SCRIPT>
+<TITLE>HtmlPage</TITLE>
+<SCRIPT id=ITEM1 type=text/javascript src="/approot/suivi_direccte/jquery/jquery-1.9.1.js"></SCRIPT>
+ 
+<SCRIPT type=text/javascript src="/approot/suivi_direccte/jquery/jquery-migrate-1.1.1.js"></SCRIPT>
+<LINK id=ITEM2 rel=stylesheet type=text/css UserSuppliedFullPath="1" rtFileName="cgipathsub/ibi_html/javaassist/ibi/html/composer/themes/nonBindows/IBI-Themes/default_theme.css"><LINK id=IBI_THEME_CSS rel=stylesheet type=text/css UserSuppliedFullPath="1" rtFileName="cgipathsub/ibi_html/javaassist/ibi/html/composer/themes/nonBindows/IBI-Themes/ibi.css" desc="Information Builders">
+<SCRIPT>//confidential_id=clientEventHandlersJS
+ 
+ 
+ 
+ 
+ 
+ 
+            //Begin function window_onload
+            function window_onload() {
+            top.window.moveTo(0, 0);
+            if (document.all) {
+            top.window.resizeTo(screen.availWidth, screen.availHeight);
+            }
+            else if (document.layers || document.getElementById) {
+            if (top.window.outerHeight < screen.availHeight || top.window.outerWidth < screen.availWidth){
+            top.window.outerHeight = screen.availHeight;
+            top.window.outerWidth = screen.availWidth;
+            }
+            }
+            //la dropdown liste Géo est le focus
+            this.ars3_listb_geo.focus();
+            //désactivation de la dropdown Nouvelles régions
+            this.ars3_listb_geo_regnw.disabled = true;
+            //désactivation de la dropdown département
+            this.ars3_listb_geo_dept.disabled = true;
+            //la dropdown liste Activité est le focus
+            this.ars3_listb_act.focus();
+            //désactivation de la dropdown Secteur
+            this.ars3_listb_act_sect.disabled = true;
+            //désactivation de la dropdown Type d'intervention
+            this.ars3_listb_act_tint.disabled = true;
+            //désactivation de la dropdown Mission
+            this.ars3_listb_act_miss.disabled = true;
+            //désactivation de la dropdown Statut
+            this.ars3_listb_statut.disabled = true;
+            //désactivation de la dropdown Emploi
+            this.ars3_listb_emploi.disabled = true;
+            //la dropdown list site est le focus
+            //this.ars3_listb_site.focus();
+            //désactivation de la dropdown catégorie
+            //this.ars3_listb_site_site.disabled=true;
+            //la dropdown list catégorie est le focus
+            this.ars3_listb_categ.focus();
+ 
+ 
+            UpdateData();
+            // TODO: Add your event handler code here
+            //add onInitialUpdate() function to make changes before initial run of the reports
+            }
+            //End function window_onload
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+        
+</SCRIPT>
+ 
+<SCRIPT type=text/javascript src="/approot/ars2016/ars3_adhoc.js"></SCRIPT>
+ 
+<SCRIPT type=text/javascript>
+ 
+            $(document).ready(function() {
+ 
+            // --------------------------------------------------------------------------------------------
+            // Détection de l'explorateur
+            // --------------------------------------------------------------------------------------------
+ 
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            if (jQuery.browser.msie && jQuery.browser.version == '8.0') {
+            //	alert('Hello Word IE 8');
+            script.src = "/approot/suivi_direccte/jquery/jquery-1.9.1.js";
+            }
+            else{
+            script.src = "/approot/suivi_direccte/jquery/jquery-2.1.1.js";
+            //	alert('Hello Word2');
+            }
+            head.appendChild(script);
+            // --------------------------------------------------------------------------------------------
+            // FS: Save Parameters
+            // --------------------------------------------------------------------------------------------
+            //$("#btn-parameters-save").button()
+            $("#btn-parameters-save").on("click", "", function() {
+ 
+            ars3_adhoc_save();
+            })
+ 
+                    // --------------------------------------------------------------------------------------------
+                    // FS: Load Parameters
+                    // --------------------------------------------------------------------------------------------
+                    //$("#btn-parameters-load").button();
+                    $("#btn-parameters-load").on("click", "", function() {
+ 
+            ars3_adhoc_load();
+            })
+ 
+                    var glbTid = setInterval(mycode, 100);
+            function mycode() {
+            var _num = $("#ars3_listb_insctrl")[0].length;
+            if (_num != 0) {
+            abortTimerAndContinue();
+            }
+            }
+            function abortTimerAndContinue() { // to be called when you want to stop the timer
+            clearInterval(glbTid);
+            //		parametersLoad();
+            }
+ 
+ 
+            })
+ 
+        
+</SCRIPT>
+ 
+<SCRIPT for=window type=text/javascript eventname="onload">window.onload = function() { window_onload(); }</SCRIPT>
+ 
+<STYLE type=text/css>#text2 {
+                FONT-STYLE: normal; FONT-FAMILY: Tahoma, Geneva, sans-serif; FONT-SIZE: 12px; FONT-WEIGHT: bold
+            }
+            #txtload {
+                FONT-STYLE: normal; FONT-FAMILY: Tahoma, Geneva, sans-serif; FONT-SIZE: 12px; FONT-WEIGHT: bold
+            }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+        </STYLE>
+</HEAD>
+<BODY style="OVERFLOW: auto" class=IBI_PageBg nextelementuniquenumber="28" maptype="0" thumbnailscale="4" elementtype="21" edaconnectionrequired="true"><LABEL style="Z-INDEX: 5; POSITION: absolute; WIDTH: 49px; HEIGHT: 13px; FONT-SIZE: 12px; CURSOR: default; TOP: 2px; LEFT: 885px" id=label1 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_exercice name="edit1">EXERCICE </LABEL><SPAN style="Z-INDEX: 6; POSITION: absolute; OVERFLOW-Y: auto; WIDTH: 280px; HEIGHT: 60px; FONT-SIZE: 12px; TOP: 22px; LEFT: 885px" id=ars3_listb_exercice class=isParameter tabIndex=4 contentEditable=false elementtype="12" defaultselection="1" defaultlocation="0,0,15,118" boundtovariable="1" requiredfield="1" CHECKED="false" indeterminate="false" width="0" start="fileopen" loop="1" vspace="0" maxLength="2147483647" hspace="0" readOnly="false" height="0" columns="1" value="2012" size="20" groupChildren="1" persistentuniqueid="compUid_1" name="ars3_listb_exercice"></SPAN><LABEL style="Z-INDEX: 7; POSITION: absolute; WIDTH: 30px; HEIGHT: 13px; CURSOR: default; TOP: 24px; LEFT: 12px" id=label2 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_geo name="edit2">GEO </LABEL><SELECT style="Z-INDEX: 8; POSITION: absolute; WIDTH: 159px; TOP: 44px; LEFT: 12px" id=ars3_listb_geo class=isParameter tabIndex=4 onclick=geo_check(); size=1 defaultselection="1" defaultlocation="0,0,15,118" boundtovariable="1" requiredfield="1" CHECKED="false" indeterminate="false" width="0" start="fileopen" loop="1" vspace="0" maxLength="2147483647" hspace="0" readOnly="false" persistentuniqueid="compUid_2" name="ars3_listb_geo"><OPTION selected value=1 displaytext="National" noinput="0">National
+</OPTION><OPTION value=2 displaytext="Nouvelles régions" noinput="0">Nouvelles régions</OPTION><OPTION value=4 displaytext="Départemental" noinput="0">Départemental</OPTION></SELECT><LABEL style="Z-INDEX: 13; POSITION: absolute; WIDTH: 90px; HEIGHT: 13px; CURSOR: default; TOP: 4px; LEFT: 538px" id=label5 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_geo_dept name="">DEPARTEMENTS </LABEL><SELECT style="Z-INDEX: 14; POSITION: absolute; WIDTH: 328px; HEIGHT: 235px; TOP: 24px; LEFT: 538px" id=ars3_listb_geo_dept class=isParameter disabled tabIndex=8 multiple size=3 defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" persistentuniqueid="compUid_5" name="ars3_listb_geo_dept"></SELECT><LABEL style="Z-INDEX: 17; POSITION: absolute; WIDTH: 140px; HEIGHT: 20px; CURSOR: default; TOP: 4px; LEFT: 188px" id=label7 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_geo_regnw name="">NOUVELLES REGIONS </LABEL><SELECT style="Z-INDEX: 18; POSITION: absolute; WIDTH: 331px; HEIGHT: 235px; TOP: 24px; LEFT: 188px" id=ars3_listb_geo_regnw class=isParameter disabled tabIndex=10 multiple size=3 defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" persistentuniqueid="compUid_7" name="ars3_listb_geo_regnw"></SELECT><LABEL style="Z-INDEX: 25; POSITION: absolute; WIDTH: 120px; HEIGHT: 20px; CURSOR: default; TOP: 89px; LEFT: 886px" id=label11 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_ent_ars name="">ENTITE </LABEL><SELECT style="Z-INDEX: 26; POSITION: absolute; WIDTH: 117px; HEIGHT: 66px; TOP: 109px; LEFT: 886px" id=ars3_listb_ent_ars class=isParameter tabIndex=14 multiple size=3 defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" persistentuniqueid="compUid_11" name="ars3_listb_ent_ars"></SELECT><LABEL style="Z-INDEX: 27; POSITION: absolute; WIDTH: 47px; HEIGHT: 13px; CURSOR: default; TOP: 258px; LEFT: 12px" id=label12 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_act name="">ACTIVITE 
+</LABEL><SELECT style="Z-INDEX: 28; POSITION: absolute; WIDTH: 159px; TOP: 278px; LEFT: 12px" id=ars3_listb_act class=isParameter tabIndex=15 onclick=activite_check(); size=1 defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" persistentuniqueid="compUid_12" name="ars3_listb_act"><OPTION selected value=1 displaytext="Toutes les activités" noinput="0">Toutes les activités</OPTION><OPTION value=2 displaytext="Secteurs" noinput="0">Secteurs</OPTION><OPTION value=3 displaytext="Types d'intervention" noinput="0">Types d'intervention</OPTION><OPTION value=4 displaytext="Missions" noinput="0">Missions</OPTION></SELECT><LABEL style="Z-INDEX: 29; POSITION: absolute; WIDTH: 52px; HEIGHT: 13px; CURSOR: default; TOP: 267px; LEFT: 188px" id=label13 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_act_sect name="">SECTEURS </LABEL><SELECT style="Z-INDEX: 30; POSITION: absolute; WIDTH: 330px; HEIGHT: 110px; TOP: 287px; LEFT: 188px" id=ars3_listb_act_sect class=isParameter title=SECTEUR disabled tabIndex=16 multiple size=3 defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" persistentuniqueid="compUid_13" name="ars3_listb_act_sect"></SELECT><LABEL style="Z-INDEX: 31; POSITION: absolute; WIDTH: 180px; HEIGHT: 20px; CURSOR: default; TOP: 267px; LEFT: 538px" id=label14 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_act_tint name="">TYPES D'INTERVENTION&nbsp; </LABEL><SELECT style="Z-INDEX: 32; POSITION: absolute; WIDTH: 330px; HEIGHT: 110px; TOP: 287px; LEFT: 538px" id=ars3_listb_act_tint class=isParameter title="Type d'intervention" disabled tabIndex=17 multiple size=3 defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" persistentuniqueid="compUid_14" name="ars3_listb_act_tint"></SELECT><LABEL style="Z-INDEX: 33; POSITION: absolute; WIDTH: 230px; HEIGHT: 20px; CURSOR: default; TOP: 400px; LEFT: 188px" id=label15 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_act_miss name="">MISSIONS 
+</LABEL><SELECT style="Z-INDEX: 34; POSITION: absolute; WIDTH: 680px; HEIGHT: 110px; TOP: 416px; LEFT: 188px" id=ars3_listb_act_miss class=isParameter title=Missions disabled tabIndex=18 multiple size=3 defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" persistentuniqueid="compUid_15" name="ars3_listb_act_miss"></SELECT><LABEL style="Z-INDEX: 35; POSITION: absolute; WIDTH: 180px; HEIGHT: 20px; CURSOR: default; TOP: 183px; LEFT: 886px" id=label16 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_prog_fin name="">PLAFOND/HORD PLAFOND </LABEL><SPAN style="Z-INDEX: 36; POSITION: absolute; OVERFLOW-Y: auto; WIDTH: 330px; HEIGHT: 59px; OVERFLOW: hidden; TOP: 203px; LEFT: 886px" id=ars3_listb_prog_fin class=isParameter tabIndex=19 contentEditable=false elementtype="12" defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" columns="1" size="3" groupChildren="1" persistentuniqueid="compUid_16"></SPAN><LABEL style="Z-INDEX: 37; POSITION: absolute; WIDTH: 61px; HEIGHT: 13px; CURSOR: default; TOP: 520px; LEFT: 12px" id=label17 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_categ name="edit7">STATUT</LABEL><SELECT style="Z-INDEX: 38; POSITION: absolute; WIDTH: 159px; TOP: 540px; LEFT: 12px" id=ars3_listb_categ class=isParameter tabIndex=20 onclick=categorie_check(); size=1 defaultselection="1" defaultlocation="0,0,15,118" boundtovariable="1" requiredfield="1" CHECKED="false" indeterminate="false" width="0" start="fileopen" loop="1" vspace="0" maxLength="2147483647" hspace="0" readOnly="false" persistentuniqueid="compUid_17" name="ars3_listb_categ"><OPTION selected value=1 displaytext="Tous statuts confondus" noinput="0">Tous statuts confondus</OPTION><OPTION value=2 displaytext="Statut" noinput="0">Statut</OPTION><OPTION value=3 displaytext="Emploi/Corps" noinput="0">Emploi/Corps</OPTION></SELECT><LABEL style="Z-INDEX: 39; POSITION: absolute; WIDTH: 100px; HEIGHT: 13px; CURSOR: default; TOP: 536px; LEFT: 188px" id=label18 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_statut name="">STATUT&nbsp; 
+</LABEL><SELECT style="Z-INDEX: 40; POSITION: absolute; WIDTH: 330px; HEIGHT: 123px; TOP: 556px; LEFT: 188px" id=ars3_listb_statut class=isParameter disabled tabIndex=21 multiple size=3 defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" groupChildren="1" persistentuniqueid="compUid_18" operation="OR" name="ars3_listb_statut"></SELECT><LABEL style="Z-INDEX: 43; POSITION: absolute; WIDTH: 77px; HEIGHT: 13px; CURSOR: default; TOP: 415px; LEFT: 886px" id=label20 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_present name="edit8">PRESENTATION </LABEL><SPAN style="Z-INDEX: 44; POSITION: absolute; OVERFLOW-Y: auto; WIDTH: 120px; HEIGHT: 42px; OVERFLOW: hidden; TOP: 435px; LEFT: 886px" id=ars3_listb_present class=isParameter tabIndex=23 contentEditable=false elementtype="12" defaultselection="1" defaultlocation="0,0,15,118" boundtovariable="1" requiredfield="1" CHECKED="false" indeterminate="false" width="0" start="fileopen" loop="1" vspace="0" maxLength="2147483647" hspace="0" readOnly="false" height="0" columns="1" value="0" size="20" groupChildren="1" persistentuniqueid="compUid_20" tempatt_lastelement_ofline="1" name="ars3_listb_present">
+<TABLE style="WIDTH: 100%; HEIGHT: 100%" id=table4 class=isParameter contentEditable=false cellSpacing=0 cellPadding=0>
+<TBODY>
+<TR>
+<TD noWrap><LABEL style="CURSOR: default" id=edit8_LABEL_0 for=edit8_0><INPUT id=edit8_0 tabIndex=23 value=1 CHECKED type=radio displaytext="Tableau" noinput="0" name="edit8">Tableau</LABEL></TD></TR>
+<TR>
+<TD noWrap><LABEL style="CURSOR: default" id=edit8_LABEL_1 for=edit8_1><INPUT id=edit8_1 tabIndex=23 value=2 type=radio displaytext="Base de données" noinput="0" name="edit8">Base de données</LABEL></TD></TR></TBODY></TABLE></SPAN><IMG style="Z-INDEX: 43; POSITION: absolute; TOP: 524px; LEFT: 951px" id=btn-parameters-save class=IBIfield title="Sauvegarder les favoris" tabIndex=20 border=0 src="/approot/image/save-icon.png" width=58 height=58 UserSuppliedFullPath="1" originalWidth="128" originalHeight="128" name="btn-parameters-save"> 
+<FIELDSET style="Z-INDEX: 0; POSITION: absolute; WIDTH: 156px; HEIGHT: 662px; TOP: 4px; LEFT: 4px" id=groupbox1 class="IBIfield IBI_rounded_m" persistentuniqueid="compUid_23"><LEGEND id=legend1>Niveau d'analyse 
+</LEGEND></FIELDSET> <LABEL style="Z-INDEX: 51; POSITION: absolute; WIDTH: 155px; HEIGHT: 13px; CURSOR: default; TOP: 536px; LEFT: 537px" id=label24 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_emploi name="">EMPLOI/CORPS</LABEL><SELECT style="Z-INDEX: 52; POSITION: absolute; WIDTH: 330px; HEIGHT: 123px; TOP: 556px; LEFT: 538px" id=ars3_listb_emploi class=isParameter disabled tabIndex=28 multiple size=3 defaultselection="1" defaultlocation="0,0,42,121" boundtovariable="1" requiredfield="1" persistentuniqueid="compUid_21" tempatt_lastelement_ofline="1" name="ars3_listb_emploi"></SELECT> <LABEL style="Z-INDEX: 59; POSITION: absolute; WIDTH: 219px; HEIGHT: 17px; CURSOR: default; TOP: 273px; LEFT: 886px" id=label29 class="IBIfield IBI_ReportControlLabel" for=ars3_listb_categ name="label29" persistentuniqueid="compUid_25">INSPECTION CONTROLE </LABEL><SELECT style="Z-INDEX: 61; POSITION: absolute; WIDTH: 244px; HEIGHT: 106px; TOP: 294px; LEFT: 886px" id=ars3_listb_insctrl class=isParameter tabIndex=30 multiple size=3 defaultselection="1" persistentuniqueid="compUid_27" operation="OR" name="ars3_listb_insctrl"></SELECT> <SPAN style="OVERFLOW: auto" class=IBI_PageBg><IMG style="Z-INDEX: 44; POSITION: absolute; TOP: 518px; LEFT: 1016px" id=btn-parameters-load class=IBIfield title="Charger les favoris" tabIndex=21 border=0 src="/approot/image/chargement.png" width=58 height=58 UserSuppliedFullPath="1" usenewratio="1.183674" originalwidth="128" originalheight="128" name="image3"></SPAN><SPAN style="OVERFLOW: auto" class=IBI_PageBg elementtype="4"><SPAN style="OVERFLOW: auto" class=IBI_PageBg elementtype="4"><A style="CURSOR: pointer" href="javascript:OnExecute(null, 'image1')"> </A><A style="CURSOR: pointer" href="javascript:OnExecute(null, 'image1')"><IMG style="Z-INDEX: 63; POSITION: absolute; TOP: 524px; LEFT: 885px" id=image1 title=Exécuter tabIndex=63 border=0 alt="Exécuter le rapport" src="/approot/image/excel-icon.png" width=58 height=58 persistentuniqueid="compUid_58" originalwidth="128" originalheight="128" usersuppliedfullpath="1" autoexecute="false" requests_list="8" name="image1">
+</A> </SPAN></SPAN><INPUT style="POSITION: absolute; TOP: -100px; LEFT: -100px" id=layoutinfo type=hidden resourcectrlids="ITEM2;IBI_THEME_CSS" name="inputhidden1"><INPUT style="POSITION: absolute; TOP: -100px; LEFT: -100px" id=ibiapp_app value=ars2016 type=hidden name="ibiapp_app"><INPUT style="POSITION: absolute; TOP: -100px; LEFT: -100px" id=ibic_server value=EDASERVE type=hidden isdataserversarea="1" name="ibic_server"><xml id=focus_xmlelement><script type="text/xml" nextelementuniquenumber="40">
+	<rootxmlnode focoption="_FOC_NULL" top="190" left="10" width="150" height="261">
+		<variables>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="EXERCICE" name="EXERCICE" default="" textvarname="" accept="0" select="0" create="1" top="70" left="30" width="60" height="20" inbinding="1">
+				<link linktype="default" from="compUid_1" persistentuniqueid="compUid_38">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="EXERCICE" datafield="EXERCICE" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="GEO" name="GEO" default="" textvarname="" accept="0" select="0" create="1" top="70" left="140" width="60" height="20" inbinding="1">
+				<link linktype="default" from="compUid_2">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="GEO" datafield="GEO" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster">
+						
+</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="DEPARTEMENT" name="DEPARTEMENT" default="" textvarname="" accept="0" select="0" create="1" top="70" left="360" width="60" height="20" inbinding="1">
+				<link linktype="default" from="compUid_5" persistentuniqueid="compUid_26">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="DEPARTEMENT" ibiformat="A10" datafield="DEPARTEMENT" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="ENTITE_TYPE" name="ENTITE_TYPE" default="" textvarname="" accept="0" select="0" create="1" top="70" left="470" width="60" height="20" inbinding="1">
+				<link linktype="default" from="compUid_11" persistentuniqueid="compUid_27">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="ENTITE_TYPE" ibiformat="A10" datafield="ENTITE_TYPE" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none" fieldtoresolveparameter="AARS16ENT_N2">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="ACTIVITE" name="ACTIVITE" default="" textvarname="" accept="0" select="0" create="1" top="70" left="580" width="60" height="20" inbinding="1">
+				<link linktype="default" from="compUid_12" persistentuniqueid="compUid_22">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="ACTIVITE" ibiformat="A10" datafield="ACTIVITE" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none">
+						
+</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="PLAFOND" name="PLAFOND" default="" textvarname="" accept="0" select="0" create="1" top="70" left="1020" width="60" height="20" inbinding="1">
+				<link linktype="default" from="compUid_16" persistentuniqueid="compUid_39">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="PLAFOND" ibiformat="A10" datafield="PLAFOND" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none" operation="">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="STATUT" name="STATUT" default="" textvarname="" accept="0" select="0" create="1" top="160" left="30" width="60" height="20" inbinding="1">
+				<link linktype="default" from="compUid_18" persistentuniqueid="compUid_32">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="STATUT" ibiformat="A10" datafield="STATUT" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none" fieldtoresolveparameter="AARS16STATUT_N2">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="default" desc="PRESENTATION" name="PRESENTATION" default="1" textvarname="" accept="0" select="0" create="1" top="160" left="250" width="60" height="20" inbinding="1">
+				<link linktype="default" from="compUid_20">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="PRESENTATION" datafield="PRESENTATION" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="1" operation="" slider_range_from="" slider_range_to="" previewvalue="1" sourcetype="typeMaster">
+							<static_values><static value="1" display="1" selected="1" noinput="0">
+</static></static_values></data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="MISSION" name="MISSION" default="" textvarname="" accept="0" select="0" create="1" top="70" left="910" width="60" height="20" inbinding="1">
+				<link linktype="default" persistentuniqueid="compUid_31" from="compUid_15">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="MISSION" ibiformat="A10" datafield="MISSION" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none" fieldtoresolveparameter="AARS16DOM_N4">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="EMPLOI" name="EMPLOI" default="" textvarname="" accept="0" select="0" create="1" top="160" left="140" width="60" height="20" inbinding="1">
+				<link linktype="default" from="compUid_21" persistentuniqueid="compUid_33">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="EMPLOI" ibiformat="A10" datafield="EMPLOI" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none" fieldtoresolveparameter="AARS16STATUT_N3">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="ACTIVITE_SECTEUR" name="ACTIVITE_SECTEUR" default="" textvarname="" accept="0" select="0" create="1" top="70" left="690" width="60" height="20" inbinding="1">
+				<link linktype="default" persistentuniqueid="compUid_29" from="compUid_13">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="ACTIVITE_SECTEUR" datafield="ACTIVITE_SECTEUR" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" linktype="none" sourcetype="typeMaster" fieldtoresolveparameter="AARS16DOM_N2">
+						
+</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="ACTIVITE_TYP_INT" name="ACTIVITE_TYP_INT" default="" textvarname="" accept="0" select="0" create="1" top="70" left="800" width="60" height="20" inbinding="1">
+				<link linktype="default" persistentuniqueid="compUid_30" from="compUid_14">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="ACTIVITE_TYP_INT" datafield="ACTIVITE_TYP_INT" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" linktype="none" sourcetype="typeMaster" fieldtoresolveparameter="AARS16DOM_N3">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="unresolved" desc="STATUT_STATUT" name="STATUT_STATUT" default="" textvarname="" accept="0" select="0" create="1" top="70" left="1130" width="60" height="20" inbinding="1">
+				<link linktype="default" persistentuniqueid="compUid_37" from="compUid_17">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" displayfield="STATUT_STATUT" datafield="STATUT_STATUT" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="" linktype="none" sourcetype="typeMaster">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" name="NEWREG" parametercreatedinreslay="0" top="70" left="250" width="60" height="20" inbinding="1" select="0" type="unresolved" desc="NEWREG" default="" textvarname="" accept="0" create="1">
+				<link linktype="default" persistentuniqueid="compUid_24" from="compUid_7">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" sourcetype="typeMaster" fieldtoresolveparameter="GEOAR_N2" operation="" displayfield="NEWREG" datafield="NEWREG" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" slider_range_from="" slider_range_to="" previewvalue="">
+						
+</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+			<variable controltype="7" name="INSPECT_CTRL" parametercreatedinreslay="0" top="160" left="360" width="60" height="20" inbinding="1" type="unresolved" desc="INSPECT_CTRL" default="" textvarname="" accept="0" select="0" create="1">
+				<link linktype="default" persistentuniqueid="compUid_34" from="compUid_27">
+					<condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" sourcetype="typeMaster" fieldtoresolveparameter="AARS15ICE_N2" displayfield="INSPECT_CTRL" datafield="INSPECT_CTRL" datasource="axe_geoar.mas" ibif_ex="axe_geoar" selectedvalue="" operation="" slider_range_from="" slider_range_to="" previewvalue="">
+						</data_info>
+					</condition>
+				</link>
+				<requestid id="8"></requestid></variable>
+		</variables>
+		<input_controls>
+			<input_control bindcontrolid="compUid_1" elementtype="12" name="ars3_listb_exercice" id="ars3_listb_exercice" multiple="0" onetimepopulated="0" inbinding="1" top="20" left="30" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_2">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="1" modifiedrequest="0" datasource="ars3_begin.fex" ibif_ex="ars3_begin" addalloption="0" sourcetype="typeFex" cacheruntimedata="0" accept="0" operation="NONE" checkForDuplicateValues="0" displayfield="LIBELLE" datafield="ANNEENUM" ibiapp_app="ars2016" requestid="9">
+							<![CDATA[]]>
+						</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_2" elementtype="8" name="ars3_listb_geo" id="ars3_listb_geo" multiple="0" onetimepopulated="1" inbinding="1" top="20" left="140" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_3">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" datasource="" ibif_ex="" addalloption="0" sourcetype="typeMaster" cacheruntimedata="0" accept="0" operation="NONE">
+							<static_values><static value="1" display="National" selected="1" noinput="0">
+</static><static value="2" display="Nouvelles régions" selected="0" noinput="0"></static><static value="4" display="Départemental" selected="0" noinput="0"></static></static_values></data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_5" elementtype="9" name="ars3_listb_geo_dept" id="ars3_listb_geo_dept" multiple="1" onetimepopulated="0" inbinding="1" top="20" left="360" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_10" from="compUid_7">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0" resolveparameterfq="NEWREG" resolveparameter="NEWREG">
+						<data_info datatype="1" modifiedrequest="0" datasource="ars3_cdg_fil_geo_dep.fex" ibif_ex="ars3_cdg_fil_geo_dep" datafield="GEOAR_N4" displayfield="GEOAR_N4_LIB" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" dynalldisplayvalue="Tous" ibiformat="A15" dfformat="A15" accept="0" selectedvalue="" operation="NONE" checkForDuplicateValues="0" ibiapp_app="ars2016" requestid="3" fieldtoresolveparameter="GEOAR_N3"><![CDATA[]]>
+						</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_7" elementtype="9" name="ars3_listb_geo_regnw" id="ars3_listb_geo_regnw" multiple="1" onetimepopulated="0" inbinding="1" top="20" left="250" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_7">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="1" modifiedrequest="1" datasource="ars3_cdg_fil_geo_newreg.fex" ibif_ex="ars3_cdg_fil_geo_newreg" datafield="GEOAR_N2" displayfield="GEOAR_N2_LIB" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" dynalldisplayvalue="Toutes" ibiformat="A15" dfformat="A15" accept="0" selectedvalue="" operation="NONE" checkForDuplicateValues="0" ibiapp_app="ars2016" requestid="17"><![CDATA[]]>
+						
+</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_11" elementtype="9" name="ars3_listb_ent_ars" id="ars3_listb_ent_ars" multiple="1" onetimepopulated="0" inbinding="1" top="20" left="470" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_6">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="1" modifiedrequest="0" datasource="ars3_cdg_fil_ent_ars.fex" ibif_ex="ars3_cdg_fil_ent_ars" datafield="AARS16ENT_N2" displayfield="AARS16ENT_N2_LIB" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" dynalldisplayvalue="Toutes" ibiformat="A60" dfformat="A15" accept="0" selectedvalue="" operation="NONE" checkForDuplicateValues="0" ibiapp_app="ars2016" requestid="4"><![CDATA[]]>
+						</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_12" elementtype="8" name="ars3_listb_act" id="ars3_listb_act" multiple="0" onetimepopulated="1" inbinding="1" top="20" left="580" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_18">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" datasource="CAR.mas" ibif_ex="CAR" datafield="CAR.ORIGIN.COUNTRY" displayfield="CAR.ORIGIN.COUNTRY" addalloption="1" sourcetype="typeMaster" cacheruntimedata="0" dynalldisplayvalue="TOUT" ibiformat="A10" dfformat="A10" accept="0" selectedvalue="Toutes" operation="NONE" checkForDuplicateValues="0"><![CDATA[TABLE FILE CAR
+						SUM FST.CAR.ORIGIN.COUNTRY
+					    BY CAR.ORIGIN.COUNTRY
+						-*insert_filters_here
+						ON TABLE PCHOLD FORMAT XML
+						END
+						]]>
+							<static_values>
+								<static value="1" display="Toutes les activités" selected="1" noinput="0">
+								
+</static>
+								<static value="2" display="Secteurs" selected="0" noinput="0"></static>
+								<static value="3" display="Types d'intervention" selected="0" noinput="0"></static>
+								<static value="4" display="Missions" selected="0" noinput="0"></static>
+							</static_values>
+						</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_13" elementtype="9" name="ars3_listb_act_sect" id="ars3_listb_act_sect" multiple="1" onetimepopulated="0" inbinding="1" top="20" left="690" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_15">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="1" modifiedrequest="1" datasource="ars3_cdg_fil_act_sect.fex" ibif_ex="ars3_cdg_fil_act_sect" datafield="AARS16DOM_N2" displayfield="AARS16DOM_N2_LIB" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" dynalldisplayvalue="Tous" ibiformat="A15" dfformat="A15" accept="0" selectedvalue="" operation="NONE" checkForDuplicateValues="0" ibiapp_app="ars2016" requestid="5"><![CDATA[]]>
+						</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_14" elementtype="9" name="ars3_listb_act_tint" id="ars3_listb_act_tint" multiple="1" onetimepopulated="0" inbinding="1" top="20" left="800" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_16" from="compUid_13">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0" resolveparameterfq="ACTIVITE_SECTEUR" resolveparameter="ACTIVITE_SECTEUR">
+						<data_info datatype="1" modifiedrequest="1" datasource="ars3_cdg_fil_act_typ_int.fex" ibif_ex="ars3_cdg_fil_act_typ_int" datafield="AARS16DOM_N3" displayfield="AARS16DOM_N3_LIB" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" dynalldisplayvalue="Tous" ibiformat="A15" dfformat="A15" accept="0" selectedvalue="" operation="NONE" checkForDuplicateValues="0" ibiapp_app="ars2016" requestid="6" fieldtoresolveparameter="AARS16DOM_N2"><![CDATA[]]>
+						
+</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_15" elementtype="9" name="ars3_listb_act_miss" id="ars3_listb_act_miss" multiple="1" onetimepopulated="0" inbinding="1" top="20" left="910" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_17" from="compUid_14">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0" resolveparameterfq="ACTIVITE_TYP_INT" resolveparameter="ACTIVITE_TYP_INT">
+						<data_info datatype="1" modifiedrequest="1" datasource="ars3_cdg_fil_act_miss.fex" ibif_ex="ars3_cdg_fil_act_miss" datafield="AARS16DOM_N4" displayfield="AARS16DOM_N4_LIB" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" dynalldisplayvalue="Toutes" ibiformat="A15" dfformat="A15" accept="0" selectedvalue="" operation="NONE" checkForDuplicateValues="0" ibiapp_app="ars2016" requestid="7" fieldtoresolveparameter="AARS16DOM_N3"><![CDATA[]]>
+						</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_16" elementtype="12" name="ars3_listb_prog_fin" id="ars3_listb_prog_fin" multiple="0" onetimepopulated="0" inbinding="1" top="20" left="1020" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_14">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="1" modifiedrequest="0" datasource="ars3_cdg_fil_prog_fin.fex" ibif_ex="ars3_cdg_fil_prog_fin" datafield="AARS15EFF_N2" displayfield="AARS15EFF_N2_LIB" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" dynalldisplayvalue="Tous" ibiformat="A15" dfformat="A15" accept="0" selectedvalue="" operation="NONE" checkForDuplicateValues="0" ibiapp_app="ars2016" requestid="18"><![CDATA[]]>
+						</data_info>
+					</condition>
+				
+</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_17" elementtype="8" name="ars3_listb_categ" id="ars3_listb_categ" multiple="0" onetimepopulated="1" inbinding="1" top="20" left="1130" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_12">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" datasource="CAR.mas" ibif_ex="CAR" addalloption="0" sourcetype="typeMaster" cacheruntimedata="0" accept="0" operation="NONE">
+							<static_values>
+								<static value="1" display="Tous statuts confondus" selected="1" noinput="0"></static>
+								<static value="2" display="Statut" selected="0" noinput="0"></static>
+								<static value="3" display="Emploi/Corps" selected="0" noinput="0"></static>
+							</static_values>
+						</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_18" elementtype="9" name="ars3_listb_statut" id="ars3_listb_statut" multiple="1" onetimepopulated="0" inbinding="1" top="110" left="30" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_19">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="1" modifiedrequest="0" datasource="ars3_cdg_fil_statut_statut.fex" ibif_ex="ars3_cdg_fil_statut_statut" datafield="AARS16STATUT_N2" displayfield="AARS16STATUT_N2_LIB" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" dynalldisplayvalue="Tous" ibiformat="A15" dfformat="A15" accept="0" selectedvalue="" operation="NONE" checkForDuplicateValues="0" ibiapp_app="ars2016" requestid="12"><![CDATA[]]>
+						</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_20" elementtype="12" name="ars3_listb_present" id="ars3_listb_present" multiple="0" onetimepopulated="1" inbinding="1" top="110" left="250" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_9">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="0" modifiedrequest="0" datasource="CAR.mas" ibif_ex="CAR" addalloption="0" sourcetype="typeMaster" cacheruntimedata="0" accept="0" operation="NONE">
+							<static_values><static value="1" display="Tableau" selected="1" noinput="0">
+								
+</static><static value="2" display="Base de données" selected="0" noinput="0"></static></static_values></data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_21" elementtype="9" name="ars3_listb_emploi" id="ars3_listb_emploi" multiple="1" onetimepopulated="0" inbinding="1" top="110" left="140" width="60" height="20">
+				<link linktype="default" persistentuniqueid="compUid_35" from="compUid_18">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0" resolveparameterfq="STATUT" resolveparameter="STATUT">
+						<data_info datatype="1" modifiedrequest="0" datasource="ars3_cdg_fil_statut_emploi.fex" ibif_ex="ars3_cdg_fil_statut_emploi" datafield="AARS16STATUT_N3" displayfield="AARS16STATUT_N3_LIB" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" dynalldisplayvalue="Tous" ibiformat="A15" dfformat="A15" accept="0" selectedvalue="" operation="NONE" checkForDuplicateValues="0" ibiapp_app="ars2016" requestid="13" fieldtoresolveparameter="AARS16STATUT_N2"><![CDATA[]]>
+						</data_info>
+					</condition>
+				</link>
+			</input_control>
+			<input_control bindcontrolid="compUid_27" elementtype="9" name="ars3_listb_insctrl" id="ars3_listb_insctrl" multiple="1" inbinding="1" top="110" left="360" width="60" height="20" onetimepopulated="0">
+				<link linktype="default" persistentuniqueid="compUid_36">
+					<condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0">
+						<data_info datatype="1" modifiedrequest="1" sourcetype="typeFex" checkForDuplicateValues="0" datasource="ars3_cdg_fil_inspec_ctrl.fex" ibif_ex="ars3_cdg_fil_inspec_ctrl" displayfield="AARS15ICE_N2_LIB" datafield="AARS15ICE_N2" ibiapp_app="ars2016" requestid="19" addalloption="1" dynalldisplayvalue="Toutes" operation="NONE"><![CDATA[]]>
+						</data_info>
+					
+</condition>
+				</link>
+			</input_control>
+		</input_controls>
+		<requests>
+			<request requestid="8" sourcetype="typeFex" targettype="window" targetname="_blank" ibif_ex="ars3_rpt_controleur_gestion.fex" activereport="0" reportcolumns="" reportrealcolumns="" ibiapp_app="ars2016"></request>
+		</requests>
+		<other_bound_objects>
+		</other_bound_objects>
+	</rootxmlnode>
+</script>
+</xml></BODY>
+<SCRIPT type=text/javascript>//confidential_id=IBI_loader
+if(typeof doBeforeLoad === 'function'){doBeforeLoad();}function AdjustChildrenPosition(){
+}
+</SCRIPT>
+</HTML>
+<!-- cc 00000 -->

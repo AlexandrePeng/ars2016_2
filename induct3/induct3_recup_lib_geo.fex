@@ -1,0 +1,36 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des libellés des variables géographiques sélectionnées dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 26/08/2015
+-*  Auteur : Guy FUTE
+ 
+-*============================================================================
+-* Procedure    : induct3_recup_lib_geo.fex
+-* ------------------------------------------------------------------------------------------------
+-IF &NEW_REGION EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSNREG;
+ 
+TABLE FILE AXE_GEOAR
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ '&NEW_REGION'
+ON TABLE HOLD AS TMP_LIB_GEO_NREG FORMAT ALPHA
+END
+-RUN
+ 
+-READ TMP_LIB_GEO_NREG &NEW_REGION_LIB.A60.
+-GOTO ENREG
+-TSNREG
+-SET &NEW_REGION_LIB='Toutes';
+ 
+-ENREG
+-TYPE &NEW_REGION_LIB
+ 
+ 
+-SET &GEO_LIB = IF &GEO EQ 1 THEN 'National' ELSE IF &GEO EQ 2 THEN &NEW_REGION_LIB;
+ 

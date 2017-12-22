@@ -1,0 +1,36 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 25/08/2015
+-* Description   : Procédure de d'alimentation du filtre plafond (PLAFOND)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 25/08/2015
+-*  Auteur : guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_cdg_FIL_PLAFOND.fex
+-* -----------------------------------------------------------------------------------------------
+ 
+-DEFAULT &ID_NIVEAU ='2'
+TABLE FILE SI_AXN_AXE_NIVEAU
+PRINT *
+WHERE ID_AXE EQ 'AARS15EFF'
+WHERE ID_NIVEAU EQ '&ID_NIVEAU'
+ON TABLE HOLD AS FIL_PLAFOND FORMAT ALPHA
+END
+ 
+JOIN CLEAR *
+-RUN
+JOIN ID_VALEUR_AXE IN FIL_PLAFOND TO UNIQUE VALEUR_AXE IN AXE_AARS15EFF
+ 
+TABLE FILE FIL_PLAFOND
+SUM ID_VALEUR_AXE
+BY AARS15EFF_N2_LIB
+ON TABLE PCHOLD FORMAT XML
+END
+ 
+ 

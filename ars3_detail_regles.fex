@@ -1,0 +1,26 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas WATTIAUX (Information builders),Guy FUTE (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de génération de la formule de calcul métier
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   :
+-*  Auteur :
+ 
+-TYPE ============================================================================
+-TYPE Procédure    : ars3_detail_regles.fex
+-TYPE ============================================================================
+-DEFAULTH &FILTRE_ACT_NAT=''
+-SET &FILTRE_ACT_NAT=IF &FILTRE_ACT_NAT EQ '_FOC_NULL' THEN '' ELSE &FILTRE_ACT_NAT;
+-TYPE 'Dénominateur avec activité=' &LIB_GEO_D_ACT
+-TYPE 'Activité sélectionnée=' &FILTRE_ACT_NAT
+-TYPE 'Niveau activité sélectionné=' &NIVEAU_ACT_NAT
+-SET &NIVEAU_GEO_NUME=IF &NIVEAU_GEO_NUM EQ 2 THEN 'Nouvelle région du DOMTOM' ELSE IF &NIVEAU_GEO_NUM EQ 4 THEN 'Département du DOMTOM' ELSE 'National';
+-SET &REGLE=IF &NIVEAU_ACTI EQ 1 THEN 'Nb ETP niveau ' | &NIVEAU_GEO_NUME | ' niveau activité ' | &NIVEAU_ACT_NUM | ' / Nb ETP Total national (niveau ' | &NIVEAU_ACT_NAT | ' de l'Activité ' | ')' ELSE 'Nb ETP niveau ' | &NIVEAU_GEO_NUME | ' niveau activité ' | &NIVEAU_ACT_NUM | '/' || &LIB_GEO_D_ACT | ' au niveau ' | &NIVEAU_ACT_NAT | ' de l'activité' ;
+-TYPE &REGLE
+ 
+ 

@@ -1,0 +1,61 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2017
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE, Alexandre PENG
+-* Date création : 14/11/2017
+-* Description   : Procédure d'attritbution de valeurs par défaut aux différents filtres de l'onglet Répartition des indicateurs 2016
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   :
+-*  Auteur :
+ 
+-*============================================================================
+-* Procedure    : ars2_2016_défaut_induct.fex
+-* -----------------------------------------------------------------------------------------------
+-*-SET &ECHO=ALL;
+ 
+ 
+-DEFAULTH &ID_INDICATEUR='I_GIDB001E';
+-DEFAULTH &ID_INDUCTEUR='D_GIDB001F';
+-DEFAULTH &ID_RANKING='D_GIDB001G';
+-DEFAULTH &EXERCICE='2016';
+ 
+-DEFAULTH &NOM_VUE = 'VUE_ACTIVITE'
+ 
+-*Filtre GEO
+-DEFAULTH &GEO='1';
+-DEFAULTH &GEO_NATIONAL='GEOA000';
+-DEFAULTH &NEW_REGION='_FOC_NULL';
+-*-DEFAULTH &REGION='_FOC_NULL';
+-*-DEFAULTH &DEPARTEMENT='_FOC_NULL';
+ 
+ 
+-*Filtre STATUT
+-DEFAULTH &STATUT_NIV='1';
+-DEFAULTH &STATUT_NATIONAL='AARS17ST00TOUT';
+-DEFAULTH &STATUT='_FOC_NULL';
+-DEFAULTH &EMPLOI='_FOC_NULL';
+ 
+-*Filtre ACTIVITE
+-DEFAULTH &ACTIVITE='1';
+-DEFAULTH &ACTIVITE_NATIONAL='AARS17INDB00';
+-DEFAULTH &SECTEUR='_FOC_NULL';
+-DEFAULTH &INDUCTEUR='_FOC_NULL';
+ 
+ 
+-*******Récupération des valeur de niveau pour chaque filtre
+-DEFAULTH &STR_GEO='';
+-DEFAULTH &STR_ACT='';
+ 
+SET CENT-ZERO=ON
+SET CDN=ON
+-SET &GEO = IF &NEW_REGION EQ 'undefined' OR 'TOUT' OR '_FOC_NULL' THEN '1' ELSE '2';
+ 
+-SET &NIV_ACTIVITE = IF &SECTEUR EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN '1' ELSE '2';
+-SET &NIV_ACTIVITE = IF &INDUCTEUR EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN &NIV_ACTIVITE ELSE '3';
+-SET &LIB_ACTIVITE = IF &NIV_ACTIVITE EQ '1' THEN 'Tous les secteurs' ELSE IF &NIV_ACTIVITE EQ '2' THEN 'secteur' ELSE 'Inducteur';
+ 
+ 
+-SET &NIV_STATUT = '1';

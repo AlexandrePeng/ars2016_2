@@ -1,0 +1,101 @@
+-* File induct3_rpt_rep_par_induct_loop.fex
+ 
+ 
+-SET &ECHO=ALL
+ 
+ 
+-INCLUDE induct3_default
+-INCLUDE induct3_read_statut
+-INCLUDE induct3_read_geo
+-INCLUDE induct3_read_activite
+ 
+-IF &NEW_REGION EQ '_FOC_NULL' THEN GOTO :PGARDE;
+-IF &SECTEUR EQ '_FOC_NULL' AND &INDUCTEUR EQ '_FOC_NULL' THEN GOTO :PGARDE;
+-SET &GEO=2;
+ 
+ 
+-*****************************************************************************
+-* Détermination de la règle de gestion correspondante
+-*****************************************************************************
+-*-SET &REGLE_GESTION=IF (&INDUCTEUR EQ '_FOC_NULL') AND (&SECTEUR EQ '_FOC_NULL') THEN '3' ELSE '1';
+-SET &FILTRE_NIVEAU_GEO=IF (&NEW_REGION NE '_FOC_NULL') THEN '2' ELSE '1';
+-SET &FILTRE_INDUCT=IF (&NEW_REGION NE '_FOC_NULL') THEN '2' ELSE '1';
+ 
+ 
+ 
+ 
+ 
+-DEFAULTH &NB_COMP = '_FOC_NULL';
+-DEFAULTH &VALEUR_INDUCT = '_FOC_NULL';
+ 
+DEFINE FILE AXE_AARS17INDUCTEUR
+COMP/I2 WITH VALEUR_AXE = COMP + 1 ;
+END
+ 
+ 
+ 
+TABLE FILE AXE_AARS17INDUCTEUR
+PRINT COMP AS NB_COMP
+	  VALEUR_AXE AS NB_AXE
+WHERE NIVEAU EQ '3'
+WHERE AARS17IND_N2 EQ '&SECTEUR'
+WHERE AARS17IND_N3 EQ '&INDUCTEUR'
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS COMPTEUR
+END
+ 
+ 
+-*Test pour vérifier que des données sont présentes pour l'inducteur
+-IF &LINES EQ 0 THEN GOTO :ERRMESS;
+ 
+TABLE FILE COMPTEUR
+COUNT NB_COMP
+ON TABLE HOLD AS NB_TABLE FORMAT ALPHA
+END
+-RUN
+ 
+ 
+-READFILE NB_TABLE
+-TYPE NB_COMP = &NB_COMP
+ 
+ 
+ 
+-SET &A = 1;
+-REPEAT LABEL WHILE &A LE &NB_COMP;
+-*-TYPE &A
+ 
+TABLE FILE COMPTEUR
+PRINT NB_AXE AS VALEUR_INDUCT
+WHERE NB_COMP EQ &A
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS COMPTEUR_IND FORMAT ALPHA
+END
+-RUN
+ 
+-READFILE COMPTEUR_IND
+-TYPE VALEUR_INDUCT = &VALEUR_INDUCT
+ 
+-INCLUDE induct3_rpt_rep_par_induct
+ 
+-SET &A = &A + 1;
+-LABEL TYPE END: &A
+ 
+ 
+ 
+-GOTO :FINI
+-:ERRMESS
+-HTMLFORM BEGIN
+<TD>Message d'information<BR>
+<BR>
+<I><B>Cette requête n'a pas retourné de données.<BR>
+</I></B></TD>
+-HTMLFORM END
+-GOTO :FINI
+ 
+-:PGARDE;
+-*Page de garde lorsque aucune nouvelles région ou région n'est sélectionnée
+-HTMLFORM induct3_mire_accueil
+-:FINI
+ 
+ 
+ 

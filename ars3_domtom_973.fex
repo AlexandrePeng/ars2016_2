@@ -1,0 +1,12 @@
+-*Permet d'afficher le DOMTOM 973
+ 
+-*-SET &ECHO=ALL;
+ 
+-SET &CODE_DOMTOM = '973' ;
+-*Centrage de la carte et niveau de Zoom
+-SET &CENTRE_D = '3.82041' ;
+-SET &CENTRE_F = '-53.195' ;
+-SET &ZOOM     = '6' ;
+ 
+-INCLUDE ars3_gen_dom_tom
+ 

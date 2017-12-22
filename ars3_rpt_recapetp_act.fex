@@ -1,0 +1,120 @@
+-* File dir2_rpt_recapetp.fex
+-*==================================================================================================
+-* Projet Suivi d'activité 2014 - Tableau de bord : Récapitulatif des paramètres et Total ETP
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas Wattiaux (Information Builders), Guy Fute (Aixial BI)
+-* Date création : 01/07/2015
+-* Description   :
+-*
+-*--------------------------------------------------------------------------------------------------
+-* Modifications
+-*  Date   : jj/mm/ssaa
+-*  Auteur : first last - sté
+-*  Objet  : ...
+-*==================================================================================================
+-INCLUDE ARS3_DEFAUT_ACT
+-*-SET &ECHO=ALL;
+-DEFAULT &FMT_SORTIE='HTML'
+ 
+-*---------------------------------------------------
+-* Récupération des codes axes selon les paramètres
+-*---------------------------------------------------
+ 
+-INCLUDE ARS3_READ_GEO
+-INCLUDE ARS3_READ_ENT
+-INCLUDE ARS3_READ_ACTIVITE
+-INCLUDE ARS3_READ_PLAFOND
+-INCLUDE ARS3_READ_STATUT
+ 
+-*---------------------------------
+-* Total ETP selon les paramètres
+-*---------------------------------
+SET CDN=OFF
+-RUN
+TABLE FILE VIEW_IND_VAL_IA
+SUM VALEUR_FINALE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF ) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT ) )
+-*Filtre INSPECTION CONTROLE (sinon la valeur restituée est doublée)
+	WHERE  AX07_NIVEAU EQ 1
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS OUT FORMAT ALPHA
+END
+ 
+-*Test pour vérifier qu'il y a des valeurs
+-IF &LINES EQ 0 THEN GOTO :ERRMESS;
+-RUN
+ 
+-READ OUT &VALEUR_FINALE.20.
+ 
+-GOTO :VAL
+ 
+-:ERRMESS
+-SET &VALEUR_FINALE=0;
+ 
+-:VAL
+ 
+-SET &VAL_FI=TRIM('L', &VALEUR_FINALE, 20, ' ', 1,'A20');
+-SET &NEWVAL1=TRUNCATE(&VAL_FI);
+SET CDN=SPACE
+-RUN
+ 
+-SET &NEWVAL=FTOA(&NEWVAL1, '(D10.1)', 'A12');
+ 
+-*----------------------------
+-* Récupération des libellés
+-*----------------------------
+-INCLUDE ARS3_RECUP_LIB_GEO
+-INCLUDE ARS3_RECUP_LIB_ENTITE
+-INCLUDE ARS3_RECUP_LIB_ACTIVITE
+-INCLUDE ARS3_RECUP_LIB_PLAFOND
+-INCLUDE ARS3_RECUP_LIB_STATUT
+ 
+-HTMLFORM BEGIN
+<HTML>
+<BODY style="Z-INDEX: 0; OVERFLOW: hidden;background:#5472AE">
+ 
+<font color="white">
+<font face="arial">
+-*<font face="verdana">
+<font size=1>
+<center>
+<p>
+<b><font color="black">ARS:</font>ARS &GEO_LIB</b>
+<br>
+<b><font color="black">Siège et/ou DT:</font> &ENTITE_LIB</b>
+<br>
+<b><font color="black">Secteur:</font>&SECTEUR_LIB</b>
+<br>
+<b><font color="black">Type d'intervention:</font>&TYPE_INT_LIB</b>
+<br>
+<b><font color="black">Mission:</font>&MISSION_LIB</b>
+<br>
+<b><font color="black">Plafond / Hors plafond:</font>&PLAFOND_LIB</b>
+<br>
+<b><font color="black">Statut:</font>&STATUT_LIB</b>
+<br>
+<font size=5> <font color="#ED7F10"> <b>&NEWVAL</b> </font> <font size=3>  ETP &EXERCICE </font>
+</p>
+</center></font></body></html>
+-HTMLFORM END
+-GOTO :FINI
+ 
+ 
+-:FINI
+ 
+ 

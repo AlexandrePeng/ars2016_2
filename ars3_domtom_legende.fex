@@ -1,0 +1,69 @@
+-*Gén de la légende ( 1 fois pour tous les DOMTOM )
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Information builders), Nicolas WATTIAUX (Information builders)
+-* Date création : 10/2015
+-* Description   : Procédure permettant de générer la légende ( 1 fois pour tous les DOMTOM )
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 10/2015
+-*  Auteur : Guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_domtom_legende.fex
+-* ---------------------------------------------------------------------------
+ 
+-SET &LEGENDE  = 'legendjson_' || &DMYY || EDIT(&TOD,'99$99$99') || '.txt' ;
+-SET &FLAG='LEGEND';
+-INCLUDE ars3_CARTO_MINI_NATIO_LIGHT
+ 
+-HTMLFORM BEGIN
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Document sans nom</title>
+</head>
+ 
+<body>
+<br>
+<table cellspacing="0" cellpadding="5" style="font-family:Verdana; font-size:12px;" align="center">
+  <tr>
+    <td bgcolor="#8CB3FB" style="opacity: 1; " width="6%" align="right"></td>
+    <td><div align="left"><=&&LEV0_FIN </div></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="#4886F9" style="opacity: 1; " width="6%" align="right"></td>
+    <td ><div align="left">>&&LEV0_FIN à &&LEV1_FIN</div></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td  bgcolor="#0755E4" style="opacity: 1; " width="6%" align="right"></td>
+    <td><div align="left">>&&LEV1_FIN à &&LEV2_FIN</div></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="#0542B4" style="opacity: 1; " width="6%" align="right"></td>
+    <td><div align="left">>&&LEV2_FIN à &&LEV3_FIN</div></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="#043288" style="opacity: 1; " width="6%" align="right"></td>
+    <td  ><div align="left">>&&LEV3_FIN</div></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="right"><div style="font-weight:bold; " align="left">Cf. sortie Excel pour détail du calcul</div></td>
+  </tr>
+</table>
+</body>
+</html>
+ 
+-HTMLFORM END
+ 
+ 

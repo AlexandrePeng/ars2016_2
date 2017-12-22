@@ -1,0 +1,262 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2016
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas WATTIAUX (Information builders)
+-* Date création : 18/09/2017
+-* Description   : Procédure de génération du rapport excel affichant les éléments de calcul
+-*		   des pourcentages affichés dans la cartographie
+-*--------------------------------------------------------------------------------------------------
+-* Modifications
+-*  Date   : jj/mm/ssaa
+-*  Auteur :
+-*  Objet  : ...
+-*==================================================================================================
+-TYPE =============================================================================
+-TYPE  Procedure    : ar3_excel.fex
+-TYPE =============================================================================
+-SET &EXCEL_LAUNCH='OUI';
+-INCLUDE ARS3_DOM_TOM
+ 
+JOIN GEOAR_N4 IN ETP_RATIO TO CODE_GEOAR IN SCORE AS J9
+ 
+TABLE FILE ETP_RATIO
+HEADING
+"Détails des valeurs pour le calcul des DOM-TOM"
+PRINT
+ETPNAT AS 'Dénominateur'
+VALEUR_FINALE AS 'Numerateur'
+CALC_DPT AS 'Pourcentage arrondi'
+MOYENNE AS 'Moyenne'
+MEDIANE AS 'Mediane'
+MINI AS 'Minimum'
+MAXI AS 'Maximum'
+COMPUTE DIFFERENCE_CALC/D5.2=&DIFF_CALC; AS 'Difference calcul' NOPRINT
+COMPUTE FORMULE/A150=&REGLE.QUOTEDSTRING; AS 'Formule metier' NOPRINT
+BY LIB_DEPT AS 'DOM-TOM'
+WHERE GEOAR_N4 EQ 'GEOA971R971D971' OR 'GEOA972R972D972' OR 'GEOA973R973D973' OR 'GEOA974R974D974' OR 'GEOA975R975D975' OR 'GEOA976R976D976'
+ON TABLE HOLD AS DOMTOM
+END
+ 
+-INCLUDE ARS3_CARTO_NATIONAL
+ 
+JOIN AX02_CODE IN ETP_RATIO TO AX02_CODE IN ETP_CALC AS J7
+ 
+ 
+TABLE FILE ETP_RATIO
+PRINT
+ETPNAT AS 'Dénominateur'
+VALEUR_FINALE AS 'Numérateur'
+CALC_DPT AS 'Pourcentage arrondi'
+MOYENNE AS 'Moyenne'
+MEDIANE AS 'Médiane'
+MINI AS 'Minimum'
+MAXI AS 'Maximum'
+COMPUTE DIFFERENCE_CALC/D5.2=&DIFF_CALC; AS 'Différence calcul'
+-IF &NIVEAU_GEO NE 1 GOTO SKPGEO02;
+-*NIVEAU_GEO = 1 represente aucune selection dans les controles GEO
+COMPUTE LIB_NUMER/A40=' de la Nouvelle région'; NOPRINT
+COMPUTE LIB_DENOM/A40=' Total Nouvelles régions'; NOPRINT
+-GOTO FINSKPGEO
+-SKPGEO02
+-IF &NIVEAU_GEO NE 2 GOTO SKPGEO03;
+-*NIVEAU_GEO = 2 represente une selection dans nouvelles régions
+COMPUTE LIB_NUMER/A40=' de la Nouvelle région sélectionnée'; NOPRINT
+COMPUTE LIB_DENOM/A40=' Total Nouvelles régions'; NOPRINT
+-GOTO FINSKPGEO
+-SKPGEO03
+-IF &NIVEAU_GEO NE 3 GOTO SKPGEO04;
+-*NIVEAU_GEO = 3 represente une selection dans régions
+COMPUTE LIB_NUMER/A40=' de la région sélectionnée'; NOPRINT
+COMPUTE LIB_DENOM/A40=' Total Régions'; NOPRINT
+-GOTO FINSKPGEO
+-SKPGEO04
+-IF &NIVEAU_GEO NE 4 GOTO FINSKPGEO;
+-*NIVEAU_GEO = 4 represente une selection dans départements
+COMPUTE LIB_NUMER/A40=' du département sélectionné'; NOPRINT
+COMPUTE LIB_DENOM/A40=' Total Départements'; NOPRINT
+-FINSKPGEO
+-*NIVEAU_ACTI = 1 represente aucune selection d'activité
+-IF &NIVEAU_ACTI NE 1 GOTO SKPCOMP01;
+COMPUTE FORMULE/A300='Nb ETP' | LIB_NUMER | ' / ' | 'Nb ETP ' | LIB_DENOM;
+-GOTO FINSKPCOMP
+-SKPCOMP01
+COMPUTE LIB_NACTI/A70=' au niveau &NIVEAU_ACTI de l'activité sélectionnée'; NOPRINT
+COMPUTE LIB_DACTI/A70=' au niveau &NIV_ACTI_MOINS1 de l'activité'; NOPRINT
+COMPUTE FORMULE/A300='Nb ETP' | LIB_NUMER | LIB_NACTI | ' / ' | 'Nb ETP ' | LIB_DENOM  | LIB_DACTI;
+-GOTO FINSKPCOMP
+-FINSKPCOMP
+ 
+ 
+BY AX02_LIBELLE AS 'Contexte Géo'
+ON TABLE HOLD AS NATIONAL
+END
+ 
+-INCLUDE ARS3_CARTO_DEPART
+JOIN AX02_CODE IN ETP_RATIO TO AX02_CODE IN ETP_CALC AS J7
+ 
+ 
+TABLE FILE ETP_RATIO
+PRINT
+ETPNAT AS 'Dénominateur'
+VALEUR_FINALE AS 'Numérateur'
+CALC_DPT AS 'Pourcentage arrondi'
+MOYENNE AS 'Moyenne'
+MEDIANE AS 'Médiane'
+MINI AS 'Minimum'
+MAXI AS 'Maximum'
+AX02_CODE NOPRINT
+COMPUTE DIFFERENCE_CALC/D5.2=&DIFF_CALC; AS 'Différence calcul' NOPRINT
+-IF &NIVEAU_GEO NE 1 GOTO SKPGEO02A;
+-*NIVEAU_GEO = 1 represente aucune selection dans les controles GEO
+COMPUTE LIB_NUMER/A40='Pas de calcul dans ce cas'; NOPRINT
+COMPUTE LIB_DENOM/A40=''; NOPRINT
+-GOTO FINSKPGEOA
+-SKPGEO02A
+-IF &NIVEAU_GEO NE 3 GOTO SKPGEO04A;
+-*NIVEAU_GEO = 3 represente une sélection dans régions
+COMPUTE LIB_NUMER/A40=' du département concerné'; NOPRINT
+COMPUTE LIB_DENOM/A40=' Total Départements'; NOPRINT
+-GOTO FINSKPGEOA
+-SKPGEO04A
+-IF &NIVEAU_GEO NE 4 GOTO FINSKPGEOA;
+-*NIVEAU_GEO = 4 represente une sélection dans départements
+COMPUTE LIB_NUMER/A40=' du département concerné'; NOPRINT
+COMPUTE LIB_DENOM/A40=' Total Départements'; NOPRINT
+-FINSKPGEOA
+-*NIVEAU_ACTI = 1 represente aucune selection d'activité
+-IF &NIVEAU_ACTI NE 1 GOTO SKPCOMP01A;
+COMPUTE FORMULE/A300='Nb ETP' | LIB_NUMER | ' / ' | 'Nb ETP ' | LIB_DENOM;
+COMPUTE FORMULE_REG/A300='Pas de calcul dans ce cas (aucune sélection sur l''axe géographique)';
+-GOTO FINSKPCOMPA
+-SKPCOMP01A
+COMPUTE LIB_NACTI/A70=' au niveau &NIVEAU_ACTI de l'activité sélectionnée'; NOPRINT
+COMPUTE LIB_DACTI/A70=' au niveau &NIV_ACTI_MOINS1 de l'activité'; NOPRINT
+COMPUTE FORMULE/A300='Nb ETP' | LIB_NUMER | LIB_NACTI | ' / ' | 'Nb ETP ' | LIB_DENOM  | LIB_DACTI;
+COMPUTE FORMULE_REG/A300='Pas de calcul dans ce cas (aucune sélection sur l''axe géographique)';
+-GOTO FINSKPCOMPA
+-FINSKPCOMPA
+ 
+BY AX02_LIBELLE AS 'Contexte Géo'
+ON TABLE HOLD AS DEPARTEMENTAL
+END
+ 
+SET HTMLARCHIVE=ON
+COMPOUND LAYOUT PCHOLD FORMAT EXL2K
+UNITS=IN, $
+SECTION=section1, LAYOUT=ON, METADATA='0.5^0.5^0.5^0.5^4', MERGE=OFF, ORIENTATION=PORTRAIT, PAGESIZE=Letter,  $
+PAGELAYOUT=1, NAME='Présentation page 1', text='Présentation page 1', TOC-LEVEL=1, BOTTOMMARGIN=0.5, TOPMARGIN=0.5, METADATA='BOTTOMMARGIN=0.5,TOPMARGIN=0.5,LEFTMARGIN=0,RIGHTMARGIN=0,', $
+COMPONENT='report1', TEXT='report1', TOC-LEVEL=2, POSITION=(0.729 0.938), DIMENSION=(5.417 2.292), METADATA='Z-INDEX: 100; POSITION: absolute; WIDTH: 5.417in; HEIGHT: 2.292in; OVERFLOW: auto; TOP: 0.938in; LEFT: 0.729in', $
+PAGELAYOUT=2, NAME='Présentation page 2', text='Présentation page 2', TOC-LEVEL=1, BOTTOMMARGIN=0.5, TOPMARGIN=0.5, METADATA='BOTTOMMARGIN=0.5,TOPMARGIN=0.5,LEFTMARGIN=0,RIGHTMARGIN=0,', $
+COMPONENT='report2', TEXT='report2', TOC-LEVEL=2, POSITION=(0.729 3.542), DIMENSION=(5.625 2.500), METADATA='Z-INDEX: 100; POSITION: absolute; WIDTH: 5.625in; HEIGHT: 2.5in; OVERFLOW: auto; TOP: 3.542in; LEFT: 0.729in', $
+PAGELAYOUT=3, NAME='Présentation page 3', text='Présentation page 3', TOC-LEVEL=1, BOTTOMMARGIN=0.5, TOPMARGIN=0.5, METADATA='BOTTOMMARGIN=0.5,TOPMARGIN=0.5,LEFTMARGIN=0,RIGHTMARGIN=0,', $
+COMPONENT='report3', TEXT='report3', TOC-LEVEL=2, POSITION=(0.729 3.542), DIMENSION=(5.625 2.500), METADATA='Z-INDEX: 100; POSITION: absolute; WIDTH: 5.625in; HEIGHT: 2.5in; OVERFLOW: auto; TOP: 3.542in; LEFT: 0.729in', $
+END
+SET COMPONENT='report1'
+-*component_type report
+TABLE FILE NATIONAL
+HEADING
+" Détail du calcul du ratio pour la cartographie Nationale "
+""
+"Ratio : <FORMULE"
+""
+PRINT
+AX02_LIBELLE AS 'Contexte Géo'
+VALEUR_FINALE/D11.2 AS 'Numérateur'
+ETPNAT/D11.2 AS 'Dénominateur'
+CALC_DPT/D11.2 AS 'Ratio arrondi en %'
+MOYENNE AS 'Moyenne' NOPRINT
+MEDIANE AS 'Médiane' NOPRINT
+MINI AS 'Mini' NOPRINT
+MAXI AS 'Maxi' NOPRINT
+DIFFERENCE_CALC AS 'Différence calcul' NOPRINT
+ON TABLE HOLD AS NATIO FORMAT EXL2K
+ON TABLE SET STYLE *
+UNITS=CM,PAGESIZE=A4,ORIENTATION=PORTRAIT, TOPMARGIN=0.0,LEFTMARGIN=1.0,RIGHTMARGIN=1.0,BOTTOMMARGIN=0.0, SQUEEZE=ON,$
+type=report,color=navy,squeeze=on,size=10,grid=off,$
+type=title,justify=left,style=bold,size=11,$
+type=heading,style=bold,size=14,justify=center,$
+type=heading,line=3,size=10,justify=left,$
+type=pagenum, style=italic, size=6, justify=right,$
+type=tabheading,style=bold+italic,size=14,justify=center,$
+titletext='NATIONAL',$
+ENDSTYLE
+END
+ 
+SET COMPONENT='report2'
+-*component_type report
+-IF &NIVEAU_GEO EQ 1 GOTO :NOREGION;
+TABLE FILE DEPARTEMENTAL
+HEADING " Détail du calcul du ratio pour la cartographie Départementale"
+""
+"Ratio : <FORMULE"
+""
+PRINT
+AX02_LIBELLE AS 'Contexte Géo'
+VALEUR_FINALE/D11.2 AS 'Numérateur'
+ETPNAT/D11.2 AS 'Dénominateur'
+CALC_DPT/D11.2 AS 'Ratio arrondi en %'
+MOYENNE AS 'Moyenne' NOPRINT
+MEDIANE AS 'Médiane' NOPRINT
+MINI AS 'Mini' NOPRINT
+MAXI AS 'Maxi' NOPRINT
+DIFFERENCE_CALC AS 'Différence calcul' NOPRINT
+-IF &NIVEAU_GEO NE 4 GOTO :NODEP;
+WHERE AX02_CODE EQ &DEPARTEMENT
+ 
+-:NODEP;
+-GOTO :FINREGI
+ 
+-:NOREGION
+TABLE FILE REGIONAL
+HEADING " Détail du calcul du ratio pour la cartographie Régionale "
+""
+"Ratio : <FORMULE_REG"
+""
+PRINT AX02_LIBELLE NOPRINT
+WHERE RECORDLIMIT EQ 1
+-:FINREGI
+ON TABLE HOLD AS REGIO FORMAT EXL2K
+ON TABLE SET STYLE *
+UNITS=CM,PAGESIZE=A4,ORIENTATION=PORTRAIT, TOPMARGIN=0.0,LEFTMARGIN=1.0,RIGHTMARGIN=1.0,BOTTOMMARGIN=0.0, SQUEEZE=ON,$
+type=report,color=navy,squeeze=on,size=10,grid=off,$
+type=title,justify=left,style=bold,size=11,$
+type=heading,style=bold,size=14,justify=center,$
+type=heading,line=3,size=10,justify=left,$
+type=pagenum, style=italic, size=6, justify=right,$
+type=tabheading,style=bold+italic,size=14,justify=center,$
+titletext='DEPARTEMENTAL',$
+ENDSTYLE
+END
+ 
+SET COMPONENT='report3'
+-*component_type report
+TABLE FILE DOMTOM
+HEADING
+" Détail du calcul du ratio pour la cartographie DOMTOM "
+""
+"Ratio : <FORMULE"
+""
+PRINT
+LIB_DEPT AS 'Contexte Géo'
+VALEUR_FINALE/D11.2 AS 'Numérateur'
+ETPNAT/D11.2 AS 'Dénominateur'
+CALC_DPT/D11.2 AS 'Ratio arrondi en %'
+MOYENNE AS 'Moyenne' NOPRINT
+MEDIANE AS 'Médiane' NOPRINT
+MINI AS 'Mini' NOPRINT
+MAXI AS 'Maxi' NOPRINT
+DIFFERENCE_CALC AS 'Différence calcul' NOPRINT
+ON TABLE HOLD AS DTOM FORMAT EXL2K
+ON TABLE SET STYLE *
+UNITS=CM,PAGESIZE=A4,ORIENTATION=PORTRAIT, TOPMARGIN=0.0,LEFTMARGIN=1.0,RIGHTMARGIN=1.0,BOTTOMMARGIN=0.0, SQUEEZE=ON,$
+type=report,color=navy,squeeze=on,size=10,grid=off,$
+type=title,justify=left,style=bold,size=11,$
+type=heading,style=bold,size=14,justify=center,$
+type=heading,line=3,size=10,justify=left,$
+type=pagenum, style=italic, size=6, justify=right,$
+type=tabheading,style=bold+italic,size=14,justify=center,$
+titletext='DOMTOM',$
+ENDSTYLE
+END
+ 
+COMPOUND END

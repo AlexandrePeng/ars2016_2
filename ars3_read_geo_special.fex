@@ -1,0 +1,53 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2015
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des variables géographiques sélectionnées dans les filtres (dashboard), utiliée pour le graphique de répartition par entité
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 28/08/2015
+-*  Auteur : Guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_read_geo_special.fex
+-* ------------------------------------------------------------------------------------------------
+ 
+TABLE FILE AXE_GEOAR
+PRINT VALEUR_AXE
+-IF &GEO EQ 1 THEN GOTO :GEO_N1 ELSE IF &GEO EQ 2 THEN GOTO :GEO_N2 ELSE GOTO :GEO_N4;
+-:GEO_N4
+WHERE GEOAR_N4 EQ &DEPARTEMENT.QUOTEDSTRING
+-GOTO GEO_FIN
+-:GEO_N2
+WHERE GEOAR_N2 EQ &NEW_REGION.QUOTEDSTRING
+-GOTO GEO_FIN
+-:GEO_N1
+WHERE GEOAR_N1 EQ &GEO_NATIONAL.QUOTEDSTRING
+-GEO_FIN
+ON TABLE HOLD AS TMP_AXE_GEO FORMAT ALPHA
+END
+-RUN
+-SET &IORETURN=0;
+-SET &CPT=0;
+-SET &STR_GEO='';
+-REPEAT :BOUCLE11 WHILE &IORETURN EQ 0;
+-READ TMP_AXE_GEO &GEO_VAL.A15.
+-IF &IORETURN NE 0 THEN GOTO :BOUCLE11;
+-SET &STR_GEO=IF &STR_GEO EQ '' THEN &GEO_VAL ELSE IF &CPT EQ 1 THEN '''' | &STR_GEO | '''' | ',' | '''' | &GEO_VAL | '''' ELSE &STR_GEO | ',' | '''' | &GEO_VAL | '''';
+-SET &STR_GEO=IF &LINES EQ 1 THEN '''' | &STR_GEO | '''' ELSE &STR_GEO;
+-SET &CPT=&CPT+1;
+-:BOUCLE11
+ 
+-CLOSE TMP_AXE_GEO
+-TYPE &STR_GEO
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

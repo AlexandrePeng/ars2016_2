@@ -1,0 +1,318 @@
+-*==================================================================================================
+-* Projet Suivi d'activité ARS 2016 - Tableau de bord : Répartition et comparaison des ETP
+-*				 par Activité (vue Activité)
+-*
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas Wattiaux, Guy Fute et Alexandre PENG
+-* Date création : 05/09/2017
+-* Description   :
+-*
+-*--------------------------------------------------------------------------------------------------
+-* Modifications
+-*  Date   :
+-*  Auteur :
+-*  Objet  : ...
+-*==================================================================================================
+ 
+-*------------------------------------------------------------------
+-* Definition du passage de paramètre pour Total ETP et % du total
+-*------------------------------------------------------------------
+ 
+-INCLUDE ARS3_DEFAUT_ACT
+ 
+-SET &EXERM2= &EXERCICE-2;
+-INCLUDE ARS3_READ_GEO
+-INCLUDE ARS3_READ_ENT
+-INCLUDE ARS3_READ_ACTIVITE_SPECIAL
+-INCLUDE ARS3_READ_PLAFOND
+-INCLUDE ARS3_READ_STATUT
+ 
+-TYPE &NIV_ENTITE
+ 
+-*les deux 1ères colonnes (Total ETP et % du total) :
+-*----------------------------------------------------
+DEFINE FILE VIEW_IND_VAL_IA
+VALEUR_FIN/D20.2= IF VALEUR_FINALE IS MISSING THEN 0 ELSE VALEUR_FINALE ;
+END
+TABLE FILE VIEW_IND_VAL_IA
+SUM
+     VALEUR_FIN AS 'TOTAL_ETP_&EXERCICE'
+     PCT.VALEUR_FIN AS 'PCT_TOTAL_ETP_&EXERCICE'
+ 
+BY AX04_ORDRE
+BY AX04_LIBELLE
+ 
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF ) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT ) )
+-*Filtre INSPECTION CONTROLE (sinon la valeur restituée est doublée)
+	WHERE  AX07_NIVEAU EQ 1
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS TMP_FINAL_3 FORMAT ALPHA
+END
+ 
+ 
+-*les deux dernières colonnes (Evolution du % de l'entité):
+-*---------------------------------------------------------
+TABLE FILE VIEW_IND_VAL_IA
+SUM
+     VALEUR_FIN AS 'TOTAL_ETP_&EXERM2'
+     PCT.VALEUR_FIN AS 'PCT_TOTAL_ETP_&EXERM2'
+ 
+BY AX04_ORDRE
+BY AX04_LIBELLE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERM2' )
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF ) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT ) )
+-*Filtre INSPECTION CONTROLE (sinon la valeur restituée est doublée)
+	WHERE  AX07_NIVEAU EQ 1
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS TMP_FINAL_4 FORMAT ALPHA
+END
+ 
+ 
+-*------------------------------------------------------------------
+-* Definition du passage de paramètre pour % Même type d'entité
+-*------------------------------------------------------------------
+-*Filtre GEO
+-INCLUDE ARS3_DEFAUT_ACT
+-SET &GEO='1';
+-INCLUDE ARS3_READ_GEO
+-INCLUDE ARS3_READ_ENT
+-INCLUDE ARS3_READ_ACTIVITE_SPECIAL
+-INCLUDE ARS3_READ_PLAFOND
+-INCLUDE ARS3_READ_STATUT
+ 
+ 
+-*3ème colonne (% Même type d'entité):
+-*------------------------------------
+TABLE FILE VIEW_IND_VAL_IA
+SUM
+     VALEUR_FIN AS 'TOTAL_ETP_MEME_TYPE_ENTITE'
+     PCT.VALEUR_FIN AS 'PCT_MEME_TYPE_ENTITE'
+ 
+-*Test pour passage de BY selon la vue
+ 
+-*-:ACTIVITE_3
+BY AX04_ORDRE
+BY AX04_LIBELLE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF ) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT ) )
+-*Filtre INSPECTION CONTROLE (sinon la valeur restituée est doublée)
+	WHERE  AX07_NIVEAU EQ 1
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS TMP_FINAL_2 FORMAT ALPHA
+END
+ 
+ 
+-*------------------------------------------------------------------
+-* Definition du passage de paramètre pour % Tous types d'entités
+-*------------------------------------------------------------------
+-*Filtre ENTITE
+-INCLUDE ARS3_DEFAUT_ACT
+-SET &NIV_ENTITE='1';
+-INCLUDE ARS3_READ_GEO
+-INCLUDE ARS3_READ_ENT
+-INCLUDE ARS3_READ_ACTIVITE_SPECIAL
+-INCLUDE ARS3_READ_PLAFOND
+-INCLUDE ARS3_READ_STATUT
+-*4ème colonne (% Tous types d'entités):
+-*---------------------------------------
+TABLE FILE VIEW_IND_VAL_IA
+SUM
+     VALEUR_FIN AS 'TOTAL_ETP_TOUS_TYPES_ENTITE'
+     PCT.VALEUR_FIN AS 'PCT_TOUS_TYPES_ENTITE'
+ 
+-*-:ACTIVITE_4
+BY AX04_ORDRE
+BY AX04_LIBELLE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF ) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT ) )
+-*Filtre INSPECTION CONTROLE (sinon la valeur restituée est doublée)
+	WHERE  AX07_NIVEAU EQ 1
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS TMP_FINAL_1 FORMAT ALPHA
+END
+ 
+ 
+-*------------------------------------------------------------------
+-*Jointure pour récupérer toutes les données dans une même table
+-*------------------------------------------------------------------
+-*Test pour passage de JOIN selon la vue
+ 
+MATCH FILE TMP_FINAL_1
+SUM TOTAL_ETP_TOUS_TYPES_ENTITE
+    PCT_TOUS_TYPES_ENTITE
+BY AX04_ORDRE
+BY AX04_LIBELLE
+RUN
+FILE TMP_FINAL_2
+SUM TOTAL_ETP_MEME_TYPE_ENTITE
+    PCT_MEME_TYPE_ENTITE
+BY AX04_ORDRE
+BY AX04_LIBELLE
+RUN
+FILE TMP_FINAL_3
+SUM  TOTAL_ETP_&EXERCICE
+     PCT_TOTAL_ETP_&EXERCICE
+BY AX04_ORDRE
+BY AX04_LIBELLE
+RUN
+FILE TMP_FINAL_4
+SUM TOTAL_ETP_&EXERM2
+	PCT_TOTAL_ETP_&EXERM2
+BY AX04_ORDRE
+BY AX04_LIBELLE
+AFTER MATCH HOLD OLD-OR-NEW AS TMP_FINAL_1
+END
+ 
+-*****************************************************************************
+-* Création du tableau Répartition et comparaison des ETP par domaine
+-*****************************************************************************
+TABLE FILE TMP_FINAL_1
+PRINT
+     TOTAL_ETP_&EXERCICE
+	 TOTAL_ETP_&EXERM2
+     PCT_TOTAL_ETP_&EXERCICE
+     PCT_TOTAL_ETP_&EXERM2
+	 PCT_MEME_TYPE_ENTITE
+     PCT_TOUS_TYPES_ENTITE
+ 
+	 COMPUTE EVOL_TOTAL_ETP/D6.2=(PCT_TOTAL_ETP_&EXERCICE - PCT_TOTAL_ETP_&EXERM2);
+ 
+ 
+-*-:ACTIVITE_5
+BY AX04_ORDRE
+BY AX04_LIBELLE
+ON TABLE HOLD AS TMP_FINAL FORMAT ALPHA
+END
+ 
+-*Test pour vérifier qu'il y a des valeurs
+-IF &LINES EQ 0 THEN GOTO :ERRMESS;
+ 
+ 
+SET DROPBLNKLINE = ALL
+ 
+DEFINE FILE TMP_FINAL
+RIEN/A1='';
+END
+SET CDN=SPACE
+-RUN
+TABLE FILE TMP_FINAL
+ 
+PRINT
+     TOTAL_ETP_&EXERM2/D11.2 AS ''
+     TOTAL_ETP_&EXERCICE/D11.2 AS ''
+	 BY RIEN NOPRINT AS ''
+BY AX04_ORDRE NOPRINT
+BY AX04_LIBELLE AS ''
+ON RIEN SUBHEAD
+" <+0>Total ETP<+0>Total ETP "
+"&LIB_ACTIVITE<+0>&EXERM2<+0>&EXERCICE"
+ON TABLE SET PAGE-NUM NOLEAD
+ON TABLE COLUMN-TOTAL AS 'TOTAL'
+ON TABLE PCHOLD FORMAT PDF
+ON TABLE SET STYLE *
+     INCLUDE = endeflt,
+$
+     GRAPHTYPE=DATA,
+     COLUMN=N5,
+     GRAPHCOLOR=RGB(0 0 133),
+ 
+$
+TYPE=REPORT, SQUEEZE=ON, GRID=OFF,$
+TYPE=DATA, SIZE=8, BACKCOLOR=( RGB(235 235 240) 'WHITE' ),FONT=ARIAL,$
+TYPE=REPORT, COLUMN=N3, SQUEEZE=3.5,$
+TYPE=REPORT, COLUMN=N4, SQUEEZE=0.7,$
+TYPE=REPORT, COLUMN=N5, SQUEEZE=0.7,$
+TYPE=SUBHEAD,
+     BY=1,
+     HEADALIGN=BODY,
+	 BACKCOLOR=RGB(45 102 183),FONT=ARIAL,
+	 COLOR=WHITE,
+$
+TYPE=SUBHEAD,
+     BY=1,
+     LINE=1,
+     OBJECT=TEXT,
+     ITEM=1,
+     COLSPAN=1,
+     JUSTIFY=LEFT,
+$
+TYPE=SUBHEAD,
+     BY=1,
+     LINE=1,
+     OBJECT=TEXT,
+     ITEM=2,
+     COLSPAN=1,
+     JUSTIFY=LEFT,
+$
+TYPE=SUBHEAD,
+     BY=1,
+     LINE=1,
+     OBJECT=TEXT,
+     ITEM=3,
+     COLSPAN=1,
+     JUSTIFY=LEFT,
+$
+ENDSTYLE
+END
+ 
+-GOTO :FINI
+ 
+-:ERRMESS
+-INCLUDE ARS3_NODATA
+-:FINI
+ 
+ 
+ 
+ 

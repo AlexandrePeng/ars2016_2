@@ -1,0 +1,33 @@
+-* File ars3_adhoc_start.fex
+-*============================================================================
+-* Projet Suivi d'activité ARS 2016
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/08/2015
+-* Description   : Procédure de lancement du controleur de gestion
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   :
+-*  Auteur :
+ 
+-*============================================================================
+-* Procedure    : dir2_adhoc_start.fex
+-* ------------------------------------------------------------------------------------------------
+-*Liste des valeur par défautdans le controleur de gestion et lancement du fichier adhoc.htm
+-*-INCLUDE ars3_ADHOC_DEFAUT
+ 
+-*Nom du rapport contenant les valeurs de sauvegarde des paramètres contenu dans SQL (Table PAI_PARAMETRE_USER)
+-DEFAULTH &RAPPORT='ars3_adhoc_fs';
+ 
+-*-*Utilisateur par défaut
+-*-DEFAULTH &IBIMR_user='''gfute''';
+ 
+ 
+-SET &INDIC = '&ID_INDICATEUR.EVAL' ;
+-*Lancement de la page html du controleur de gestion
+-HTMLFORM ars3_adhoc
+ 
+ 
+ 

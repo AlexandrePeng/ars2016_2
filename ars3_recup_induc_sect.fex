@@ -1,0 +1,28 @@
+-*============================================================================
+-* Projet Inducteurs de charge ARS 2016
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI)
+-* Date création : 10/11/2016
+-* Description   : Procédure de d'alimentation du filtre secteur (SECTEUR) de la structure d'emploi des inducteurs 2016
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   :
+-*  Auteur :
+ 
+-*============================================================================
+-* Procedure    : ars3_recup_induc_sect.fex
+-* -----------------------------------------------------------------------------------------------
+ 
+ 
+TABLE FILE AXE_AARS17INDUCTEUR
+SUM VALEUR_AXE
+BY AARS17IND_N2_ORD NOPRINT
+BY LIBELLE
+WHERE NIVEAU EQ 2
+ON TABLE PCHOLD FORMAT XML
+END
+ 
+ 
+ 

@@ -1,0 +1,47 @@
+-*============================================================================
+-* Projet Suivi SD 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des activité sélectionnées dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 31/08/2015
+-*  Auteur : Guy FUTE
+-* Description: Procédure utilisée pour les tableaux de répartion  des etpt
+-*============================================================================
+-* Procedure    : ars3_read_statut_special.fex
+-* ------------------------------------------------------------------------------------------------
+ 
+-SET &STAT= IF &NIV_STATUT EQ '3' THEN &NIV_STATUT ELSE &NIV_STATUT+1;
+ 
+TABLE FILE AXE_AARS16STATUT
+PRINT VALEUR_AXE
+WHERE NIVEAU EQ &STAT
+-IF &NIV_STATUT EQ '1' THEN GOTO :STATUT_N1 ELSE IF &NIV_STATUT EQ '2' THEN GOTO :STATUT_N2 ELSE GOTO :STATUT_N3;
+-:STATUT_N3
+WHERE AARS16STATUT_N3 EQ &EMPLOI.QUOTEDSTRING
+-GOTO ESTATUT
+-:STATUT_N2
+WHERE AARS16STATUT_N2 EQ &STATUT.QUOTEDSTRING
+-GOTO ESTATUT
+-:STATUT_N1
+WHERE AARS16STATUT_N1 EQ '&STATUT_NATIONAL'
+-ESTATUT
+ON TABLE HOLD AS TMP_AXE_AARS16STATUT FORMAT ALPHA
+END
+-RUN
+-SET &IORETURN=0;
+-SET &CPT=0;
+-SET &STR_STAT='';
+-REPEAT :BOUCLE_STATUT WHILE &IORETURN EQ 0;
+-READ TMP_AXE_AARS16STATUT &STATUT_VAL.A15.
+-IF &IORETURN NE 0 THEN GOTO :BOUCLE_STATUT;
+-SET &STR_STAT=IF &STR_STAT EQ '' THEN &STATUT_VAL ELSE IF &CPT EQ 1 THEN '''' | &STR_STAT | '''' | ',' | '''' | &STATUT_VAL | '''' ELSE &STR_STAT | ',' | '''' | &STATUT_VAL | '''';
+-SET &STR_STAT=IF &LINES EQ 1 THEN '''' | &STR_STAT | '''' ELSE &STR_STAT;
+-SET &CPT=&CPT+1;
+-:BOUCLE_STATUT
+-CLOSE TMP_AXE_AARS16STATUT
+-TYPE &STR_STAT

@@ -1,0 +1,66 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2015
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des libellés d'activité sélectionnés dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 28/08/2015
+-*  Auteur : Guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_recup_lib_activite.fex
+-* ------------------------------------------------------------------------------------------------
+-IF &SECTEUR EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSSECTEUR;
+ 
+TABLE FILE AXE_AARS16DOM
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ &SECTEUR.QUOTEDSTRING
+ON TABLE HOLD AS TMP_LIB_ACTIVITE_SECTEUR FORMAT ALPHA
+END
+-RUN
+ 
+-READ TMP_LIB_ACTIVITE_SECTEUR &SECTEUR_LIB.A60.
+-GOTO ESECTEUR
+-TSSECTEUR
+-SET &SECTEUR_LIB='Tous';
+-ESECTEUR
+-TYPE &SECTEUR_LIB
+ 
+ 
+-IF &TYPE_INT EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSTYPE_INT;
+ 
+TABLE FILE AXE_AARS16DOM
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ &TYPE_INT.QUOTEDSTRING
+ON TABLE HOLD AS TMP_LIB_ACTIVITE_TYPE_INT FORMAT ALPHA
+END
+-RUN
+-READ TMP_LIB_ACTIVITE_TYPE_INT &TYPE_INT_LIB.A60.
+-GOTO ETYPE_INT
+-TSTYPE_INT
+-SET &TYPE_INT_LIB='Tous';
+-ETYPE_INT
+-TYPE &TYPE_INT_LIB
+ 
+-IF &MISSION EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSMISSION;
+ 
+TABLE FILE AXE_AARS16DOM
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ &MISSION.QUOTEDSTRING
+ON TABLE HOLD AS TMP_LIB_ACTIVITE_MISSION FORMAT ALPHA
+END
+-RUN
+-READ TMP_LIB_ACTIVITE_MISSION &MISSION_LIB.A60.
+-GOTO EMISSION
+-TSMISSION
+-SET &MISSION_LIB='Toutes';
+-EMISSION
+-TYPE &MISSION_LIB
+ 
+ 
+ 
+ 

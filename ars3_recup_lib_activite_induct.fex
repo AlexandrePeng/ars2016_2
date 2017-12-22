@@ -1,0 +1,34 @@
+-* File ars3_recup_lib_activité_inducteur.fex
+-*============================================================================
+-* Projet Suivi d'activité ARS 2015
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI)
+-* Date création : 15/11/2016
+-* Description   : Procédure de récupération des libellés d'activité sélectionnés dans les filtres (dashboard tructure d'emploi 2016)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 15/11/2016
+-*  Auteur : Guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_recup_lib_activite_inducteur.fex
+-* ------------------------------------------------------------------------------------------------
+-IF &SECTEUR EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSSECTEUR;
+ 
+TABLE FILE AXE_AARS16INDUCTEUR
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ &SECTEUR
+ON TABLE HOLD AS TMP_LIB_ACTIVITE_SECTEUR FORMAT ALPHA
+END
+-RUN
+ 
+-READ TMP_LIB_ACTIVITE_SECTEUR &SECTEUR_LIB.A60.
+-GOTO ESECTEUR
+-TSSECTEUR
+-SET &SECTEUR_LIB='Tous';
+-ESECTEUR
+-TYPE &SECTEUR_LIB
+ 
+ 

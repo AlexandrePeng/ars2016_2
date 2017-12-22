@@ -1,0 +1,207 @@
+-* File induct3_rpt_rep_par_induct.fex
+-*============================================================================
+-* Projet Suivi d'activité ARS 2016 - Tableau de bord contrôleur de gestion
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Alexandre PENG
+-* Date création : 07/11/2017
+-* Description   : Enquête Activité ARS par Inducteur 2016
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : jj/mm/ssaa
+-*  Auteur : first last - sté
+-*  Objet  : ...
+-*============================================================================
+-*Ajout du 0 avant les décimales lorque l'on a une valeur compris entre 0 et 1
+SET CENT-ZERO = ON
+-*-SET &ECHO = ALL ;
+-*-DEFAULTH &AX04_LIBELLE=''
+ 
+ 
+ 
+ 
+ 
+ 
+-*****************************************************************************
+-* Récupèrer la liste des inducteurs sélectionnés
+-*****************************************************************************
+TABLE FILE AXE_AARS17INDUCTEUR
+PRINT VALEUR_AXE
+WHERE NIVEAU EQ '3'
+WHERE AARS17IND_N2 EQ '&SECTEUR'
+WHERE AARS17IND_N3 EQ '&INDUCTEUR'
+ON TABLE HOLD AS TMP_AXE_INDUCT FORMAT ALPHA
+END
+ 
+-RUN
+-SET &IORETURN=0;
+-SET &CPT=0;
+-SET &STR_IND='';
+-REPEAT :BOUCLE3 WHILE &IORETURN EQ 0;
+-READ TMP_AXE_INDUCT &ACT_VAL.A15.
+-IF &IORETURN NE 0 THEN GOTO :BOUCLE3;
+-SET &STR_IND=IF &STR_IND EQ '' THEN &ACT_VAL ELSE IF &CPT EQ 1 THEN '''' | &STR_IND | '''' | ',' | '''' | &ACT_VAL | '''' ELSE &STR_IND | ',' | '''' | &ACT_VAL | '''';
+-SET &STR_IND=IF &LINES EQ 1 THEN '''' | &STR_IND | '''' ELSE &STR_IND;
+-SET &CPT=&CPT+1;
+-:BOUCLE3
+-CLOSE TMP_AXE_INDUCT
+-TYPE &STR_IND
+ 
+ 
+-*****************************************************************************
+-* Récupère ETP
+-*****************************************************************************
+-*
+TABLE FILE VIEW_IND_VAL_IA
+ 
+SUM
+	VALEUR_FINALE AS VALEUR_ETP
+-*	AX02_ORD
+-*	AX04_ORD
+ 
+BY AX04_CODE
+BY AX04_ORD
+BY AX04_LIBELLE
+BY AX02_CODE
+BY AX02_ORD
+BY AX02_LIBELLE
+-*Filtre INDICATEUR
+    WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+ 
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+ 
+-*Filtre GEO
+	WHERE ( AX02_NIVEAU EQ ('&FILTRE_NIVEAU_GEO') )
+ 
+-*Filtre ACTIVITE
+-*	WHERE ( AX04_CODE IN ( &STR_IND ) )
+WHERE AX04_CODE EQ '&VALEUR_INDUCT'
+-*Filtre STATUT
+	WHERE ( AX03_CODE IN ( &STR_STAT ) )
+ 
+	WHERE ( AX04_NIVEAU EQ '3')
+-*
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS TMP_ETP
+END
+ 
+-*****************************************************************************
+-* Récupère INDUCTEUR
+-*****************************************************************************
+-*
+ 
+TABLE FILE VIEW_IND_VDB_IA
+ 
+SUM
+	VALEUR_VDB AS VALEUR_INDUCT
+-*	AX02_ORD
+-*	AX04_ORD
+ 
+BY AX04_CODE
+BY AX04_ORD
+BY AX04_LIBELLE
+BY AX02_CODE
+BY AX02_ORD
+BY AX02_LIBELLE
+-*Filtre INDICATEUR
+    WHERE ( ID_ELEMENT EQ '&ID_INDUCTEUR' )
+ 
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+ 
+-*Filtre GEO
+	WHERE ( AX02_NIVEAU EQ ('&FILTRE_NIVEAU_GEO') )
+ 
+-*Filtre ACTIVITE
+-*	WHERE ( AX04_CODE IN ( &STR_IND ) )
+WHERE AX04_CODE EQ '&VALEUR_INDUCT'
+-*Filtre STATUT
+	WHERE ( AX03_CODE IN ( &STR_STAT ) )
+ 
+	WHERE ( AX04_NIVEAU EQ '3')
+-*
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS TMP_IND
+END
+ 
+JOIN CLEAR *
+JOIN AX04_CODE AND AX02_CODE IN TMP_ETP TO UNIQUE AX04_CODE AND AX02_CODE IN TMP_IND
+ 
+ 
+TABLE FILE TMP_ETP
+PRINT VALEUR_ETP
+VALEUR_INDUCT
+BY AX04_CODE
+BY AX04_ORD
+BY AX04_LIBELLE
+BY AX02_CODE
+BY AX02_ORD
+BY AX02_LIBELLE
+ON TABLE HOLD AS TMP_FINAL
+END
+ 
+ 
+-SET &REG_LIB=IF (&NEW_REGION NE '_FOC_NULL') THEN 'Nouvelles Régions' ELSE 'NONE';
+ 
+ 
+DEFINE FILE TMP_FINAL
+BLK/A1='';
+FLAG_NR/A1 = IF AX02_CODE EQ &NEW_REGION.QUOTEDSTRING THEN '*' ELSE '';
+VALEUR_INDUCT2/D12 = IF VALEUR_INDUCT EQ '' THEN 0 ELSE VALEUR_INDUCT;
+END
+ 
+TABLE FILE TMP_FINAL
+SUM
+ VALEUR_ETP/D10.1 AS 'Total ETP'
+ VALEUR_INDUCT2/D12 AS 'Inducteur'
+COMPUTE RATIO/D10.1= VALEUR_INDUCT2 / VALEUR_ETP;
+WHERE AX04_CODE EQ '&VALEUR_INDUCT'
+BY AX04_CODE NOPRINT
+BY AX04_LIBELLE	NOPRINT
+BY BLK NOPRINT
+BY HIGHEST VALEUR_INDUCT2 NOPRINT
+BY FLAG_NR AS ''
+BY AX02_LIBELLE AS '&REG_LIB'
+-*ON AX04_LIBELLE RECOMPUTE AS 'TOTAL :'
+ON BLK RECOMPUTE AS 'TOTAL :'
+-*ON AX04_CODE PAGE-BREAK
+HEADING
+"Inducteur : <AX04_LIBELLE "
+ON TABLE NOTOTAL
+ON TABLE SET PAGE-NUM OFF
+ON TABLE SET BYDISPLAY ON
+ON TABLE SET HTMLCSS ON
+ON TABLE SET CDN SPACE
+ON TABLE PCHOLD FORMAT HTML
+ON TABLE SET STYLE *
+     INCLUDE = endeflt,
+$
+TYPE=REPORT, SQUEEZE=ON,GRID=ON,BORDER-TOP=LIGHT,BORDER-LEFT=LIGHT,BORDER-RIGHT=LIGHT,BORDER-BOTTOM=LIGHT, SIZE= 10,$
+TYPE=FOOTING,GRID=OFF,BORDER=OFF,SIZE=10,JUSTIFY=LEFT,$
+TYPE=GRANDTOTAL, BACKCOLOR=RGB(184 204 228),STYLE=BOLD,JUSTIFY=CENTER,$
+TYPE=SUBTOTAL,BY=1,JUSTIFY=RIGHT,$
+TYPE=TITLE,COLUMN=N7,JUSTIFY=CENTER,$
+TYPE=TITLE,COLUMN=N8,JUSTIFY=CENTER,$
+TYPE=TITLE,COLUMN=N9,JUSTIFY=CENTER,$
+TYPE=TITLE,BACKCOLOR=RGB(184 204 228),$
+TYPE=TITLE,COLUMN=N6,BORDER-LEFT=OFF,$
+TYPE=DATA,COLUMN=N6,BORDER-LEFT=OFF,$
+GRAPHTYPE=DATA,COLUMN=N8,GRAPHCOLOR='FUCHSIA',$
+GRAPHTYPE=DATA,COLUMN=N9,GRAPHCOLOR='NAVY',$
+TYPE=SUBTOTAL,
+     STYLE=BOLD,
+	 BACKCOLOR=RGB(184 204 228),
+$
+TYPE=HEADING,
+     LINE=1,
+     OBJECT=FIELD,
+     ITEM=1,
+     COLOR='RED',
+$
+ENDSTYLE
+ 
+ 
+END
+ 

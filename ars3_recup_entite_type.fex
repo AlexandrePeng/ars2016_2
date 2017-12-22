@@ -1,0 +1,36 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 25/08/2015
+-* Description   : Procédure de d'alimentation du filtre statut (STATUT)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 25/08/2015
+-*  Auteur : guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_cdg_fil_entite_type.fex
+-* -----------------------------------------------------------------------------------------------
+ 
+-DEFAULT &ID_NIVEAU ='2'
+TABLE FILE SI_AXN_AXE_NIVEAU
+PRINT *
+WHERE ID_AXE EQ 'AARS16ENT'
+WHERE ID_NIVEAU EQ '&ID_NIVEAU'
+ON TABLE HOLD AS FIL_ENTITE_TYPE FORMAT ALPHA
+END
+ 
+JOIN CLEAR *
+-RUN
+JOIN ID_VALEUR_AXE IN FIL_ENTITE_TYPE TO UNIQUE VALEUR_AXE IN AXE_AARS16ENT
+ 
+TABLE FILE FIL_ENTITE_TYPE
+SUM ID_VALEUR_AXE
+BY AARS16ENT_N2_LIB
+ON TABLE PCHOLD FORMAT XML
+END
+ 
+ 

@@ -1,0 +1,76 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2015
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure d'attritbution de valeurs par défaut aux différents filtres de l'onglet suivi par activité
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 26/08/2015
+-*  Auteur : Guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_défaut_stat.fex
+-* -----------------------------------------------------------------------------------------------
+-*-SET &ECHO=ALL;
+-DEFAULTH &ID_INDICATEUR='I_GIDB001C';
+-DEFAULTH &ID_INDUCTEUR='I_GIDB0013';
+-DEFAULTH &EXERCICE='2016';
+ 
+-DEFAULTH &NOM_VUE = 'VUE_STATUT'
+ 
+-*Filtre GEO
+-DEFAULTH &GEO='1';
+-DEFAULTH &GEO_NATIONAL='GEOA000';
+-DEFAULTH &NEW_REGION='_FOC_NULL';
+-DEFAULTH &DEPARTEMENT='_FOC_NULL';
+ 
+-*Filtre ENTITE
+-DEFAULTH &ENTITE='1';
+-DEFAULTH &ENTITE_NATIONAL='AARS16ENT1ARS00';
+-DEFAULTH &ENTITE_TYPE='_FOC_NULL';
+ 
+-*Filtre ACTIVITE
+-DEFAULTH &ACTIVITE='1';
+-DEFAULTH &ACTIVITE_NATIONAL='AARS1600';
+-DEFAULTH &SECTEUR='_FOC_NULL';
+-DEFAULTH &TYPE_INT='_FOC_NULL';
+-DEFAULTH &MISSION='_FOC_NULL';
+ 
+-*Filtre STATUT
+-*-DEFAULTH &STATUT_NIV='1';
+-DEFAULTH &STATUT_NATIONAL='AARS16ST00TOUT';
+-DEFAULTH &STATUT='_FOC_NULL';
+-DEFAULTH &EMPLOI='_FOC_NULL';
+ 
+-*Filtre PLAFOND
+-DEFAULTH &PLAFOND_NATIONAL='AARS15EFF0TOUS';
+-DEFAULTH &PLAFOND='_FOC_NULL';
+ 
+-*******Récupération des valeur de niveau pour chaque filtre
+-DEFAULTH &STR_GEO='';
+-DEFAULTH &STR_ENT='';
+-DEFAULTH &STR_ACT='';
+-DEFAULTH &STR_PLAF='';
+-DEFAULTH &STR_STAT='';
+ 
+SET CENT-ZERO=ON
+SET CDN=ON
+-SET &GEO = IF &NEW_REGION EQ 'undefined' OR 'TOUT' OR '_FOC_NULL' THEN '1' ELSE '2';
+-SET &GEO = IF &DEPARTEMENT EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN &GEO ELSE '4';
+ 
+-SET &NIV_ENTITE = IF &ENTITE_TYPE EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN '1' ELSE '2';
+ 
+-SET &NIV_PLAFOND = IF &PLAFOND EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN '1' ELSE '2';
+ 
+-SET &NIV_STATUT = IF &STATUT EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN '1' ELSE '2';
+-SET &NIV_STATUT = IF &EMPLOI EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN &NIV_STATUT ELSE '3';
+-SET &LIB_STATUT = IF &NIV_STATUT EQ '1' THEN 'Tous les statuts' ELSE 'Emplois';
+ 
+-SET &NIV_ACTIVITE= IF &SECTEUR EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN '1' ELSE '2';
+ 
+ 
+ 
+ 

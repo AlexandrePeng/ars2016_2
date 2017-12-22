@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<HTML><HEAD>
+<META id=RLT_STANDARDS_MODE_META content=IE=9 http-equiv=X-UA-Compatible>
+<META name=mycharsetmeta content="text/html; charset=ISO-8859-1" http-equiv=Content-Type>
+<META name=Generation content="Created in release 8009, Generation 3">
+<SCRIPT type=text/javascript>//confidential_id=IBI_OptionsScript
+var szHtmlAlias="/ibi_apps/ibi_html";var szRunTimeHtmlAlias="runTimeHtmlAlias";var cgipath="cgipath";var ibirls="ibirls3";var rltdyncalendar="rltdyncalendar";var map="ibimap";var olap="olap";var olappanebase="olappanebase";var olapdrill="olapdrill";var ibiOptions = new Array(cgipath,ibirls);var nlsScript="/javaassist/nls.js";var glbScript="/javaassist/ibi/html/js/ibigbl.js";var replacePart="<replace>";
+var scriptTemplate='<SCRIPT src="'+replacePart+'" type="text/javascript"><\/SCRIPT>';if(typeof(szRunTimeHtmlAlias) === 'string' && szRunTimeHtmlAlias.indexOf('/') == 0)szHtmlAlias=szRunTimeHtmlAlias;document.write(scriptTemplate.replace(replacePart, szHtmlAlias + nlsScript));document.write(scriptTemplate.replace(replacePart, szHtmlAlias + glbScript));</SCRIPT>
+ 
+<SCRIPT type=text/javascript>//confidential_id=IBI_ibigblloadCss
+if(typeof ibigblloadCss === 'function'){ibigblloadCss(null);addIntlTranslatedJS("composertrans.js");}else {alert("L'alias JavaScript '/ibi_apps/ibi_html'  n'est pas valide");window.location("about:blank");}</SCRIPT>
+<TITLE>HtmlPage</TITLE><LINK id=ITEM2 rel=stylesheet type=text/css UserSuppliedFullPath="1" rtFileName="cgipathsub/ibi_html/javaassist/ibi/html/composer/themes/nonBindows/IBI-Themes/default_theme.css"><LINK id=IBI_THEME_CSS rel=stylesheet type=text/css UserSuppliedFullPath="1" desc="Information Builders" rtFileName="cgipathsub/ibi_html/javaassist/ibi/html/composer/themes/nonBindows/IBI-Themes/ibi.css">
+<SCRIPT id=ITEM1 type=text/javascript src="/approot/suivi_direccte/jquery/jquery-1.9.1.js"></SCRIPT>
+ 
+<SCRIPT type=text/javascript src="/approot/suivi_direccte/jquery/jquery-migrate-1.1.1.js"></SCRIPT>
+ 
+<SCRIPT>//confidential_id=clientEventHandlersJS
+ 
+ 
+//Begin function window_onload
+function window_onload() {
+ 
+UpdateData();
+ 
+// TODO: Add your event handler code here
+//add onInitialUpdate() function to make changes before initial run of the reports
+}
+//End function window_onload
+ 
+//Begin function button1_onclick
+function button1_onclick(ctrl) {
+// TODO: Add your event handler code here
+refreshReports();
+}
+//End function button1_onclick
+function refreshReports(){
+ 
+// this is the name of the iframe
+var name = this.window.name;
+ 
+// call to set the ampers for the current page ? use Len?s function instead of the hard-coded string
+// you only need to set once per page, per run/edit session, unless they change
+//parent.BipIframeInterface.setAllAmpersValues(name, IbComposer_getAllAmpersValues());
+parent.BipIframeInterface.setAllAmpersValues(name, IbComposer_getAllAmpersValues(), parent.BipIframeInterface.AMPERS_PAGE_ONLY); 
+// call to refresh all but self
+// the available values for the first parameter are in portalcanvas/util.js ? see below
+// the third parameter, not passed here, is an array of frame names
+parent.BipIframeInterface.refresh(parent.BipIframeInterface.REFRESH_ALL_BUT_SELF, name);
+} 
+ 
+ 
+</SCRIPT>
+ 
+<SCRIPT type=text/javascript src="/approot/ars_wf8/dashboard_fonction_act.js"></SCRIPT>
+ 
+<SCRIPT type=text/javascript>
+ 
+$(document).ready(function() {
+ 
+// --------------------------------------------------------------------------------------------
+// Détection de l'explorateur
+// --------------------------------------------------------------------------------------------
+ 
+	var head = document.getElementsByTagName('head')[0];
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+ 
+	if (jQuery.browser.msie && jQuery.browser.version == '8.0') {
+	//	alert('Hello Word IE 8');
+		script.src="/approot/suivi_direccte/jquery/jquery-1.9.1.js";
+	}
+ 
+	else{   
+		script.src="/approot/suivi_direccte/jquery/jquery-2.1.1.js";
+	//	alert('Hello Word2');
+	}
+	head.appendChild(script);
+	
+	
+	// --------------------------------------------------------------------------------------------
+	// FS: Save Parameters
+	// --------------------------------------------------------------------------------------------
+	//$("#btn-parameters-save").button()
+	$("#btn-parameters-save").on("click", "", function() {
+		parametersSave();
+	}) 
+    $("#btn-run").on("click", "", function() {
+		button1_onclick();
+	})
+	// --------------------------------------------------------------------------------------------
+	// FS: Load Parameters
+	// --------------------------------------------------------------------------------------------
+	//$("#btn-parameters-load").button();
+	$("#btn-parameters-load").on("click", "", function() {
+	
+		parametersLoad();
+	})
+ 
+	var glbTid = setInterval(mycode, 100);
+	function mycode() {
+		var _num = $("#STATUT")[0].length;
+		if (_num != 0) {
+			abortTimerAndContinue();
+		}
+	}
+	function abortTimerAndContinue() { // to be called when you want to stop the timer
+		clearInterval(glbTid);
+//		parametersLoad();
+	}	
+	
+	
+})
+ 
+</SCRIPT>
+ 
+<SCRIPT for=window type=text/javascript eventname="onload">window.onload = function() { window_onload(); }</SCRIPT>
+ 
+<STYLE type=text/css>#text2 {
+	FONT-STYLE: normal; FONT-FAMILY: Tahoma, Geneva, sans-serif; FONT-SIZE: 12px; FONT-WEIGHT: bold
+}
+#txtload {
+	FONT-STYLE: normal; FONT-FAMILY: Tahoma, Geneva, sans-serif; FONT-SIZE: 12px; FONT-WEIGHT: bold
+}
+ 
+ 
+ 
+</STYLE>
+</HEAD>
+<BODY style="Z-INDEX: 0; OVERFLOW: auto" class=IBI_PageBg edaconnectionrequired="true" elementtype="21" thumbnailscale="4" maptype="0" nextelementuniquenumber="11"><LABEL style="Z-INDEX: 5; POSITION: absolute; WIDTH: 193px; HEIGHT: 16px; CURSOR: default; TOP: 5px; LEFT: 1px" id=label1 class="IBIfield IBI_ReportControlLabel" for=NEW_REGION name="label1"><B>Nouvelles Régions</B></LABEL><SELECT style="Z-INDEX: 6; POSITION: absolute; OVERFLOW-Y: visible; WIDTH: 100%; OVERFLOW: visible; TOP: 28px; LEFT: 1px" id=NEW_REGION class=isParameter tabIndex=4 size=1 persistentuniqueid="compUid_1" requiredfield="1" boundtovariable="1" defaultlocation="0,0,17,101" defaultselection="1" name="NEW_REGION"></SELECT><LABEL style="Z-INDEX: 7; POSITION: absolute; WIDTH: 44px; HEIGHT: 13px; CURSOR: default; TOP: 57px; LEFT: 1px" id=label2 class="IBIfield IBI_ReportControlLabel" for=REGION name="label2"><B>Régions</B></LABEL><SELECT style="Z-INDEX: 8; POSITION: absolute; OVERFLOW-Y: visible; WIDTH: 100%; OVERFLOW: visible; TOP: 80px; LEFT: 1px" id=REGION class=isParameter tabIndex=5 size=1 persistentuniqueid="compUid_2" requiredfield="1" boundtovariable="1" defaultlocation="0,0,17,101" defaultselection="1" name="REGION"></SELECT><LABEL style="Z-INDEX: 13; POSITION: absolute; WIDTH: 259px; HEIGHT: 19px; CURSOR: default; TOP: 109px; LEFT: 1px" id=label5 class="IBIfield IBI_ReportControlLabel" for=SECTEUR name="label5"><B>Secteurs</B></LABEL><SELECT style="Z-INDEX: 14; POSITION: absolute; OVERFLOW-Y: visible; WIDTH: 100%; OVERFLOW: visible; TOP: 132px; LEFT: 1px" id=SECTEUR class=isParameter tabIndex=8 size=1 persistentuniqueid="compUid_5" requiredfield="1" boundtovariable="1" defaultlocation="0,0,17,101" defaultselection="1" name="SECTEUR"></SELECT><LABEL style="Z-INDEX: 19; POSITION: absolute; WIDTH: 290px; HEIGHT: 26px; CURSOR: default; TOP: 164px; LEFT: 1px" id=label8 class="IBIfield IBI_ReportControlLabel" for=TYPE_INT name="label8"><B>Types d'interventions</B></LABEL><SELECT style="Z-INDEX: 20; POSITION: absolute; OVERFLOW-Y: visible; WIDTH: 100%; OVERFLOW: visible; TOP: 187px; LEFT: 1px" id=TYPE_INT class=isParameter tabIndex=11 size=1 persistentuniqueid="compUid_8" requiredfield="1" boundtovariable="1" defaultlocation="0,0,17,99" defaultselection="1" name="TYPE_INT">
+</SELECT><LABEL style="Z-INDEX: 21; POSITION: absolute; WIDTH: 183px; HEIGHT: 26px; CURSOR: default; TOP: 215px; LEFT: 1px" id=label9 class="IBIfield IBI_ReportControlLabel" for=MISSION name="label9"><B>Missions</B></LABEL><SELECT style="Z-INDEX: 22; POSITION: absolute; OVERFLOW-Y: visible; WIDTH: 100%; OVERFLOW: visible; TOP: 238px; LEFT: 1px" id=MISSION class=isParameter tabIndex=12 size=1 persistentuniqueid="compUid_9" requiredfield="1" boundtovariable="1" defaultlocation="0,0,17,101" defaultselection="1" name="MISSION"></SELECT><LABEL style="Z-INDEX: 23; POSITION: absolute; WIDTH: 59px; HEIGHT: 16px; CURSOR: default; TOP: 267px; LEFT: 1px" id=label10 class="IBIfield IBI_ReportControlLabel" for=STATUT name="label10"><B>Statuts</B></LABEL><SELECT style="Z-INDEX: 24; POSITION: absolute; OVERFLOW-Y: visible; WIDTH: 100%; OVERFLOW: visible; TOP: 286px; LEFT: 1px" id=STATUT class=isParameter tabIndex=13 size=1 persistentuniqueid="compUid_10" requiredfield="1" boundtovariable="1" defaultlocation="0,0,17,101" defaultselection="1" tempatt_lastelement_ofline="1" name="STATUT"></SELECT> 
+<A style="CURSOR: pointer" href="javascript:OnExecute(null, 'btn-run')"><IMG style="Z-INDEX: 25; POSITION: absolute; WIDTH: 15%; TOP: 344px; LEFT: 32%" id=btn-run class=IBIfield title=Valider tabIndex=14 border=0 src="/approot/image/runicon.png" UserSuppliedFullPath="1" originalWidth="128" originalHeight="128" autoExecute="false" name="btn-run"> </A>
+<A style="CURSOR: pointer" href="javascript:OnExecute(null, 'btn-parameters-save')"><IMG style="Z-INDEX: 25; POSITION: absolute; WIDTH: 15%; TOP: 344px; LEFT: 16%" id=btn-parameters-save class=IBIfield title="Sauvegarder vos paramètres" tabIndex=14 border=0 rtFileName="save-icon.png" originalWidth="128" originalHeight="128" autoExecute="false" name="btn-parameters-save"></A>
+<SPAN style="Z-INDEX: 29; POSITION: absolute; WIDTH: 31px; HEIGHT: 53px; TOP: 534px; LEFT: 57px" id=panel1 elementtype="34"></SPAN>
+<A style="CURSOR: pointer" href="javascript:OnExecute(null, 'btn-parameters-load')"><IMG style="Z-INDEX: 30; POSITION: absolute; WIDTH: 15%; TOP: 344px; LEFT: 1%" id=btn-parameters-load class=IBIfield title="Charger vos paramètres" tabIndex=15 border=0 rtFileName="chargement.png" originalWidth="128" originalHeight="128" autoExecute="false" name="btn-parameters-load"></A>
+</A>&nbsp; <INPUT style="POSITION: absolute; TOP: -100px; LEFT: -100px" id=layoutinfo type=hidden resourcectrlids="ITEM2;IBI_THEME_CSS;btn-parameters-save;btn-parameters-load" name="inputhidden1"><INPUT style="POSITION: absolute; TOP: -100px; LEFT: -100px" id=ibiapp_app value=ars_wf8 type=hidden name="ibiapp_app"><INPUT style="POSITION: absolute; TOP: -100px; LEFT: -100px" id=ibic_server value=EDASERVE type=hidden isdataserversarea="1" name="ibic_server"><xml id=focus_xmlelement><script type="text/xml" nextelementuniquenumber="19">
+	<rootxmlnode focoption="_FOC_NULL" top="100" left="10" width="150" height="130">
+		<variables>
+			<variable controltype="7" parametercreatedinreslay="0" type="default" desc="NEW_REGION" name="NEW_REGION" default="'_FOC_NONE'" textvarname="" accept="0" select="0" create="1" top="70" left="30" width="60" height="20" inbinding="1"><link linktype="default" from="compUid_1" persistentuniqueid="compUid_12"><condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="0" modifiedrequest="0" displayfield="NEW_REGION" datafield="NEW_REGION" datasource="si_axn_axe_niveau.mas" ibif_ex="si_axn_axe_niveau" selectedvalue="'_FOC_NONE'" operation="" slider_range_from="" slider_range_to="" previewvalue="'_FOC_NONE'" sourcetype="typeMaster" linktype="none" ibiformat="A10"><static_values><static value="'_FOC_NONE'" display="'_FOC_NONE'" selected="1" noinput="0">
+								</static></static_values></data_info></condition></link><requestid id="0"></requestid><requestid id="4"></requestid></variable>
+			<variable controltype="7" parametercreatedinreslay="0" type="default" desc="REGION" name="REGION" default="'_FOC_NONE'" textvarname="" accept="0" select="0" create="1" top="70" left="140" width="60" height="20" inbinding="1"><link linktype="default" from="compUid_2" persistentuniqueid="compUid_13"><condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="0" modifiedrequest="0" displayfield="REGION" datafield="REGION" datasource="si_axn_axe_niveau.mas" ibif_ex="si_axn_axe_niveau" selectedvalue="'_FOC_NONE'" operation="" slider_range_from="" slider_range_to="" previewvalue="'_FOC_NONE'" sourcetype="typeMaster" linktype="none" ibiformat="A10"><static_values><static value="'_FOC_NONE'" display="'_FOC_NONE'" selected="1" noinput="0">
+								
+</static></static_values></data_info>
+					</condition></link><requestid id="0"></requestid></variable>
+			<variable controltype="9" parametercreatedinreslay="0" type="prompt" desc="DEPARTEMENT" name="DEPARTEMENT" default="" textvarname="" accept="0" select="1" create="1" top="70" left="250" width="60" height="20" inbinding="1"><link linktype="default" persistentuniqueid="compUid_14"><condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="1" modifiedrequest="0" displayfield="COUNTRY" datafield="COUNTRY" datasource="CAR.mas" ibif_ex="CAR" selectedvalue="" operation="OR" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none" ibiformat="A10"/></condition></link><requestid id="0">
+				</requestid></variable>
+			<variable controltype="9" parametercreatedinreslay="0" type="prompt" desc="TYPE_INT" name="TYPE_INT" default="" textvarname="" accept="0" select="1" create="1" top="70" left="360" width="60" height="20" inbinding="1"><link linktype="default" from="compUid_8"><condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="1" modifiedrequest="0" displayfield="COUNTRY" datafield="COUNTRY" datasource="CAR.mas" ibif_ex="CAR" selectedvalue="" operation="OR" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none" ibiformat="A10"/>
+					</condition></link><requestid id="0"></requestid></variable>
+			<variable controltype="9" parametercreatedinreslay="0" type="prompt" desc="SECTEUR" name="SECTEUR" default="" textvarname="" accept="0" select="1" create="1" top="70" left="250" width="60" height="20" inbinding="1"><link linktype="default" from="compUid_5"><condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="1" modifiedrequest="0" displayfield="COUNTRY" datafield="COUNTRY" datasource="CAR.mas" ibif_ex="CAR" selectedvalue="" operation="OR" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none" ibiformat="A10"/>
+ 
+					</condition></link><requestid id="0"></requestid></variable>
+			<variable controltype="9" parametercreatedinreslay="0" type="prompt" desc="MISSION" name="MISSION" default="" textvarname="" accept="0" select="1" create="1" top="70" left="470" width="60" height="20" inbinding="1"><link linktype="default" from="compUid_9" persistentuniqueid="compUid_17"><condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="1" modifiedrequest="0" displayfield="COUNTRY" datafield="COUNTRY" datasource="CAR.mas" ibif_ex="CAR" selectedvalue="" operation="OR" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" ibiformat="A10" linktype="none"/>
+					</condition></link><requestid id="0"></requestid></variable>
+			<variable controltype="9" parametercreatedinreslay="0" type="prompt" desc="STATUT" name="STATUT" default="" textvarname="" accept="0" select="1" create="1" top="70" left="580" width="60" height="20" inbinding="1"><link linktype="default" from="compUid_10"><condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="1" modifiedrequest="0" displayfield="COUNTRY" datafield="COUNTRY" datasource="CAR.mas" ibif_ex="CAR" selectedvalue="" operation="OR" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" ibiformat="A10"/>
+ 
+					</condition></link><requestid id="0"></requestid></variable>
+			<variable controltype="9" parametercreatedinreslay="0" type="prompt" desc="PLAFOND" name="PLAFOND" default="" textvarname="" accept="0" select="1" create="1" top="160" left="30" width="60" height="20" inbinding="1"><link linktype="default" persistentuniqueid="compUid_30"><condition default="1" name="Par défaut" whattodowithcontrol="4" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="1" modifiedrequest="0" displayfield="COUNTRY" datafield="COUNTRY" datasource="CAR.mas" ibif_ex="CAR" selectedvalue="" operation="OR" slider_range_from="" slider_range_to="" previewvalue="" sourcetype="typeMaster" linktype="none" ibiformat="A10"/>
+					</condition></link><requestid id="0"></requestid></variable>
+		</variables>
+		<input_controls>
+			<input_control bindcontrolid="compUid_1" elementtype="8" name="NEW_REGION" id="NEW_REGION" multiple="0" inbinding="1" top="20" left="30" width="60" height="20" onetimepopulated="0"><link linktype="default" persistentuniqueid="compUid_3"><condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="1" modifiedrequest="0" datasource="ars3_recup_geo_newreg.fex" ibif_ex="ars3_recup_geo_newreg" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" accept="0" operation="NONE" checkForDuplicateValues="0" displayfield="GEOAR_N2_LIB" datafield="ID_VALEUR_AXE" ibiapp_app="ars_wf8" requestid="3" dynalldisplayvalue="Toutes"><![CDATA[]]>
+						</data_info></condition></link></input_control>
+			<input_control bindcontrolid="compUid_2" elementtype="8" name="REGION" id="REGION" multiple="0" inbinding="1" top="20" left="140" width="60" height="20" onetimepopulated="0"><link linktype="default" persistentuniqueid="compUid_4" from="compUid_1"><condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0" resolveparameterfq="NEW_REGION" resolveparameter="NEW_REGION"><data_info datatype="1" modifiedrequest="0" datasource="ars3_recup_geo_reg.fex" ibif_ex="ars3_recup_geo_reg" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" accept="0" operation="NONE" checkForDuplicateValues="0" displayfield="GEOAR_N3_LIB" datafield="ID_VALEUR_AXE" ibiapp_app="ars_wf8" requestid="4" dynalldisplayvalue="Toutes"><![CDATA[]]>
+</data_info></condition></link></input_control>
+			<input_control bindcontrolid="compUid_5" elementtype="8" name="SECTEUR" id="SECTEUR" multiple="0" inbinding="1" top="20" left="250" width="60" height="20" onetimepopulated="0"><link linktype="default" persistentuniqueid="compUid_1"><condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="1" modifiedrequest="0" datasource="ars3_recup_act_sect.fex" ibif_ex="ars3_recup_act_sect" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" accept="0" operation="OR" checkForDuplicateValues="0" displayfield="AARS16DOM_N2_LIB" datafield="ID_VALEUR_AXE" ibiapp_app="ars_wf8" requestid="6" dynalldisplayvalue="Tous"><![CDATA[]]>
+						</data_info></condition></link></input_control>
+			<input_control bindcontrolid="compUid_8" elementtype="8" name="TYPE_INT" id="TYPE_INT" multiple="0" inbinding="1" top="20" left="360" width="60" height="20" onetimepopulated="0"><link linktype="default" persistentuniqueid="compUid_6" from="compUid_5"><condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0" resolveparameterfq="SECTEUR" resolveparameter="SECTEUR"><data_info datatype="1" modifiedrequest="0" datasource="ars3_recup_act_type_int.fex" ibif_ex="ars3_recup_act_type_int" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" accept="0" operation="OR" checkForDuplicateValues="0" displayfield="AARS16DOM_N3_LIB" datafield="ID_VALEUR_AXE" ibiapp_app="ars_wf8" requestid="7" dynalldisplayvalue="Tous"><![CDATA[]]>
+						</data_info></condition></link></input_control>
+			<input_control bindcontrolid="compUid_9" elementtype="8" name="MISSION" id="MISSION" multiple="0" inbinding="1" top="20" left="470" width="60" height="20" onetimepopulated="0"><link linktype="default" persistentuniqueid="compUid_7" from="compUid_8"><condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0" resolveparameterfq="TYPE_INT" resolveparameter="TYPE_INT"><data_info datatype="1" modifiedrequest="0" datasource="ars3_recup_act_mission.fex" ibif_ex="ars3_recup_act_mission" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" accept="0" operation="OR" checkForDuplicateValues="0" displayfield="AARS16DOM_N4_LIB" datafield="ID_VALEUR_AXE" ibiapp_app="ars_wf8" requestid="8" dynalldisplayvalue="Toutes"><![CDATA[]]>
+						
+</data_info></condition></link></input_control>
+			<input_control bindcontrolid="compUid_10" elementtype="8" name="STATUT" id="STATUT" multiple="0" inbinding="1" top="20" left="580" width="60" height="20" onetimepopulated="0"><link linktype="default" persistentuniqueid="compUid_8"><condition default="1" name="Par défaut" whattodowithcontrol="0" valuescompareoperator="0" parameterscompareoperator="0" conditionmultiselectoperator="0"><data_info datatype="1" modifiedrequest="0" datasource="ars3_recup_statut_statut.fex" ibif_ex="ars3_recup_statut_statut" addalloption="1" sourcetype="typeFex" cacheruntimedata="0" accept="0" operation="OR" checkForDuplicateValues="0" displayfield="AARS16STATUT_N2_LIB" datafield="ID_VALEUR_AXE" ibiapp_app="ars_wf8" requestid="9" dynalldisplayvalue="Tous"><![CDATA[]]></data_info></condition></link></input_control>
+		</input_controls>
+		<requests nextrequestsid="16"><request requestid="0" sourcetype="typeFex" targettype="window" targetname="_blank" ibif_ex="ars3_excel" activereport="0" reportcolumns="" reportrealcolumns="" ibiapp_app="ars_wf8" paramremovedbyuser="PRG_FIN&amp;CATEGORIE&amp;ENTITE_TYPE&amp;DEPARTEMENT&amp;PLAFOND"></request>
+		</requests>
+		<other_bound_objects>
+		</other_bound_objects>
+	</rootxmlnode>
+</script>
+</xml></BODY>
+<SCRIPT type=text/javascript>//confidential_id=IBI_loader
+if(typeof doBeforeLoad === 'function'){doBeforeLoad();}function AdjustChildrenPosition(){
+}
+</SCRIPT>
+</HTML>
+<!-- cc 00000 -->
+ 
+ 

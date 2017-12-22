@@ -1,0 +1,38 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de d'alimentation du filte nouvelles régions (NEW_REGION)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 25/08/2015
+-*  Auteur : guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_cdg_fil_geo_newreg.fex
+-* -----------------------------------------------------------------------------------------------
+-*-SET &ECHO=ALL;
+-DEFAULT &ID_NIVEAU ='2'
+TABLE FILE SI_AXN_AXE_NIVEAU
+PRINT *
+WHERE ID_AXE EQ 'GEOAR'
+WHERE ID_NIVEAU EQ '&ID_NIVEAU'
+ON TABLE HOLD AS FIL_GEO_NEWREG FORMAT ALPHA
+END
+ 
+JOIN CLEAR *
+-RUN
+JOIN  ID_VALEUR_AXE IN FIL_GEO_NEWREG TO UNIQUE VALEUR_AXE IN AXE_GEOAR
+ 
+TABLE FILE FIL_GEO_NEWREG
+PRINT ID_VALEUR_AXE
+BY GEOAR_N2_LIB
+ON TABLE PCHOLD FORMAT XML
+END
+ 
+ 
+ 
+ 

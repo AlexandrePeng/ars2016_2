@@ -1,0 +1,416 @@
+-* File ars3_graph_filiere_pro.fex
+-*==================================================================================================
+-* Projet Suivi d'activité ARS 2015 - Graphique Filière "Professionnelle de Santé" (Vue Statut)
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas Wattiaux (Information Builders) et Guy Fute (Aixial BI)
+-* Date création : 10/09/2011
+-* Description   :
+-*
+-*--------------------------------------------------------------------------------------------------
+-* Modifications
+-*  Date   : jj/mm/ssaa
+-*  Auteur : first last - sté
+-*  Objet  : ...
+-*==================================================================================================
+ 
+-*------------------------------------
+-* Definition du passage de paramètre
+-*------------------------------------
+-*Filtre NOM_VUE
+-DEFAULT &NOM_VUE = 'VUE_STATUT'
+-DEFAULT &GRAPHE='COMP_FIL_PRO';
+ 
+-INCLUDE ars3_DEFAUT_STAT
+ 
+-*Filtre INSP_CONT
+-SET &INSP_CONT='AARS15ICE_0TOUT';
+-SET &NIV_STATUT = '3';
+-*---------------------------------------------------
+-* Récupération des codes axes selon les paramètres
+-*---------------------------------------------------
+-INCLUDE ars3_READ_GEO
+-INCLUDE ars3_READ_ENT
+-INCLUDE ars3_READ_ACTIVITE
+-INCLUDE ars3_READ_PLAFOND
+-INCLUDE ars3_READ_STATUT
+-RUN
+ 
+-*------------------------------------------------------------------
+-* GRAPH1 Répartition structure (entité) - Statut (emploi avec codes se tarminant par T ou S)
+-*------------------------------------------------------------------
+ 
+TABLE FILE VIEW_IND_VAL_IA
+SUM VALEUR_FINALE/D8.2 AS 'VALEUR_FINALE_GRAPH1_I'
+ 
+BY  AX02_LIBELLE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT) )
+	WHERE (AX06_CODE LIKE '%T') OR (AX06_CODE LIKE '%S')
+-*Filtre INSPECTION CONTROLE
+	WHERE ( AX07_CODE EQ '&INSP_CONT' )
+ 
+ON TABLE HOLD AS H_GRAPH1_I FORMAT ALPHA
+ON TABLE SET ASNAMES ON
+END
+ 
+ 
+-*------------------------------------------------------------------
+-* GRAPH1 Répartition structure (entité) - Tous les atatuts (tous les emplois)
+-*------------------------------------------------------------------
+ 
+TABLE FILE VIEW_IND_VAL_IA
+ 
+SUM VALEUR_FINALE/D8.2 AS 'VALEUR_FINALE_GRAPH1_TOUTES_I'
+ 
+BY  AX02_LIBELLE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT) )
+-*Filtre INSPECTION CONTROLE
+	WHERE ( AX07_CODE EQ '&INSP_CONT' )
+ 
+ON TABLE HOLD AS H_GRAPH1_ALL FORMAT ALPHA
+ON TABLE SET ASNAMES ON
+END
+ 
+ 
+-*------------------------------------------------------------------
+-* GRAPH2 Répartition structure (entité) - Statut (emploi avec codes se tarminant par T ou S)
+-*------------------------------------------------------------------
+ 
+-INCLUDE ars3_DEFAUT_STAT
+-SET &NIV_STATUT = '3';
+-SET &GEO='1';
+ 
+-INCLUDE ars3_READ_GEO
+-INCLUDE ars3_READ_ENT
+-INCLUDE ars3_READ_ACTIVITE
+-INCLUDE ars3_READ_PLAFOND
+-INCLUDE ars3_READ_STATUT
+-RUN
+ 
+ 
+TABLE FILE VIEW_IND_VAL_IA
+ 
+SUM VALEUR_FINALE/D8.2 AS 'VALEUR_FINALE_GRAPH2_I'
+ 
+	BY  AX02_LIBELLE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT) )
+	WHERE (AX06_CODE LIKE '%T') OR (AX06_CODE LIKE '%S')
+-*Filtre INSPECTION CONTROLE
+	WHERE ( AX07_CODE EQ '&INSP_CONT' )
+ 
+ON TABLE HOLD AS H_GRAPH2_I FORMAT ALPHA
+ON TABLE SET ASNAMES ON
+END
+ 
+-*------------------------------------------------------------------
+-* GRAPH2 Répartition structure (entité) - Tous les atatuts (tous les emplois)
+-*------------------------------------------------------------------
+ 
+ 
+TABLE FILE VIEW_IND_VAL_IA
+ 
+SUM VALEUR_FINALE/D8.2 AS 'VALEUR_FINALE_GRAPH2_TOUTES_I'
+ 
+    BY  AX02_LIBELLE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT) )
+-*Filtre INSPECTION CONTROLE
+	WHERE ( AX07_CODE EQ '&INSP_CONT' )
+ 
+ON TABLE HOLD AS H_GRAPH2_ALL FORMAT ALPHA
+ON TABLE SET ASNAMES ON
+END
+ 
+ 
+-*------------------------------------------------------------------
+-* GRAPH3 Répartition structure (entité) - Statut (emploi avec codes se tarminant par T ou S)
+-*------------------------------------------------------------------
+ 
+-INCLUDE ars3_DEFAUT_STAT
+-SET &NIV_STATUT = '3';
+-SET &NIV_ENTITE='1';
+-SET &GEO='1';
+-INCLUDE ars3_READ_GEO
+-INCLUDE ars3_READ_ENT
+-INCLUDE ars3_READ_ACTIVITE
+-INCLUDE ars3_READ_PLAFOND
+-INCLUDE ars3_READ_STATUT
+-RUN
+ 
+TABLE FILE VIEW_IND_VAL_IA
+ 
+SUM VALEUR_FINALE/D8.2 AS 'VALEUR_FINALE_GRAPH3_I'
+ 
+	BY  AX02_LIBELLE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT) )
+	WHERE (AX06_CODE LIKE '%T') OR (AX06_CODE LIKE '%S')
+-*Filtre INSPECTION CONTROLE
+	WHERE ( AX07_CODE EQ '&INSP_CONT' )
+ 
+ON TABLE HOLD AS H_GRAPH3_I FORMAT ALPHA
+ON TABLE SET ASNAMES ON
+END
+ 
+ 
+-*------------------------------------------------------------------
+-* GRAPH3 Répartition structure (entité) - Tous les atatuts (tous les emplois)
+-*------------------------------------------------------------------
+ 
+TABLE FILE VIEW_IND_VAL_IA
+ 
+SUM VALEUR_FINALE/D8.2 AS 'VALEUR_FINALE_GRAPH3_TOUTES_I'
+ 
+	BY  AX02_LIBELLE
+ 
+-*Filtre INDICATEUR
+	WHERE ( ID_INDICATEUR EQ '&ID_INDICATEUR' )
+-*Filtre TEMPS
+	WHERE ( AX01_CODE EQ '&EXERCICE' )
+-*Filtre GEO
+	WHERE ( AX02_CODE IN ( &STR_GEO ) )
+-*Filtre ENTITE
+	WHERE ( AX03_CODE IN ( &STR_ENT ) )
+-*Filtre ACTIVITE
+	WHERE ( AX04_CODE IN ( &STR_ACT ) )
+-*Filtre PLAFOND
+	WHERE ( AX05_CODE IN ( &STR_PLAF) )
+-*Filtre STATUT
+	WHERE ( AX06_CODE IN ( &STR_STAT) )
+-*Filtre INSP_CONT
+	WHERE ( AX07_CODE EQ '&INSP_CONT' )
+ 
+ON TABLE HOLD AS H_GRAPH3_ALL FORMAT ALPHA
+ON TABLE SET ASNAMES ON
+END
+ 
+-*------------------------------------------------------------------
+-* Jointure pour récupérer les valeurs dans une même table
+-*------------------------------------------------------------------
+JOIN CLEAR *
+JOIN
+ AX02_LIBELLE IN H_GRAPH1_I TO UNIQUE AX02_LIBELLE IN H_GRAPH1_ALL AS J1
+END
+JOIN
+ AX02_LIBELLE IN H_GRAPH2_I TO UNIQUE AX02_LIBELLE IN H_GRAPH2_ALL AS J2
+END
+JOIN
+ AX02_LIBELLE IN H_GRAPH3_I TO UNIQUE AX02_LIBELLE IN H_GRAPH3_ALL AS J3
+END
+ 
+-*----------------------------
+-* Récupération des libellés
+-*----------------------------
+-INCLUDE ars3_DEFAUT_STAT
+-INCLUDE ars3_RECUP_LIB_ENTITE
+-INCLUDE ars3_RECUP_LIB_GEO
+-SET &ENTITE_LIB=TRUNCATE(&ENTITE_LIB);
+-SET &GEO_LIB=TRUNCATE(&GEO_LIB);
+ 
+-*-----------------------------------------------------------
+-* APPEND pour ajouter les données dans la table GRAPH_FINAL
+-*-----------------------------------------------------------
+APP FI GRAPH_FINAL siperf_input (APPEND
+ 
+TABLE FILE H_GRAPH1_I
+SUM
+AX02_LIBELLE
+COMPUTE ORDRE_GRAPH/I1 = 1;
+COMPUTE VALEUR_GRAPH/D6.2 = IF VALEUR_FINALE_GRAPH1_I IS MISSING THEN 0 ELSE (VALEUR_FINALE_GRAPH1_I / VALEUR_FINALE_GRAPH1_TOUTES_I) * 100;
+COMPUTE LIBELLE_GRAPH/A80 = '&ENTITE_LIB - &GEO_LIB';
+ON TABLE HOLD AS GRAPH_FINAL FORMAT ALPHA
+END
+-RUN
+ 
+TABLE FILE H_GRAPH2_I
+SUM
+AX02_LIBELLE
+COMPUTE ORDRE_GRAPH/I1 = 2;
+COMPUTE VALEUR_GRAPH/D6.2 = IF VALEUR_FINALE_GRAPH2_I IS MISSING THEN 0 ELSE (VALEUR_FINALE_GRAPH2_I / VALEUR_FINALE_GRAPH2_TOUTES_I) * 100;
+COMPUTE LIBELLE_GRAPH/A50 = 'Toutes entités';
+ON TABLE HOLD AS GRAPH_FINAL FORMAT ALPHA
+END
+-RUN
+ 
+TABLE FILE H_GRAPH3_I
+SUM
+AX02_LIBELLE
+COMPUTE ORDRE_GRAPH/I1 = 3;
+COMPUTE VALEUR_GRAPH/D6.2 = IF VALEUR_FINALE_GRAPH3_I IS MISSING THEN 0 ELSE (VALEUR_FINALE_GRAPH3_I / VALEUR_FINALE_GRAPH3_TOUTES_I) * 100;
+COMPUTE LIBELLE_GRAPH/A50 = 'National';
+ON TABLE HOLD AS GRAPH_FINAL FORMAT ALPHA
+END
+-RUN
+ 
+-*Test pour vérifier qu'il y a des valeurs
+-IF &LINES EQ 0 THEN GOTO :ERRMESS;
+ 
+-*------------------------------------------------------
+-* Création du GRAPH Poids filière professionnels de santé
+-*------------------------------------------------------
+-DEFAULTH &WF_STYLE_UNITS='PIXELS';
+-DEFAULTH &WF_STYLE_HEIGHT='405.0';
+-DEFAULTH &WF_STYLE_WIDTH='1000.0';
+ 
+GRAPH FILE GRAPH_FINAL
+HEADING
+""
+FOOTING
+"1ère barre : Poids filière professionnels de santé pour l'entité sélectionnée"
+"2ème barre : Poids filière professionnels de santé pour le même type d'entité"
+"3ème barre : Poids filière professionnels de santé pour toutes entités confondues"
+PRINT VALEUR_GRAPH AS 'Pourcent'
+BY ORDRE_GRAPH NOPRINT
+BY LIBELLE_GRAPH
+ 
+ON GRAPH PCHOLD FORMAT AHTML
+ON GRAPH SET VZERO OFF
+ON GRAPH SET HTMLENCODE ON
+ON GRAPH SET GRAPHDEFAULT OFF
+ON GRAPH SET ARGRAPHENGIN JSCHART
+ON GRAPH SET UNITS &WF_STYLE_UNITS
+ON GRAPH SET HAXIS &WF_STYLE_WIDTH
+ON GRAPH SET VAXIS &WF_STYLE_HEIGHT
+ON GRAPH SET GRMERGE ADVANCED
+ON GRAPH SET GRMULTIGRAPH 0
+ON GRAPH SET GRLEGEND 1
+ON GRAPH SET GRXAXIS 0
+ON GRAPH SET LOOKGRAPH VBAR
+ON GRAPH SET AUTOFIT ON
+ON GRAPH SET STYLE *
+-*INCLUDE = FRblue_theme,$
+*GRAPH_SCRIPT
+setPieDepth(0);
+setPieTilt(0);
+setDepthRadius(0);
+setCurveFitEquationDisplay(false);
+setPlace(true);
+setPieFeelerTextDisplay(1);
+*END
+TYPE=REPORT, TITLETEXT='WebFOCUS Report', ARGRAPHENGINE=JSFUSION, LINES-PER-PAGE=20,$
+TYPE=HEADING, JUSTIFY=CENTER, FONT='Trebuchet MS', SIZE=10, COLOR=RGB(66 70 73), STYLE=BOLD, $
+TYPE=FOOTING,
+SIZE=8,
+$
+*GRAPH_SCRIPT
+setPieFeelerTextDisplay(1);
+setDisplay(getSubtitle(),false);
+setDisplay(getTitle(),false);
+setReportParsingErrors(false);
+setSelectionEnableMove(false);
+setDisplay(getFootnote(),false);
+setLegendPosition(7);
+setFillColor(getChartBackground(),new Color(255,255,255));
+setFillType(getSeries(0),1);
+setFillColor(getSeries(0), new Color(48,94,213,186));
+setDisplay(getPieLabel(),false);
+setFontName(getLegendText(),"Arial");
+setFontSizeAbsolute(getLegendText(), false);
+setFontSizeInPoints(getLegendText(), 10);
+setTextJustHoriz(getLegendText(),1);
+setTextUnderlineType(getLegendText(),1);
+setLegendPosition(7);
+setLegendTextAutosize(false);
+setLegendAutomatic(true);
+setPlaceResize(getLegendText(),1);
+setLegendPosition(1);
+setLegendOrient(1);
+setBorderColor(getLegendArea(),new Color(0,0,0));
+setPieFeelerTextDisplay(4);
+setTextFormatPreset(getPieSliceLabel(),3);
+setDepthRadius(5);
+setDepthAngle(45);
+setPieTilt(10);
+setPieDepth(70);
+setPieSliceDetach(getSeries(*), 0);
+setPieSliceDetach(getSeries(*), 0);
+setDisplay(getY1Title(),false);
+setDisplay(getO1Title(),false);
+setDisplay(getLegendArea(),true);
+*GRAPH_JS
+"mouseOverIndicator": {
+  "enabled": true,
+  "color": "navy",
+  "marker": {"size": 0}
+ },
+ "riserShadow": true,
+ "riserBevel": "cylinder",
+ "introAnimation": {
+  "enabled": false,
+  "duration": 1400
+ },
+*END
+ENDSTYLE
+END
+-GOTO :FINI
+ 
+-:ERRMESS
+-INCLUDE ars3_NODATA
+-:FINI

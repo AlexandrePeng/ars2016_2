@@ -1,0 +1,39 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des types d'interventions sélectionnées dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 26/08/2015
+-*  Auteur : Guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_recup_statut_emploi.fex
+-* ------------------------------------------------------------------------------------------------
+ 
+-DEFAULTH &STATUT = '''_FOC_NONE'''
+-DEFAULT &ID_NIVEAU ='3'
+TABLE FILE SI_AXN_AXE_NIVEAU
+PRINT *
+WHERE ID_AXE EQ 'AARS16STATUT'
+WHERE ID_NIVEAU EQ '&ID_NIVEAU'
+ON TABLE HOLD AS FIL_ACT_STATUT FORMAT ALPHA
+END
+ 
+JOIN ID_VALEUR_AXE IN FIL_ACT_STATUT TO UNIQUE VALEUR_AXE IN AXE_AARS16STATUT
+ 
+TABLE FILE FIL_ACT_STATUT
+PRINT ID_VALEUR_AXE
+BY AARS16STATUT_N3_ORD NOPRINT
+BY AARS16STATUT_N3_LIB
+WHERE AARS16STATUT_N3 NE MISSING
+-IF &STATUT EQ '''_FOC_NONE''' THEN GOTO :SKPSTATUT;
+WHERE AARS16STATUT_N2 EQ '&STATUT'
+ 
+-:SKPSTATUT
+ON TABLE PCHOLD FORMAT XML
+END

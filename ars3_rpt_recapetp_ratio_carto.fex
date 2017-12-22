@@ -1,0 +1,152 @@
+-*============================================================================
+-* Projet Suivi d'activité DIRECCTE 2016
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Nicolas WATTIAUX (Information builders)
+-* Date création : 29/08/2017
+-* Description   : Récapitulatif des paramètres et Total ETP
+-*
+-*--------------------------------------------------------------------------------------------------
+-* Modifications
+-*  Date   : jj/mm/ssaa
+-*  Auteur : first last - sté
+-*  Objet  : ...
+-*==================================================================================================
+-*-SET &ECHO=ALL;
+-TYPE =============================================================================
+-TYPE Procedure    : ars3_rpt_recapetp.fex
+-TYPE =============================================================================
+-INCLUDE ARS3_DEFAUT_ACT
+-*----------------------------------------------------
+-* Definition du passage de paramètre pour Total ETP
+-*----------------------------------------------------
+ 
+-*---------------------------------------------------
+-* Récupération des codes axes selon les paramètres
+-*---------------------------------------------------
+ 
+-INCLUDE ARS3_READ_GEO
+-INCLUDE ARS3_READ_ENT
+-INCLUDE ARS3_READ_ACTIVITE
+-INCLUDE ARS3_READ_PLAFOND
+-INCLUDE ARS3_READ_STATUT
+-*---------------------------------
+-* Total ETP selon les paramètres
+-*---------------------------------
+SET CDN=OFF
+-RUN
+ 
+-*----------------------------
+-* Récupération des libellés
+-*----------------------------
+-INCLUDE ARS3_RECUP_LIB_GEO
+-INCLUDE ARS3_RECUP_LIB_ENTITE
+-INCLUDE ARS3_RECUP_LIB_ACTIVITE
+-INCLUDE ARS3_RECUP_LIB_PLAFOND
+-INCLUDE ARS3_RECUP_LIB_STATUT
+ 
+ 
+-*----------------------------
+-* Récupération des libellés du niveau supérieur lors une séléction sur N4 ou N3
+-*----------------------------
+ 
+-DEFAULTH &SECTEUR_LIB_DEMONINATEUR = ''
+-DEFAULTH &TYPE_INT_LIB_DEMONINATEUR = ''
+ 
+ 
+ 
+TABLE FILE AXE_AARS16DOM
+PRINT
+AARS16DOM_N2_LIB AS 'SECTEUR_LIB_DEMONINATEUR'
+AARS16DOM_N3_LIB AS 'TYPE_INT_LIB_DEMONINATEUR'
+-IF &MISSION NE '_FOC_NULL' GOTO :SKIP_MISSION;
+-IF &MISSION EQ '_FOC_NULL' GOTO :SKIP_TYPE_INT;
+-:SKIP_MISSION
+WHERE AARS16DOM_N4 EQ '&MISSION'
+-GOTO :SKIP_FIN
+-:SKIP_TYPE_INT
+WHERE AARS16DOM_N3 EQ '&TYPE_INT'
+-:SKIP_FIN
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS TABLE_NIVEAU
+END
+ 
+ 
+-RUN
+ 
+-READFILE TABLE_NIVEAU
+ 
+ 
+-TYPE SECTEUR_LIB_DEMONINATEUR = &SECTEUR_LIB_DEMONINATEUR
+-TYPE TYPE_INT_LIB_DEMONINATEUR = &TYPE_INT_LIB_DEMONINATEUR
+ 
+ 
+ 
+-*-*---------------------------------------------------
+-*-* Calcul le ratio en pourcentage d'ETP
+-*-*---------------------------------------------------
+ 
+-INCLUDE ARS3_RATIO_EN_PERCENT_ETP_PRECALCUL
+-DEFAULTH &RATIO = ''
+ 
+TABLE FILE ETP_RATIO_CARTO
+PRINT RATIO
+ON TABLE SET ASNAMES ON
+ON TABLE HOLD AS RATIOVALUE
+END
+-RUN
+-READFILE RATIOVALUE
+-TYPE RATIO = &RATIO
+ 
+-SET &TYPE_INT_LIB_DEMONINATEUR_2 = IF &MISSION_LIB NE 'Toutes' THEN &TYPE_INT_LIB_DEMONINATEUR ELSE 'Toutes';
+-SET &SECTEUR_LIB_DEMONINATEUR_2 = IF &TYPE_INT_LIB EQ 'Tous' AND &MISSION_LIB EQ 'Toutes' THEN 'Tous' ELSE IF &TYPE_INT_LIB_DEMONINATEUR NE 'Toutes' OR &MISSION_LIB NE 'Toutes' THEN &SECTEUR_LIB_DEMONINATEUR ELSE 'Tous';
+ 
+-HTMLFORM BEGIN
+<HTML>
+<body style="Z-INDEX: 0; OVERFLOW: auto;background:#5472AE">
+<div style="overflow: auto;" align="center">
+ 
+        <font color="white">
+        <font face="arial">
+        <b><font color="yellow">RATIO en % ETP &EXERCICE : &RATIO %</font>
+</div>
+<div style="overflow: auto;" align="justify">
+ 
+		<font size=2>
+ 
+        <b><font color="yellow"><U>NUMERATEUR:</U></font></b>
+        <br>
+        <font color="black">Nouvelle région:</font> &NEW_REGION_LIB  <font color="black">Département:</font> &DPT_LIB
+        <br>
+		        <font color="black">Secteur:</font> &SECTEUR_LIB
+        <br>
+        <font color="black">Types d'interventions:</font> &TYPE_INT_LIB
+        <br>
+        <font color="black">Missions:</font> &MISSION_LIB
+        <br>
+        <font color="black">Plafond d'emploi/Hors plafond d'emploi:</font> &PLAFOND_LIB
+        <br>
+        <font color="black">Statuts:</font> &STATUT_LIB
+ 
+		<font size=2>
+		<br>
+        <b><font color="yellow"><U>DENOMINATEUR:</U></font></b>
+        <br>
+        <font color="black">Nouvelle région:</font> Toutes   <font color="black">Département:</font> Tous
+        <br>
+        <font color="black">Secteur:</font> &SECTEUR_LIB_DEMONINATEUR_2
+        <br>
+        <font color="black">Types d'interventions:</font> &TYPE_INT_LIB_DEMONINATEUR_2
+        <br>
+        <font color="black">Plafond d'emploi/Hors plafond d'emploi:</font> Toutes
+        <br>
+        <font color="black">Statuts:</font> Tous
+    </font>
+</div>
+</body>
+</html>
+-HTMLFORM END
+-GOTO :FINI
+ 
+ 
+-:FINI
+ 

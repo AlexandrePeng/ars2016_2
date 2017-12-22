@@ -1,0 +1,52 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2015
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des libellés d'activité sélectionnés dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 28/08/2015
+-*  Auteur : Guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_recup_lib_statut.fex
+-* ------------------------------------------------------------------------------------------------
+-IF &STATUT EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSSTATUT;
+ 
+TABLE FILE AXE_AARS16STATUT
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ &STATUT.QUOTEDSTRING
+ON TABLE HOLD AS TMP_LIB_ACTIVITE_STATUT FORMAT ALPHA
+END
+-RUN
+ 
+-READ TMP_LIB_ACTIVITE_STATUT &STATUT_LIB.A60.
+-GOTO ESTATUT
+-TSSTATUT
+-SET &STATUT_LIB='Tous';
+-ESTATUT
+-TYPE &STATUT_LIB
+ 
+ 
+-IF &EMPLOI EQ 'undefined' OR 'All' OR '_FOC_NULL' THEN GOTO TSEMPLOI;
+ 
+TABLE FILE AXE_AARS16STATUT
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ &EMPLOI.QUOTEDSTRING
+ON TABLE HOLD AS TMP_LIB_ACTIVITE_EMPLOI FORMAT ALPHA
+END
+-RUN
+-READ TMP_LIB_ACTIVITE_EMPLOI &EMPLOI_LIB.A60.
+-GOTO EEMPLOI
+-TSEMPLOI
+-SET &EMPLOI_LIB='Tous';
+-EEMPLOI
+-TYPE &EMPLOI_LIB
+ 
+ 
+ 
+ 
+ 

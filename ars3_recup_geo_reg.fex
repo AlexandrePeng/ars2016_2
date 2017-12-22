@@ -1,0 +1,46 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des régions sélectionnées dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 25/08/2015
+-*  Auteur : Nicolas WATTIAUX
+ 
+-*============================================================================
+-* Procedure    : ars3_recup_geo_reg.fex
+-* ------------------------------------------------------------------------------------------------
+ 
+-*-SET &ECHO=ALL;
+-DEFAULT &NEW_REGION='''_FOC_NONE'''
+-DEFAULT &ID_NIVEAU ='3'
+TABLE FILE SI_AXN_AXE_NIVEAU
+PRINT *
+WHERE ID_AXE EQ 'GEOAR'
+WHERE ID_NIVEAU EQ '&ID_NIVEAU'
+ON TABLE HOLD AS FIL_GEO_REG FORMAT ALPHA
+END
+ 
+JOIN CLEAR *
+-RUN
+JOIN  ID_VALEUR_AXE IN FIL_GEO_REG TO UNIQUE VALEUR_AXE IN AXE_GEOAR
+ 
+TABLE FILE FIL_GEO_REG
+PRINT ID_VALEUR_AXE
+BY GEOAR_N3_LIB
+ 
+-IF &NEW_REGION EQ '''_FOC_NONE''' OR '''_FOC_NULL''' THEN GOTO :SKPNEWREGION;
+WHERE GEOAR_N2 EQ '&NEW_REGION'
+-:SKPNEWREGION
+ 
+ON TABLE PCHOLD FORMAT XML
+END
+ 
+ 
+ 
+ 
+ 

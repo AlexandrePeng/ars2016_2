@@ -1,0 +1,37 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Alexandre PENG
+-* Date création : 25/08/2017
+-* Description   : Procédure de d'alimentation du filtre secteur (SECTEUR)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 
+-*  Auteur : 
+ 
+-*============================================================================
+-* Procedure    : induct3_recup_act_sect.fex
+-* -----------------------------------------------------------------------------------------------
+ 
+-DEFAULT &ID_NIVEAU ='2'
+TABLE FILE SI_AXN_AXE_NIVEAU
+PRINT *
+WHERE ID_AXE EQ 'AARS17INDUCTEUR'
+WHERE ID_NIVEAU EQ '&ID_NIVEAU'
+ON TABLE HOLD AS FIL_SECTEUR FORMAT ALPHA
+END
+ 
+JOIN CLEAR *
+-RUN
+JOIN ID_VALEUR_AXE IN FIL_SECTEUR TO UNIQUE VALEUR_AXE IN AXE_AARS17INDUCTEUR
+ 
+TABLE FILE FIL_SECTEUR
+SUM ID_VALEUR_AXE
+BY AARS17IND_N2_ORD NOPRINT
+BY AARS17IND_N2_LIB
+ON TABLE PCHOLD FORMAT XML
+END
+ 
+ 

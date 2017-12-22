@@ -1,0 +1,46 @@
+-*============================================================================
+-* Projet Suivi d'activité ARS 2017
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Aleandre PENG
+-* Date création : 14/11/2017
+-* Description   : Procédure de récupération des inducteurs sélectionnées dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   :
+-*  Auteur :
+ 
+-*============================================================================
+-* Procedure    : ars2_2016_recup_type_int.fex
+-* ------------------------------------------------------------------------------------------------
+ 
+ 
+-DEFAULTH &SECTEUR = '''_FOC_NONE'''
+-DEFAULT &ID_NIVEAU ='3'
+TABLE FILE SI_AXN_AXE_NIVEAU
+PRINT *
+WHERE ID_AXE EQ 'AARS17INDUCTEUR'
+WHERE ID_NIVEAU EQ '&ID_NIVEAU'
+ON TABLE HOLD AS FIL_ACT_SECTEUR FORMAT ALPHA
+END
+ 
+JOIN ID_VALEUR_AXE IN FIL_ACT_SECTEUR TO UNIQUE VALEUR_AXE IN AXE_AARS17INDUCTEUR
+ 
+TABLE FILE FIL_ACT_SECTEUR
+PRINT ID_VALEUR_AXE
+BY AARS17IND_N3_ORD NOPRINT
+BY AARS17IND_N3_LIB
+ 
+-IF &SECTEUR EQ '''_FOC_NONE''' THEN GOTO :SKPSECTEUR;
+WHERE AARS17IND_N2 EQ '&SECTEUR'
+ 
+-:SKPSECTEUR
+ON TABLE PCHOLD FORMAT XML
+END
+ 
+ 
+ 
+ 
+ 
+ 

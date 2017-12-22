@@ -1,0 +1,12 @@
+-*Permet d'afficher le DOMTOM 971
+ 
+-*-SET &ECHO=ALL;
+ 
+-SET &CODE_DOMTOM = '971' ;
+-*Centrage de la carte et niveau de Zoom
+-SET &CENTRE_D = '16.25687' ;
+-SET &CENTRE_F = '-61.53992';
+-SET &ZOOM     = '8' ;
+ 
+-INCLUDE ars3_gen_dom_tom
+ 

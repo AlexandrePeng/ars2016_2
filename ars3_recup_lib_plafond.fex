@@ -1,0 +1,35 @@
+-*============================================================================
+-* Projet Suivi d'activité DIRECCTE 2014
+-*
+-* Destinataire  : Philippe Louvel
+-* Auteur        : Guy FUTE (Aixial BI), Nicolas WATTIAUX (Information builders)
+-* Date création : 04/06/2015
+-* Description   : Procédure de récupération des libellés de programme de financement sélectionnées dans les filtres (dashboard)
+-*
+-*----------------------------------------------------------------------------
+-* Modifications
+-*  Date   : 07/07/2015
+-*  Auteur : Guy FUTE
+ 
+-*============================================================================
+-* Procedure    : ars3_recup_lib_plafond.fex
+-* ------------------------------------------------------------------------------------------------
+-IF &PLAFOND EQ 'undefined' OR 'All' OR '_FOC_NULL' GOTO TSFIN_PLAF;
+ 
+TABLE FILE AXE_AARS15EFF
+PRINT LIBELLE
+WHERE VALEUR_AXE EQ &PLAFOND.QUOTEDSTRING
+ON TABLE HOLD AS TMP_LIB_FIN_CATEG FORMAT ALPHA
+END
+-RUN
+ 
+-READ TMP_LIB_FIN_CATEG &PLAFOND_LIB.A60.
+-GOTO EFIN_PLAF
+-TSFIN_PLAF
+-SET &PLAFOND_LIB='Tous';
+ 
+-EFIN_PLAF
+-TYPE &PLAFOND_LIB
+ 
+ 
+ 
